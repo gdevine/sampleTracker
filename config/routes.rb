@@ -2,6 +2,7 @@ SampleTracker::Application.routes.draw do
   
   resources :users
   resources :sessions, only: [:new, :create, :destroy]
+  resources :sample_sets, only: [:create, :destroy]
   
   root  'static_pages#home'
   match '/register',    to: 'users#new',    via: 'get'

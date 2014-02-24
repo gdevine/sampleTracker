@@ -18,5 +18,14 @@ namespace :db do
                    password: password,
                    password_confirmation: password)
     end
+    
+    users = User.all(limit: 6)
+    50.times do
+      content = Faker::Lorem.sentence(5)
+      users.each { |user| user.sample_sets.create!(facility_id: 1 + rand(100), 
+                                                   project_id: 1 + rand(100), 
+                                                   num_samples: 1 + rand(100),
+                                                   sampling_date: Date.today+(100*rand())) }
+    end
   end
 end

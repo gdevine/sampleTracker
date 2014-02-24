@@ -1,0 +1,9 @@
+<h1>
+  <%= current_user.firstname %>
+</h1>
+<span>
+  <%= link_to "view my profile", current_user %>
+</span>
+<span>
+  <%= pluralize(current_user.sample_sets.count, "sample_set") %>
+</span>

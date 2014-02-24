@@ -4,7 +4,7 @@ describe User do
 
   before { @user = User.new(firstname: "Example", surname: "Blabla", email: "user@example.com",
                             password: "foobar", password_confirmation: "foobar") }
-
+  
   subject { @user }
 
   it { should respond_to(:firstname) }
@@ -16,6 +16,8 @@ describe User do
   it { should respond_to(:authenticate) }
   it { should respond_to(:remember_token) }
   it { should respond_to(:admin) }
+  it { should respond_to(:sample_sets) }
+  it { should respond_to(:feed) }
 
   it { should be_valid }
   it { should_not be_admin }
@@ -122,5 +124,40 @@ describe User do
   describe "remember token" do
     before { @user.save }
     its(:remember_token) { should_not be_blank }
+  end
+  
+  describe "sample_set associations" do
+
+    before { @user.save }
+    let!(:older_sample_set) do
+      FactoryGirl.create(:sample_set, owner: @user, created_at: 1.day.ago)
+    end
+    let!(:newer_sample_set) do
+      FactoryGirl.create(:sample_set, owner: @user, created_at: 1.hour.ago)
+    end
+
+    it "should have the right sample_sets in the right order" do
+      expect(@user.sample_sets.to_a).to eq [newer_sample_set, older_sample_set]
+    end
+    
+    it "should destroy associated sample_sets" do
+      sample_sets = @user.sample_sets.to_a
+      @user.destroy
+      expect(sample_sets).not_to be_empty
+      sample_sets.each do |sample_set|
+        expect(SampleSet.where(id: sample_set.id)).to be_empty
+      end
+    end
+    
+    describe "status" do
+      let(:unfollowed_sample_set) do
+        FactoryGirl.create(:sample_set, owner: FactoryGirl.create(:user))
+      end
+
+      its(:feed) { should include(newer_sample_set) }
+      its(:feed) { should include(older_sample_set) }
+      its(:feed) { should_not include(unfollowed_sample_set) }
+    end
+    
   end
 end

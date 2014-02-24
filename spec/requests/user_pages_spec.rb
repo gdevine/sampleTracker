@@ -53,10 +53,19 @@ describe "User pages" do
 
   describe "profile page" do
     let(:user) { FactoryGirl.create(:user) }
+    let!(:m1) { FactoryGirl.create(:sample_set, owner: user, num_samples: 60) }
+    let!(:m2) { FactoryGirl.create(:sample_set, owner: user, num_samples: 50) }
+    
     before { visit user_path(user) }
 
     it { should have_content(user.firstname) }
     it { should have_title(user.firstname) }
+    
+    describe "sample_sets" do
+      it { should have_content(m1.num_samples) }
+      it { should have_content(m2.num_samples) }
+      it { should have_content(user.sample_sets.count) }
+    end
   end
 
   describe "signup page" do
@@ -80,8 +89,8 @@ describe "User pages" do
 
     describe "with valid information" do
       before do
-        fill_in "Firstname",         with: "Example"
-        fill_in "Surname",         with: "Bla"
+        fill_in "Firstname",    with: "Example"
+        fill_in "Surname",      with: "Bla"
         fill_in "Email",        with: "user@example.com"
         fill_in "Password",     with: "foobar"
         fill_in "Confirmation", with: "foobar"
