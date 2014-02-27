@@ -1,6 +1,13 @@
 class SampleSetsController < ApplicationController
   before_action :signed_in_user, only: [:create, :destroy]
   before_action :correct_user,   only: :destroy
+  
+  def index   
+    @sample_sets = SampleSet.paginate(page: params[:page])
+  end
+  
+  def new
+  end
 
   def create
     @sample_set = current_user.sample_sets.build(sample_set_params)
@@ -8,7 +15,7 @@ class SampleSetsController < ApplicationController
       flash[:success] = "Sample Set created!"
       redirect_to root_url
     else
-      @feed_items = []
+      @sample_sets = []
       render 'static_pages/home'
     end
   end

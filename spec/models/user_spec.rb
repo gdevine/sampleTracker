@@ -17,7 +17,7 @@ describe User do
   it { should respond_to(:remember_token) }
   it { should respond_to(:admin) }
   it { should respond_to(:sample_sets) }
-  it { should respond_to(:feed) }
+  it { should respond_to(:my_sample_sets) }
 
   it { should be_valid }
   it { should_not be_admin }
@@ -154,9 +154,9 @@ describe User do
         FactoryGirl.create(:sample_set, owner: FactoryGirl.create(:user))
       end
 
-      its(:feed) { should include(newer_sample_set) }
-      its(:feed) { should include(older_sample_set) }
-      its(:feed) { should_not include(unfollowed_sample_set) }
+      its(:my_sample_sets) { should include(newer_sample_set) }
+      its(:my_sample_sets) { should include(older_sample_set) }
+      its(:my_sample_sets) { should_not include(unfollowed_sample_set) }
     end
     
   end

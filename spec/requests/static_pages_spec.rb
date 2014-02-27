@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Static pages" do
+describe "Static pages:" do
   
   subject { page }
 
@@ -12,17 +12,39 @@ describe "Static pages" do
     it { should_not have_title('| Home') }
     
     describe "for signed-in users" do
+      
       let(:user) { FactoryGirl.create(:user) }
-      before do
-        FactoryGirl.create(:sample_set, owner: user, project_id: 3)
-        FactoryGirl.create(:sample_set, owner: user, project_id: 4)
-        sign_in user
-        visit root_path
+      
+      describe "with no sample sets" do
+        before do
+          sign_in user
+          visit root_path
+        end
+        
+        it "should have an information message" do
+          expect(page).to have_content('No Sample Sets found')
+        end
+        
       end
-
-      it "should render the user's feed" do
-        user.feed.each do |item|
-          expect(page).to have_selector("li##{item.id}", text: item.project_id)
+      
+      describe "with sample sets" do
+      
+        before do
+          FactoryGirl.create(:sample_set, owner: user, project_id: 3)
+          FactoryGirl.create(:sample_set, owner: user, project_id: 4)
+          sign_in user
+          visit root_path
+        end
+        
+        
+        it "should have correct table heading" do
+          expect(page).to have_selector('th', text: 'Sample Set ID')
+        end
+                
+        it "should contain each in a table row" do
+          user.my_sample_sets.each do |item|
+            expect(page).to have_selector('table tr td', text: item.id)
+          end
         end
       end
     end

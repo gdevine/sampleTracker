@@ -1,0 +1,22 @@
+<% if @sample_sets.any? %>
+  <table class="table table-bordered table-hover" width="647">
+    <thead>
+      <tr>
+        <th>Sample Set ID</th>
+        <th>Owner</th>
+        <th>Facility</th>
+        <th>Date requested</th>
+        <th>Requested Sampling Date</th>
+        <th>Number of Samples Requested</th>
+        <th>Delete?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render partial: 'shared/sample_sets_table', collection: @sample_sets, as: :sample_set %>
+    </tbody>
+  </table>
+  
+  <%= will_paginate @sample_sets %>
+<% else %>
+  <p>No Sample Sets found</p>
+<% end %>
