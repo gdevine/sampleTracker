@@ -28,7 +28,6 @@ describe "SampleSet pages:" do
       end
       
       describe "with sample sets in the system" do
-                
         before do
           FactoryGirl.create(:sample_set, owner: user, project_id: 3)
           FactoryGirl.create(:sample_set, owner: user, project_id: 4)
@@ -49,9 +48,18 @@ describe "SampleSet pages:" do
         it "should have a create new button " do
           expect(page).to have_button('New Sample Set')
         end
-        
       end
-    
+      
+      describe "clicking the new sample set button takes you to the new sample set page" do
+        before do
+          click_button "New Sample Set"
+        end
+
+        it "should render the desired protected page" do
+          expect(page).to have_title('Create a new Sample Set')
+        end
+      end
+
     end
      
   end
