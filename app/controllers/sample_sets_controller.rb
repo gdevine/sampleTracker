@@ -1,5 +1,5 @@
 class SampleSetsController < ApplicationController
-  before_action :signed_in_user, only: [:create, :destroy]
+  before_action :signed_in_user, only: [:index, :new, :create, :destroy]
   before_action :correct_user,   only: :destroy
   
   def index   
@@ -7,6 +7,7 @@ class SampleSetsController < ApplicationController
   end
   
   def new
+    @sample_set = SampleSet.new
   end
 
   def create
@@ -16,7 +17,7 @@ class SampleSetsController < ApplicationController
       redirect_to root_url
     else
       @sample_sets = []
-      render 'static_pages/home'
+      render 'sample_sets/new'
     end
   end
 

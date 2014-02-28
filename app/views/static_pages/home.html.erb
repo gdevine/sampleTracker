@@ -1,12 +1,10 @@
 <% if signed_in? %>
 
+  <% provide(:pageheading, "Home Page for"+" " + current_user.firstname + " " + current_user.surname) %>
   <div class="row">
     <aside class="span4">
       <section>
         <%= render 'shared/user_info' %>
-      </section>
-      <section>
-        <%= render 'shared/sample_set_form' %>
       </section>
     </aside>
   </div>

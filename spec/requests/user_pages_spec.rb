@@ -56,7 +56,10 @@ describe "User pages" do
     let!(:m1) { FactoryGirl.create(:sample_set, owner: user, num_samples: 60) }
     let!(:m2) { FactoryGirl.create(:sample_set, owner: user, num_samples: 50) }
     
-    before { visit user_path(user) }
+    before do
+      sign_in user
+      visit user_path(user)
+    end
 
     it { should have_content(user.firstname) }
     it { should have_title(user.firstname) }

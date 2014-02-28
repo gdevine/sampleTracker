@@ -3,14 +3,15 @@ require 'spec_helper'
 describe "SampleSet pages:" do
 
   subject { page }
-
-  let(:user) { FactoryGirl.create(:user) }
-  before { sign_in user }
   
-  describe "sample_set index page" do
-    before { visit sample_sets_path }
+  let(:user) { FactoryGirl.create(:user) }
+
+  describe "Index page" do
     
     describe "for signed-in users" do
+      
+      before { sign_in user }
+      before { visit sample_sets_path }
       
       it { should have_content('Sample Set List') }
       it { should have_title(full_title('Sample Set List')) }
@@ -50,52 +51,78 @@ describe "SampleSet pages:" do
         end
       end
       
-      describe "clicking the new sample set button takes you to the new sample set page" do
+      describe "clicking the new sample set button" do
         before do
           click_button "New Sample Set"
         end
 
-        it "should render the desired protected page" do
-          expect(page).to have_title('Create a new Sample Set')
+        it "should open up the create sample set page" do
+          expect(page).to have_title('New Sample Set')
         end
       end
 
     end
-     
+    
+    describe "for non signed-in users" do
+      describe "should be redirected back to signin" do
+        before { visit sample_sets_path }
+        it { should have_title('Sign in') }
+      end
+    end
+    
   end
   
 
-  describe "sample_set create page" do
-    before { visit sample_sets_path }
-
-    describe "with invalid information" do
-
-      it "should not create a sample_set" do
-        expect { click_button "Submit" }.not_to change(SampleSet, :count)
+  describe "New page" do
+    
+    describe "for signed-in users" do
+    
+      before { sign_in user }
+      before { visit new_sample_set_path }
+      
+      it { should have_content('New Sample Set') }
+      it { should have_title(full_title('New Sample Set')) }
+      it { should_not have_title('| Home') }
+      
+      describe "with invalid information" do
+  
+        it "should not create a sample_set" do
+          expect { click_button "Submit" }.not_to change(SampleSet, :count)
+        end
+  
       end
-
-    end
-
-    describe "with valid information" do
-
-      before do
-        fill_in 'sample_set_facility_id'  , with: 1 
-        fill_in 'sample_set_project_id'   , with: 1
-        fill_in 'sample_set_num_samples'  , with: 50
-        fill_in 'sample_set_sampling_date', with: Date.new(2012, 12, 3)
+  
+      describe "with valid information" do
+  
+        before do
+          fill_in 'sample_set_facility_id'  , with: 1 
+          fill_in 'sample_set_project_id'   , with: 1
+          fill_in 'sample_set_num_samples'  , with: 50
+          fill_in 'sample_set_sampling_date', with: Date.new(2012, 12, 3)
+        end
+        
+        it "should create a sample_set" do
+          expect { click_button "Submit" }.to change(SampleSet, :count).by(1)
+        end
       end
       
-      it "should create a sample_set" do
-        expect { click_button "Submit" }.to change(SampleSet, :count).by(1)
+    end
+    
+    describe "for non signed-in users" do
+      describe "should be redirected back to signin" do
+        before { visit new_sample_set_path }
+        it { should have_title('Sign in') }
       end
     end
+    
   end
+  
   
   describe "sample_set destruction" do
     before { FactoryGirl.create(:sample_set, owner: user) }
 
     describe "as correct user" do
-      #before { visit root_path }
+      before { sign_in user }
       before { visit sample_sets_path }
 
       it "should delete a sample_set" do
@@ -103,4 +130,5 @@ describe "SampleSet pages:" do
       end
     end
   end
+  
 end
