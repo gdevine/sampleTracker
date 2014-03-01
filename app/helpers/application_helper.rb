@@ -21,7 +21,7 @@ module ApplicationHelper
   def show_minibar?(current_path)
     if current_path == root_path && signed_in? 
       return true
-    elsif ![root_path, about_path, contact_path, help_path, register_path, signin_path].include? current_path  
+    elsif ![root_path, about_path, contact_path, help_path, users_path, register_path, sessions_path, signin_path].include? current_path  
       return true
     else
       return false
