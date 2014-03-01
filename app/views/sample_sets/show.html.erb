@@ -1,0 +1,49 @@
+<% provide(:title, 'Sample Set View') %>
+<% provide(:pageheading, 'Sample Set View') %>
+
+<div class="row">  
+  
+  <div class="span3 offset3">
+    <h4>Sample Set ID</h4>
+  </div>
+  <div class="span3 offset1">
+    <h4><strong><%= @sample_set.id %></strong></h4>
+  </div>
+  
+  <div class="span3 offset3">
+    <h4>Owner</h4>
+  </div>
+  <div class="span3 offset1">
+    <h4><strong><%= @sample_set.owner.firstname %> <%= @sample_set.owner.surname %></strong></h4>
+  </div>
+  
+  <div class="span3 offset3">
+    <h4>Facility</h4>
+  </div>
+  <div class="span3 offset1">
+    <h4><strong><%= @sample_set.facility_id %></strong></h4>
+  </div>
+  
+  <div class="span3 offset3">
+    <h4>Project</h4>
+  </div>
+  <div class="span3 offset1">
+    <h4><strong><%= @sample_set.project_id %></strong></h4>
+  </div>
+  
+  <div class="span3 offset3">
+    <h4>Number of Samples</h4>
+  </div>
+  <div class="span3 offset1">
+    <h4><strong><%= @sample_set.num_samples %></strong></h4>
+  </div>
+  
+  <div class="span3 offset3">
+    <h4>Sampling Date</h4>
+  </div>
+  <div class="span3 offset1">
+    <h4><strong><%= @sample_set.sampling_date %></strong></h4>
+  </div> 
+  
+  
+</div>

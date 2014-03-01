@@ -131,4 +131,19 @@ describe "SampleSet pages:" do
     end
   end
   
+  describe "Show page" do
+    
+    let!(:sampleset) { FactoryGirl.create(:sample_set, owner: user, num_samples: 60) }
+        
+    describe "for signed-in users" do
+      
+      before { sign_in user }
+      before { visit sample_set_path(sampleset) }
+      
+      it { should have_content('Sample Set View') }
+      it { should have_title(full_title('Sample Set View')) }
+      it { should_not have_title('| Home') }
+    end
+  end
+  
 end

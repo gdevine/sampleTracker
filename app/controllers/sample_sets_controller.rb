@@ -9,6 +9,10 @@ class SampleSetsController < ApplicationController
   def new
     @sample_set = SampleSet.new
   end
+  
+  def show
+    @sample_set = SampleSet.find(params[:id])
+  end
 
   def create
     @sample_set = current_user.sample_sets.build(sample_set_params)
