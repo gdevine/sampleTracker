@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'pp'
 
 describe "SampleSet pages:" do
 
@@ -22,10 +23,6 @@ describe "SampleSet pages:" do
         it "should have an information message" do
           expect(page).to have_content('No Sample Sets found')
         end
-        
-        it "should still have a create new button " do
-          expect(page).to have_button('New Sample Set')
-        end
       end
       
       describe "with sample sets in the system" do
@@ -46,19 +43,6 @@ describe "SampleSet pages:" do
           end
         end
         
-        it "should have a create new button " do
-          expect(page).to have_button('New Sample Set')
-        end
-      end
-      
-      describe "clicking the new sample set button" do
-        before do
-          click_button "New Sample Set"
-        end
-
-        it "should open up the create sample set page" do
-          expect(page).to have_title('New Sample Set')
-        end
       end
 
     end
@@ -131,6 +115,7 @@ describe "SampleSet pages:" do
     end
   end
   
+  
   describe "Show page" do
     
     let!(:sampleset) { FactoryGirl.create(:sample_set, owner: user, num_samples: 60) }
@@ -140,10 +125,26 @@ describe "SampleSet pages:" do
       before { sign_in user }
       before { visit sample_set_path(sampleset) }
       
-      it { should have_content('Sample Set View') }
+      let!(:page_heading) {"Sample Set " + sampleset.id.to_s}
+      
+      it { should have_selector('h1', :text => page_heading) }
       it { should have_title(full_title('Sample Set View')) }
       it { should_not have_title('| Home') }
+      it { should have_button('Edit Sample Set') }
+      it { should have_button('Delete Sample Set') }
+      
+      describe "should delete sample set on pressing delete button" do
+        
+      end
     end
+    
+    describe "for non signed-in users" do
+      describe "should be redirected back to signin" do
+        before { visit sample_set_path(sampleset) }
+        it { should have_title('Sign in') }
+      end
+    end
+    
   end
   
 end

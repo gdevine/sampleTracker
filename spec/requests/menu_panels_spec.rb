@@ -97,5 +97,32 @@ describe "Menu Panel:" do
       expect(page).not_to have_selector('nav#minibar')
     end
   end
+  
+  # Making sure that menu options navigate to the right location
+  describe "opening the sample set dropdown" do
+    before { sign_in user }
+    before { visit root_path }
+    
+    describe "and clicking the Create New link" do
+      before do
+        click_link('sample_sets_new')
+      end
+  
+      it "should open up the create sample set page" do
+        expect(page).to have_title('New Sample Set')
+      end
+    end
+    
+    describe "and clicking the View All link" do
+      before do
+        click_link('sample_sets_index')
+      end
+  
+      it "should open up the sample set index page" do
+        expect(page).to have_title('Sample Set List')
+      end
+    end
+  end 
+  
 
 end

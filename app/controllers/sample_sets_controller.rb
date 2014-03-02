@@ -1,5 +1,5 @@
 class SampleSetsController < ApplicationController
-  before_action :signed_in_user, only: [:index, :new, :create, :destroy]
+  before_action :signed_in_user, only: [:index, :new, :show, :create, :destroy]
   before_action :correct_user,   only: :destroy
   
   def index   

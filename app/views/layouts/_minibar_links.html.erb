@@ -3,10 +3,10 @@
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sample Sets<b class="caret"></b></a>
     <ul class="dropdown-menu">
       <li>
-        <%= link_to 'View All', sample_sets_path %>
+        <%= link_to 'View All', sample_sets_path, :id => 'sample_sets_index' %>
       </li>
       <li>
-        <%= link_to 'Create New', new_sample_set_path %>
+        <%= link_to 'Create New', new_sample_set_path, :id => 'sample_sets_new' %>
       </li>
     </ul>
   </li>
