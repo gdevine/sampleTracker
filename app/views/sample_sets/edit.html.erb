@@ -1,0 +1,25 @@
+<% provide(:title, "Edit Sample Set") %>
+<% provide(:pageheading, 'Edit Sample Set '+ @sample_set.id.to_s) %>
+
+<div class="row">
+  <div class="span6 offset3">
+    <%= form_for(@sample_set) do |f| %>
+      <%= render 'shared/error_messages', object: f.object %>
+
+     <%= f.label :facility_id %>
+      <%= f.number_field :facility_id, :min => 0 %>
+      
+      <%= f.label :project_id %>
+      <%= f.number_field :project_id, :min => 0 %>
+
+      <%= f.label :sampling_date %>
+      <%= f.date_field :sampling_date %>
+
+      <%= f.label :num_samples %>
+      <%= f.number_field :num_samples, :min => 0 %>
+
+      <%= f.submit "Update Sample Set", class: "btn btn-large btn-primary" %>
+    <% end %>
+
+  </div>
+</div>

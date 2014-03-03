@@ -103,14 +103,16 @@ describe "SampleSet pages:" do
   
   
   describe "sample_set destruction" do
-    before { FactoryGirl.create(:sample_set, owner: user) }
+    # before { FactoryGirl.create(:sample_set, owner: user) }
+    let!(:sampleset) { FactoryGirl.create(:sample_set, owner: user, num_samples: 60) }
 
     describe "as correct user" do
       before { sign_in user }
-      before { visit sample_sets_path }
+      # before { visit sample_sets_path }
+      before { visit sample_set_path(sampleset) }
 
       it "should delete a sample_set" do
-        expect { click_link "delete" }.to change(SampleSet, :count).by(-1)
+        expect { click_button "Delete Sample Set" }.to change(SampleSet, :count).by(-1)
       end
     end
   end
@@ -129,22 +131,48 @@ describe "SampleSet pages:" do
       
       it { should have_selector('h1', :text => page_heading) }
       it { should have_title(full_title('Sample Set View')) }
-      it { should_not have_title('| Home') }
+      it { should_not have_title('| Home') }  
       it { should have_button('Edit Sample Set') }
       it { should have_button('Delete Sample Set') }
       
-      describe "should delete sample set on pressing delete button" do
+      describe "when clicking the edit button" do
+        before { click_button "Edit Sample Set" }
+        let!(:page_heading) {"Edit Sample Set " + sampleset.id.to_s}
         
+        describe 'should have a page heading for editing the correct sample set' do
+          it { should have_content(page_heading) }
+        end
       end
+      
+      describe "who don't own the current sample set" do
+         let(:non_owner) { FactoryGirl.create(:user) }
+         before do 
+           sign_in non_owner
+           visit sample_set_path(sampleset)
+         end 
+         
+         describe "should not see the edit and delete buttons" do
+           it { should_not have_button('Edit Sample Set') }
+           it { should_not have_button('Delete Sample Set') }
+         end 
+
+      end
+      
     end
     
     describe "for non signed-in users" do
       describe "should be redirected back to signin" do
         before { visit sample_set_path(sampleset) }
         it { should have_title('Sign in') }
+        it { should_not have_button('Edit Sample Set') }
+        it { should_not have_button('Delete Sample Set') }
       end
     end
     
   end
-  
+
+  describe "edit page" do
+    
+  end
+
 end

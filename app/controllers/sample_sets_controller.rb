@@ -1,5 +1,5 @@
 class SampleSetsController < ApplicationController
-  before_action :signed_in_user, only: [:index, :new, :show, :create, :destroy]
+  before_action :signed_in_user, only: [:index, :new, :show, :update, :edit, :create, :destroy]
   before_action :correct_user,   only: :destroy
   
   def index   
@@ -22,6 +22,20 @@ class SampleSetsController < ApplicationController
     else
       @sample_sets = []
       render 'sample_sets/new'
+    end
+  end
+  
+  def edit
+    @sample_set = SampleSet.find(params[:id])
+  end
+  
+  def update
+    @sample_set = SampleSet.find(params[:id])
+    if @sample_set.update_attributes(sample_set_params)
+      flash[:success] = "Sample Set updated"
+      redirect_to @sample_set
+    else
+      render 'edit'
     end
   end
 

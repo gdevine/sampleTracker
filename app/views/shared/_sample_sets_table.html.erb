@@ -1,17 +1,9 @@
 <tr>
-  <td><%= link_to sample_set.id, sample_set %></td>
-  <td>
-    <%= link_to(sample_set.owner) do %>
-      <%= sample_set.owner.firstname %> <%= sample_set.owner.surname %>
-    <% end %>
-  </td>
+  <td><%= sample_set.id %></td>
+  <td><%= sample_set.owner.firstname %> <%= sample_set.owner.surname %></td>
   <td><%= sample_set.facility_id %></td>
   <td><%= sample_set.created_at.to_date %></td>
   <td><%= sample_set.sampling_date %></td>
   <td><%= sample_set.num_samples %></td>
-  <td>
-    <% if current_user?(sample_set.owner) %>
-      <%= link_to "delete", sample_set, method: :delete, data: { confirm: "Are you sure?" }, title: sample_set.project_id %>
-    <% end %>
-  </td>
+  <td><%= link_to "View", sample_set %></td>
 </tr>

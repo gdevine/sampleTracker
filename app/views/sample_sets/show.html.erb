@@ -8,7 +8,8 @@
       <%= button_to "Edit Sample Set", {:action => 'edit' }, :method => :get, :class=>"btn btn-block" %>
     </div>
     <div class="span2">
-      <%= button_to "Delete Sample Set", {:action => 'edit' }, :method => :get, :class=>"btn btn-block btn-danger" %>
+      <!-- <%= button_to "Delete Sample Set", {:action => 'destroy' }, :method => :get, :class=>"btn btn-block btn-danger" %> -->
+      <%= button_to "Delete Sample Set", @sample_set, method: :delete, data: { confirm: "Are you sure?" }, title: @sample_set.project_id, :class=>"btn btn-block btn-danger" %>
     </div>
   </div>
 <% end %>
