@@ -6,17 +6,20 @@
     <%= form_for(@sample_set) do |f| %>
       <%= render 'shared/error_messages', object: f.object %>
 
-     <%= f.label :facility_id %>
+      <%= f.label :facility_id, 'Facility' %>
       <%= f.number_field :facility_id, :min => 0 %>
       
-      <%= f.label :project_id %>
+      <%= f.label :project_id, 'Project' %>
       <%= f.number_field :project_id, :min => 0 %>
 
-      <%= f.label :sampling_date %>
+      <%= f.label :sampling_date , 'Sampling Date' %>
       <%= f.date_field :sampling_date %>
 
-      <%= f.label :num_samples %>
+      <%= f.label :num_samples, 'Number of Samples Required' %>
       <%= f.number_field :num_samples, :min => 0 %>
+      
+      <%= f.label :add_info, "Additional Information" %>
+      <%= f.text_area :add_info, size: "60x12" %>
 
       <%= f.submit "Update Sample Set", class: "btn btn-large btn-primary" %>
     <% end %>

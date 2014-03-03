@@ -16,6 +16,7 @@ class SampleSetsController < ApplicationController
 
   def create
     @sample_set = current_user.sample_sets.build(sample_set_params)
+    @sample_set.status = 'Pending'
     if @sample_set.save
       flash[:success] = "Sample Set created!"
       redirect_to root_url
@@ -47,7 +48,7 @@ class SampleSetsController < ApplicationController
   private
 
     def sample_set_params
-      params.require(:sample_set).permit(:owner_id, :facility_id, :project_id, :sampling_date, :num_samples)
+      params.require(:sample_set).permit(:owner_id, :facility_id, :project_id, :sampling_date, :num_samples, :status, :add_info)
     end
     
     def correct_user

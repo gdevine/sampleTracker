@@ -15,6 +15,8 @@ FactoryGirl.define do
     facility_id  1 
     project_id   1
     num_samples  50
+    status 'Pending'
+    add_info 'Some info about this sample set'
     sampling_date Date.new(2012, 12, 3)
     association :owner, :factory  => :user
   end
