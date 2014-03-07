@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
   has_many :sample_sets, :class_name => 'SampleSet', :foreign_key => 'owner_id', dependent: :destroy
+  has_many :samples, :class_name => 'Sample', :foreign_key => 'owner_id', dependent: :destroy
   
   before_save { self.email = email.downcase }
   before_create :create_remember_token

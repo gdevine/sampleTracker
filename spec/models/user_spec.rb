@@ -18,6 +18,7 @@ describe User do
   it { should respond_to(:admin) }
   it { should respond_to(:sample_sets) }
   it { should respond_to(:my_sample_sets) }
+  it { should respond_to(:samples) }
 
   it { should be_valid }
   it { should_not be_admin }
@@ -159,5 +160,29 @@ describe User do
       its(:my_sample_sets) { should_not include(unfollowed_sample_set) }
     end
     
+  end
+  
+  describe "sample associations" do
+
+    before { @user.save }
+    let!(:older_sample) do
+      FactoryGirl.create(:sample, owner: @user, created_at: 1.day.ago)
+    end
+    let!(:newer_sample) do
+      FactoryGirl.create(:sample, owner: @user, created_at: 1.hour.ago)
+    end
+
+    it "should have the right samples in the right order" do
+      expect(@user.samples.to_a).to eq [newer_sample, older_sample]
+    end
+    
+    it "should destroy associated samples" do
+      samples = @user.samples.to_a
+      @user.destroy
+      expect(samples).not_to be_empty
+      samples.each do |sample|
+        expect(Sample.where(id: sample.id)).to be_empty
+      end
+    end
   end
 end

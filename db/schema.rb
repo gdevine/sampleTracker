@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140303025235) do
+ActiveRecord::Schema.define(version: 20140303054925) do
 
   create_table "sample_sets", force: true do |t|
     t.integer  "owner_id"
@@ -26,6 +26,31 @@ ActiveRecord::Schema.define(version: 20140303025235) do
   end
 
   add_index "sample_sets", ["owner_id", "created_at"], name: "index_sample_sets_on_owner_id_and_created_at"
+
+  create_table "samples", force: true do |t|
+    t.integer  "sample_set_id"
+    t.integer  "owner_id"
+    t.boolean  "sampled"
+    t.date     "date_sampled"
+    t.integer  "storage_location"
+    t.integer  "facility_id"
+    t.integer  "project_id"
+    t.text     "comments"
+    t.boolean  "is_primary"
+    t.integer  "ring"
+    t.integer  "tree"
+    t.integer  "plot"
+    t.float    "northing"
+    t.float    "easting"
+    t.float    "vertical"
+    t.string   "material_type"
+    t.string   "amount_collected"
+    t.string   "amount_stored"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "samples", ["owner_id", "facility_id", "created_at"], name: "index_samples_on_owner_id_and_facility_id_and_created_at"
 
   create_table "users", force: true do |t|
     t.string   "firstname"

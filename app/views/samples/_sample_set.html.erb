@@ -1,0 +1,12 @@
+<li>
+  <span class="content"><%= sample_set.num_samples %></span>
+  <span class="timestamp">
+    Posted <%= time_ago_in_words(sample_set.created_at) %> ago.
+  </span>
+  
+  <% if current_user?(sample_set.owner) %>
+    <%= link_to "delete", sample_set, method: :delete,
+                                     data: { confirm: "Are you sure?" },
+                                     title: sample_set.project_id %>
+  <% end %>
+</li>
