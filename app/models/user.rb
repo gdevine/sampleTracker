@@ -28,6 +28,10 @@ class User < ActiveRecord::Base
   def my_sample_sets
     SampleSet.where("owner_id = ?", id)
   end
+  
+  def my_samples
+    Sample.where("owner_id = ?", id)
+  end
 
   private
 

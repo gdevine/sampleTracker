@@ -1,8 +1,9 @@
-<% provide(:title, 'New Sample Set') %>
-<% provide(:pageheading, 'New Sample Set') %>
+<% provide(:title, 'New Sample') %>
+<% provide(:pageheading, 'New Sample') %>
+
 <div class="row">
   <div class="span6 offset3">
-    <%= form_for(@sample_set) do |f| %>
+    <%= form_for(@sample) do |f| %>
       <%= render 'shared/error_messages', object: f.object %>
 
       <%= f.label :facility_id, 'Facility' %>
@@ -10,15 +11,21 @@
       
       <%= f.label :project_id, 'Project' %>
       <%= f.number_field :project_id, :min => 0 %>
-
-      <%= f.label :sampling_date, 'Sampling Date' %>
-      <%= f.date_field :sampling_date %>
-
-      <%= f.label :num_samples, 'Number of Samples Required' %>
-      <%= f.number_field :num_samples, :min => 0 %>
       
-      <%= f.label :add_info, "Additional Information" %>
-      <%= f.text_area :add_info, size: "60x12" %>
+      <%= f.label :sample_set_id, 'Sample Set' %>
+      <%= f.number_field :sample_set_id, :min => 0 %>
+
+      <%= f.label :tree, 'Tree' %>
+      <%= f.number_field :tree, :min => 0 %>
+
+      <%= f.label :date_sampled, 'Date Sampled' %>
+      <%= f.date_field :date_sampled %>
+      
+      <%= f.label :sampled, "Sampled?" %>
+      <%= f.text_field :sampled %>
+
+      <%= f.label :comments, "Additional Comments" %>
+      <%= f.text_area :comments, size: "60x12" %>
 
       <%= f.submit "Submit", class: "btn btn-large btn-primary" %>
     <% end %>

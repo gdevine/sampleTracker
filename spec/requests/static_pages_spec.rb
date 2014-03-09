@@ -47,10 +47,44 @@ describe "Static pages:" do
           end
         end
       end
-    end
     
-  end
+      describe "with no samples" do
+        before do
+          sign_in user
+          visit root_path
+        end
+        
+        it "should have an information message" do
+          expect(page).to have_content('No Samples found')
+        end
+        
+      end
+      
+      describe "with sample sets" do
+      
+        before do
+          FactoryGirl.create(:sample, owner: user, facility_id: 3)
+          FactoryGirl.create(:sample, owner: user, facility_id: 4)
+          sign_in user
+          visit root_path
+        end
+        
+        it "should have correct table heading" do
+          expect(page).to have_selector('th', text: 'Sample ID')
+        end
+                
+        it "should contain each in a table row" do
+          user.my_samples.each do |item|
+            expect(page).to have_selector('table tr td', text: item.id)
+          end
+        end
+        
+      end
+      
+    end
   
+  end
+    
     
   describe "Help page" do
     before { visit help_path }
@@ -59,12 +93,14 @@ describe "Static pages:" do
     it { should have_title(full_title('Help')) }
   end
   
+  
   describe "About page" do
     before { visit about_path }
 
     it { should have_content('About the HIE Sample Tracker') }
     it { should have_title(full_title('About')) }
   end
+  
   
   describe "Contact page" do
     before { visit contact_path }

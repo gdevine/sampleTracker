@@ -30,5 +30,16 @@ namespace :db do
                                                    add_info: "Some additional info about this sample set"
                                                    ) }
     end
+    
+    50.times do
+      content = Faker::Lorem.sentence(5)
+      users.each { |user| user.samples.create!(facility_id: 1 + rand(100), 
+                                               project_id: 1 + rand(100), 
+                                               date_sampled: Date.today+(100*rand()),
+                                               sampled: false,
+                                               tree: 1 + rand(100),
+                                               comments: "Some additional comments about this sample"
+                                               ) }
+    end
   end
 end

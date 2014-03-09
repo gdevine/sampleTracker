@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'pp'
 
-describe "SampleSet pages:" do
+describe "sample_set pages:" do
 
   subject { page }
   
@@ -29,7 +29,6 @@ describe "SampleSet pages:" do
         before do
           FactoryGirl.create(:sample_set, owner: user, project_id: 3)
           FactoryGirl.create(:sample_set, owner: user, project_id: 4)
-          #sign_in user
           visit sample_sets_path
         end
                 
@@ -103,13 +102,11 @@ describe "SampleSet pages:" do
   
   
   describe "sample_set destruction" do
-    # before { FactoryGirl.create(:sample_set, owner: user) }
-    let!(:sampleset) { FactoryGirl.create(:sample_set, owner: user, num_samples: 60) }
+    let!(:sample_set) { FactoryGirl.create(:sample_set, owner: user, num_samples: 60) }
 
     describe "as correct user" do
       before { sign_in user }
-      # before { visit sample_sets_path }
-      before { visit sample_set_path(sampleset) }
+      before { visit sample_set_path(sample_set) }
 
       it "should delete a sample_set" do
         expect { click_button "Delete Sample Set" }.to change(SampleSet, :count).by(-1)
@@ -120,14 +117,14 @@ describe "SampleSet pages:" do
   
   describe "Show page" do
     
-    let!(:sampleset) { FactoryGirl.create(:sample_set, owner: user, num_samples: 60) }
+    let!(:sample_set) { FactoryGirl.create(:sample_set, owner: user, num_samples: 60) }
         
     describe "for signed-in users" do
       
       before { sign_in user }
-      before { visit sample_set_path(sampleset) }
+      before { visit sample_set_path(sample_set) }
       
-      let!(:page_heading) {"Sample Set " + sampleset.id.to_s}
+      let!(:page_heading) {"Sample Set " + sample_set.id.to_s}
       
       it { should have_selector('h1', :text => page_heading) }
       it { should have_title(full_title('Sample Set View')) }
@@ -137,7 +134,7 @@ describe "SampleSet pages:" do
       
       describe "when clicking the edit button" do
         before { click_button "Edit Sample Set" }
-        let!(:page_heading) {"Edit Sample Set " + sampleset.id.to_s}
+        let!(:page_heading) {"Edit Sample Set " + sample_set.id.to_s}
         
         describe 'should have a page heading for editing the correct sample set' do
           it { should have_content(page_heading) }
@@ -148,7 +145,7 @@ describe "SampleSet pages:" do
          let(:non_owner) { FactoryGirl.create(:user) }
          before do 
            sign_in non_owner
-           visit sample_set_path(sampleset)
+           visit sample_set_path(sample_set)
          end 
          
          describe "should not see the edit and delete buttons" do
@@ -162,7 +159,7 @@ describe "SampleSet pages:" do
     
     describe "for non signed-in users" do
       describe "should be redirected back to signin" do
-        before { visit sample_set_path(sampleset) }
+        before { visit sample_set_path(sample_set) }
         it { should have_title('Sign in') }
         it { should_not have_button('Edit Sample Set') }
         it { should_not have_button('Delete Sample Set') }
@@ -171,8 +168,61 @@ describe "SampleSet pages:" do
     
   end
 
+
   describe "edit page" do
     
+    let!(:sample_set) { FactoryGirl.create(:sample_set, owner: user, num_samples: 60) }
+    
+    describe "for signed-in users" do
+    
+      before { sign_in user }
+      before { visit edit_sample_set_path(sample_set) }
+      
+      it { should have_content('Edit Sample Set ' + sample_set.id.to_s) }
+      it { should have_title(full_title('Edit Sample Set')) }
+      it { should_not have_title('| Home') }
+      
+      describe "with invalid information" do
+        
+          before do
+            fill_in 'sample_set_facility_id', with: ''
+            click_button "Update"
+          end
+          
+          describe "should return an error" do
+            it { should have_content('error') }
+          end
+  
+      end
+  
+      describe "with valid information" do
+  
+        before do
+          fill_in 'sample_set_facility_id'  , with: 3
+          fill_in 'sample_set_project_id'   , with: 4
+          fill_in 'sample_set_num_samples'  , with: 20
+          fill_in 'sample_set_sampling_date', with: Date.new(2012, 12, 6)
+        end
+        
+        it "should update, not add a sample_set" do
+          expect { click_button "Update" }.not_to change(SampleSet, :count).by(1)
+        end
+        
+        describe "should return to view page" do
+          before { click_button "Update" }
+          it { should have_content('Sample Set updated') }
+        end
+      
+      end
+      
+    end
+    
+    describe "for non signed-in users" do
+      describe "should be redirected back to signin" do
+        before { visit edit_sample_set_path(sample_set) }
+        it { should have_title('Sign in') }
+      end
+    end
   end
 
 end

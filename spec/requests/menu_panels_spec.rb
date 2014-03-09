@@ -124,5 +124,29 @@ describe "Menu Panel:" do
     end
   end 
   
-
+  describe "opening the sample dropdown" do
+    before { sign_in user }
+    before { visit root_path }
+    
+    describe "and clicking the Create New link" do
+      before do
+        click_link('samples_new')
+      end
+  
+      it "should open up the create sample page" do
+        expect(page).to have_title('New Sample')
+      end
+    end
+    
+    describe "and clicking the View All link" do
+      before do
+        click_link('samples_index')
+      end
+  
+      it "should open up the sample index page" do
+        expect(page).to have_title('Sample List')
+      end
+    end
+  end
+  
 end

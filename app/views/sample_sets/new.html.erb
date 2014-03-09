@@ -1,5 +1,6 @@
 <% provide(:title, 'New Sample Set') %>
 <% provide(:pageheading, 'New Sample Set') %>
+
 <div class="row">
   <div class="span6 offset3">
     <%= form_for(@sample_set) do |f| %>
@@ -15,7 +16,7 @@
       <%= f.date_field :sampling_date %>
 
       <%= f.label :num_samples, 'Number of Samples Required' %>
-      <%= f.number_field :num_samples, :min => 0 %>
+      <%= f.number_field :num_samples, :min => 0, :max => 999 %>
       
       <%= f.label :add_info, "Additional Information" %>
       <%= f.text_area :add_info, size: "60x12" %>

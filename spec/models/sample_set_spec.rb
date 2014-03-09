@@ -15,6 +15,8 @@ describe SampleSet do
   it { should respond_to(:owner) }
   it { should respond_to(:status) }
   it { should respond_to(:add_info) }
+  it { should respond_to(:samples) }
+  
   its(:owner) { should eq owner }
   
   
@@ -46,7 +48,7 @@ describe SampleSet do
   end
   
   describe "when num_samples is an unrealistically large number" do
-    before { @sample_set.num_samples = 10000 }
+    before { @sample_set.num_samples = 1000 }
     it { should_not be_valid }
   end
   

@@ -9,6 +9,13 @@
     </div>
   </div>
   
+  <div class="row">
+    <div class="span12">
+      <h3>My Samples (<%= current_user.samples.count %>)</h3>
+      <%= render 'shared/samples' %>
+    </div>
+  </div>
+    
 <% else %>
 
   <div class="center hero-unit">

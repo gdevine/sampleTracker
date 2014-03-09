@@ -16,12 +16,12 @@
       <%= f.date_field :sampling_date %>
 
       <%= f.label :num_samples, 'Number of Samples Required' %>
-      <%= f.number_field :num_samples, :min => 0 %>
+      <%= f.number_field :num_samples, :min => 0, :max => 999 %>
       
       <%= f.label :add_info, "Additional Information" %>
       <%= f.text_area :add_info, size: "60x12" %>
 
-      <%= f.submit "Update Sample Set", class: "btn btn-large btn-primary" %>
+      <%= f.submit "Update", class: "btn btn-large btn-primary" %>
     <% end %>
 
   </div>

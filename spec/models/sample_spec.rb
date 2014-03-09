@@ -2,16 +2,19 @@ require 'spec_helper'
 
 describe Sample do
 
-  let(:user) { FactoryGirl.create(:user) }
-  before do
-    # This code is not idiomatically correct.
-    @sample = Sample.new(facility_id: 1, sampled: false, owner_id: user.id)
-  end
+  let(:owner) { FactoryGirl.create(:user) }
+  # @sample = owner.samples.build(facility_id: 1, sampled: false, owner_id: user.id)
+  before { @sample = owner.samples.build(date_sampled: Date.new(2012, 12, 3), 
+                                         facility_id: 1, 
+                                         project_id: 1, 
+                                         sample_set_id: 1, 
+                                         sampled: true,
+                                         tree: 3) }
 
   subject { @sample }
   
-  it { should respond_to( :sample_set_id   ) }
   it { should respond_to( :owner_id        ) }
+  it { should respond_to( :sample_set_id   ) }
   it { should respond_to( :sampled         ) }
   it { should respond_to( :date_sampled    ) }
   it { should respond_to( :storage_location) }
@@ -29,7 +32,7 @@ describe Sample do
   it { should respond_to( :amount_collected) }
   it { should respond_to( :amount_stored   ) }
   
-  its(:owner) { should eq user }
+  its(:owner) { should eq owner }
 
   it { should be_valid }
 
@@ -37,4 +40,20 @@ describe Sample do
     before { @sample.owner_id = nil }
     it { should_not be_valid }
   end
+  
+  describe "when facility_id is not present" do
+    before { @sample.facility_id = nil }
+    it { should_not be_valid }
+  end
+  
+  describe "when project_id is not present" do
+    before { @sample.project_id = nil }
+    it { should_not be_valid }
+  end
+  
+  describe "when date_sampled is not present" do
+    before { @sample.date_sampled = nil }
+    it { should_not be_valid }
+  end
+  
 end

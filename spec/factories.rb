@@ -10,7 +10,7 @@ FactoryGirl.define do
       admin true
     end
   end
-
+  
   
   factory :sample_set do
     facility_id  1 
@@ -24,8 +24,7 @@ FactoryGirl.define do
 
   
   factory :sample do
-    sample_set_id 3 
-    sampled false        
+    sampled 'true'        
     date_sampled Date.new(2013, 11, 7)   
     storage_location 'L9 Storage Room'
     facility_id 3    
@@ -43,5 +42,6 @@ FactoryGirl.define do
     amount_stored '40g'  
     
     association :owner, :factory  => :user
+    association :sample_set, :factory  => :sample_set
   end
 end
