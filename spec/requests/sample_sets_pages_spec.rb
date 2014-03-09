@@ -87,7 +87,13 @@ describe "sample_set pages:" do
         it "should create a sample_set" do
           expect { click_button "Submit" }.to change(SampleSet, :count).by(1)
         end
+        
+        it "should create the correct number of new samples based on sample_set" do
+          expect { click_button "Submit" }.to change(Sample, :count).by(50)
+        end
+        
       end
+      
       
     end
     

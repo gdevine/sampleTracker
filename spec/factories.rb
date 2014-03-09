@@ -11,7 +11,6 @@ FactoryGirl.define do
     end
   end
   
-  
   factory :sample_set do
     facility_id  1 
     project_id   1
@@ -22,7 +21,6 @@ FactoryGirl.define do
     association :owner, :factory  => :user
   end
 
-  
   factory :sample do
     sampled 'true'        
     date_sampled Date.new(2013, 11, 7)   

@@ -36,6 +36,7 @@ namespace :db do
       users.each { |user| user.samples.create!(facility_id: 1 + rand(100), 
                                                project_id: 1 + rand(100), 
                                                date_sampled: Date.today+(100*rand()),
+                                               sample_set_id: 3,
                                                sampled: false,
                                                tree: 1 + rand(100),
                                                comments: "Some additional comments about this sample"
