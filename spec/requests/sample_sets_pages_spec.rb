@@ -161,6 +161,17 @@ describe "sample_set pages:" do
 
       end
       
+      describe "should show the samples belonging to this sample set" do
+        
+        let!(:first_sample_id) { sample_set.samples.first.id }
+        let!(:last_sample_id) { sample_set.samples.last.id }
+        before { visit sample_set_path(sample_set) }
+        it { should have_content('Samples included in this sample set') }
+        it { should have_selector('table tr th', text: 'Sample ID') } 
+        it { should have_selector('table tr td', text: first_sample_id) } 
+        it { should have_selector('table tr td', text: last_sample_id) } 
+      end
+      
     end
     
     describe "for non signed-in users" do

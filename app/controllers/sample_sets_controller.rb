@@ -12,6 +12,7 @@ class SampleSetsController < ApplicationController
   
   def show
     @sample_set = SampleSet.find(params[:id])
+    @samples = @sample_set.samples.paginate(page: params[:page])
   end
 
   def create
