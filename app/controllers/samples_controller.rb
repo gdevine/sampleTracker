@@ -1,3 +1,5 @@
+require 'rqrcode'
+
 class SamplesController < ApplicationController
   before_action :signed_in_user, only: [:index, :new, :show, :update, :edit, :create, :destroy]
   before_action :correct_user,   only: :destroy
@@ -12,6 +14,7 @@ class SamplesController < ApplicationController
   
   def show
     @sample = Sample.find(params[:id])
+    @qr = RQRCode::QRCode.new( sample_url, :size => 3, :level => :l )
   end
 
   def create
