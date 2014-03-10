@@ -1,5 +1,5 @@
 require 'spec_helper'
-
+require 'pp'
 
 describe "Sample pages:" do
 

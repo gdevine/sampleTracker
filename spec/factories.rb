@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :user do
-    sequence(:firstname)  { |n| "Person #{n}" }
-    sequence(:surname)  { |n| "Bla Bla #{n}" }
+    sequence(:firstname)  { |n| "Person_#{n}" }
+    sequence(:surname)  { |n| "BlaBla_#{n}" }
     sequence(:email) { |n| "person_#{n}@example.com"}
     password "foobar"
     password_confirmation "foobar"  
@@ -13,8 +13,8 @@ FactoryGirl.define do
   
   factory :sample_set do
     facility_id  1 
-    project_id   1
-    num_samples  50
+    project_id   4
+    num_samples  5
     status 'Pending'
     add_info 'Some info about this sample set'
     sampling_date Date.new(2012, 12, 3)
@@ -25,8 +25,8 @@ FactoryGirl.define do
     sampled 'true'        
     date_sampled Date.new(2013, 11, 7)   
     storage_location 'L9 Storage Room'
-    facility_id 3    
-    project_id 45     
+    facility_id 1    
+    project_id 4     
     comments "Some comments I've added"       
     is_primary true     
     ring 3           

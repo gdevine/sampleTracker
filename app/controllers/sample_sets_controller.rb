@@ -18,7 +18,7 @@ class SampleSetsController < ApplicationController
     @sample_set = current_user.sample_sets.build(sample_set_params)
     @sample_set.status = 'Pending'
     if @sample_set.save
-      create_samples
+      #create_samples
       flash[:success] = "Sample Set created!"
       redirect_to root_url
     else
@@ -45,6 +45,11 @@ class SampleSetsController < ApplicationController
     @sample_set.destroy
     redirect_to root_url
   end
+  
+  
+  def save
+    
+  end
 
   private
 
@@ -57,14 +62,4 @@ class SampleSetsController < ApplicationController
       redirect_to root_url if @sample_set.nil?
     end
     
-    def create_samples
-      @sample_set.num_samples.times do |n| 
-        cs = current_user.samples.build(facility_id: @sample_set[:facility_id],
-                                   project_id: @sample_set[:project_id],
-                                   sample_set_id: @sample_set[:id],
-                                   date_sampled: Date.today+(100*rand()),
-                                   sampled: false)
-        cs.save                                   
-      end
-    end
 end

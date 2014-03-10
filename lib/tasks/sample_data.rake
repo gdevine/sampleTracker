@@ -1,15 +1,15 @@
 namespace :db do
   desc "Fill database with sample data"
   task populate: :environment do
-    admin = User.create!(firstname: "ExampleAdmin",
+    admin = User.create!(firstname: "Admin",
                          surname: "User",
                          email: "example@railstutorial.org",
                          password: "foobar",
                          password_confirmation: "foobar",
                          admin: true)
     99.times do |n|
-      firstname  = Faker::Name.name
-      surname = 'User'
+      firstname  = Faker::Name.first_name
+      surname = Faker::Name.last_name
       email = "example-#{n+1}@railstutorial.org"
       password  = "password"
       User.create!(firstname: firstname,
@@ -19,28 +19,16 @@ namespace :db do
                    password_confirmation: password)
     end
     
-    users = User.all(limit: 6)
+    users = User.all(limit: 3)
     50.times do
-      content = Faker::Lorem.sentence(5)
-      users.each { |user| user.sample_sets.create!(facility_id: 1 + rand(100), 
-                                                   project_id: 1 + rand(100), 
-                                                   num_samples: 1 + rand(100),
+      users.each { |user| user.sample_sets.create!(facility_id: 1 + rand(5), 
+                                                   project_id: 1 + rand(5), 
+                                                   num_samples: 1 + rand(5),
                                                    status: 'Pending',
                                                    sampling_date: Date.today+(100*rand()),
                                                    add_info: "Some additional info about this sample set"
                                                    ) }
     end
     
-    50.times do
-      content = Faker::Lorem.sentence(5)
-      users.each { |user| user.samples.create!(facility_id: 1 + rand(100), 
-                                               project_id: 1 + rand(100), 
-                                               date_sampled: Date.today+(100*rand()),
-                                               sample_set_id: 3,
-                                               sampled: false,
-                                               tree: 1 + rand(100),
-                                               comments: "Some additional comments about this sample"
-                                               ) }
-    end
   end
 end

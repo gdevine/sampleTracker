@@ -16,25 +16,69 @@
 <div class="row">  
   <div class="span3 offset3">
     <h4>Sample ID</h4>
-    <h4>Owner</h4>
-    <h4>Facility</h4>
-    <h4>Project</h4>
-    <h4>Sample Set</h4>
-    <h4>Tree</h4>
-    <h4>Date Sampled</h4>
-    <h4>Sampled?</h4>
-    <h4>Comments</h4>
   </div>
-  
   <div class="span3 offset1">
     <h4><%= @sample.id %></h4>
+  </div>
+  
+  <div class="span3 offset3">
+    <h4>Owner</h4>
+  </div>
+  <div class="span3 offset1">
     <h4><%= @sample.owner.firstname %> <%= @sample.owner.surname %></h4>
+  </div>
+  
+  <div class="span3 offset3">
+    <h4>Facility</h4>
+  </div>
+  <div class="span3 offset1">
     <h4><%= @sample.facility_id %></h4>
+  </div>
+  
+  <div class="span3 offset3">
+    <h4>Project</h4>
+  </div>
+  <div class="span3 offset1">
     <h4><%= @sample.project_id %></h4>
+  </div>
+  
+  <div class="span3 offset3">
+    <h4>Member of Sample Set</h4>
+  </div>
+  <div class="span3 offset1">
     <h4><%= @sample.sample_set_id %></h4>
-    <h4><%= @sample.tree %></h4>
-    <h4><%= @sample.date_sampled %></h4>
+  </div>
+  
+  <div class="span3 offset3">
+    <h4>Tree</h4>
+  </div>
+  <div class="span3 offset1">
+    <% if @sample.tree.present? %>
+      <h4><%= @sample.tree %></h4>
+    <% else %>
+      <h4>None</h4>
+    <% end %>
+  </div>
+  
+  <div class="span3 offset3">
+    <h4>Sample taken?</h4>
+  </div>
+  <div class="span3 offset1">
     <h4><%= @sample.sampled %></h4>
+  </div>
+  
+  <div class="span3 offset3">
+    <h4>Date sample taken</h4>
+  </div>
+  <div class="span3 offset1">
+    <h4><%= @sample.date_sampled %></h4>
+  </div>
+  
+  <div class="span3 offset3">
+    <h4>Comments</h4>
+  </div>
+  <div class="span3 offset1">
     <h4><%= @sample.comments %></h4>
   </div>
+  
 </div>
