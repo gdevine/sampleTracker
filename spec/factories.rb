@@ -11,6 +11,12 @@ FactoryGirl.define do
     end
   end
   
+  factory :facility do
+    code 'FACE' 
+    description 'A description of this facility'
+    association :contact, :factory  => :user
+  end
+  
   factory :sample_set do
     facility_id  1 
     project_id   4

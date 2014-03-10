@@ -11,7 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140303054925) do
+ActiveRecord::Schema.define(version: 20140310204030) do
+
+  create_table "facilities", force: true do |t|
+    t.string   "code"
+    t.string   "description"
+    t.integer  "contact_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "facilities", ["code"], name: "index_facilities_on_code"
 
   create_table "sample_sets", force: true do |t|
     t.integer  "owner_id"

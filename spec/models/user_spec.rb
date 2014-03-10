@@ -19,6 +19,7 @@ describe User do
   it { should respond_to(:sample_sets) }
   it { should respond_to(:my_sample_sets) }
   it { should respond_to(:samples) }
+  it { should respond_to(:facilities) }
 
   it { should be_valid }
   it { should_not be_admin }
@@ -185,4 +186,24 @@ describe User do
       end
     end
   end
+  
+  describe "facility associations" do
+
+    before { @user.save }
+    
+    let!(:upper_facility) do
+      FactoryGirl.create(:facility, contact: @user, code: 'ZZZZ')
+    end
+    let!(:lower_facility) do
+      FactoryGirl.create(:facility, contact: @user, code: 'AAAA')
+    end
+
+    it "should have the right facilities in alphabetic order" do
+      expect(@user.facilities.to_a).to eq [lower_facility, upper_facility]
+    end
+    
+    it "should deal with orphaned facilities upon contact/user deletion" do
+    end
+  end
+  
 end
