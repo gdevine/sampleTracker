@@ -25,6 +25,7 @@ FactoryGirl.define do
     add_info 'Some info about this sample set'
     sampling_date Date.new(2012, 12, 3)
     association :owner, :factory  => :user
+    association :facility, :factory  => :facility
   end
 
   factory :sample do
@@ -46,6 +47,7 @@ FactoryGirl.define do
     amount_stored '40g'  
     
     association :owner, :factory  => :user
+    association :facility, :factory  => :facility
     association :sample_set, :factory  => :sample_set
   end
 end

@@ -44,14 +44,10 @@ class SampleSetsController < ApplicationController
 
   def destroy
     @sample_set.destroy
-    redirect_to root_url
+    redirect_to sample_sets_path
   end
   
   
-  def save
-    
-  end
-
   private
 
     def sample_set_params

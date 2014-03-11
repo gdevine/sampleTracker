@@ -1,0 +1,18 @@
+<% provide(:title, 'New Facility') %>
+<% provide(:pageheading, 'New Facility') %>
+
+<div class="row">
+  <div class="span6 offset3">
+    <%= form_for(@facility) do |f| %>
+      <%= render 'shared/error_messages', object: f.object %>
+
+      <%= f.label :code, 'Facility Code' %>
+      <%= f.text_field :code %>
+      
+      <%= f.label :description, "Description" %>
+      <%= f.text_area :description, size: "60x12" %>
+
+      <%= f.submit "Submit", class: "btn btn-large btn-primary" %>
+    <% end %>
+  </div>
+</div>

@@ -44,7 +44,7 @@ class SamplesController < ApplicationController
 
   def destroy
     @sample.destroy
-    redirect_to root_url
+    redirect_to samples_path
   end
  
  

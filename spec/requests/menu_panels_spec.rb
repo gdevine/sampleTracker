@@ -149,4 +149,29 @@ describe "Menu Panel:" do
     end
   end
   
+  describe "opening the facility dropdown" do
+    before { sign_in user }
+    before { visit root_path }
+    
+    describe "and clicking the Create New link" do
+      before do
+        click_link('facilities_new')
+      end
+  
+      it "should open up the create facility page" do
+        expect(page).to have_title('New Facility')
+      end
+    end
+    
+    describe "and clicking the View All link" do
+      before do
+        click_link('facilities_index')
+      end
+  
+      it "should open up the facility index page" do
+        expect(page).to have_title('Facility List')
+      end
+    end
+  end
+  
 end

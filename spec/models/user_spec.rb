@@ -152,13 +152,13 @@ describe User do
     end
     
     describe "status" do
-      let(:unfollowed_sample_set) do
+      let(:unowned_sample_set) do
         FactoryGirl.create(:sample_set, owner: FactoryGirl.create(:user))
       end
 
       its(:my_sample_sets) { should include(newer_sample_set) }
       its(:my_sample_sets) { should include(older_sample_set) }
-      its(:my_sample_sets) { should_not include(unfollowed_sample_set) }
+      its(:my_sample_sets) { should_not include(unowned_sample_set) }
     end
     
   end

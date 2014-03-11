@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'pp'
 
 describe "Sample pages:" do
 
@@ -25,7 +24,7 @@ describe "Sample pages:" do
         end
       end
       
-      describe "with sample in the system" do
+      describe "with samples in the system" do
         before do
           FactoryGirl.create(:sample, owner: user, facility_id: 3)
           FactoryGirl.create(:sample, owner: user, facility_id: 4)

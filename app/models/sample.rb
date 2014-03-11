@@ -1,5 +1,6 @@
 class Sample < ActiveRecord::Base
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_id'
+  belongs_to :facility, :class_name => 'Facility', :foreign_key => 'facility_id'
   belongs_to :sample_set, :class_name => 'SampleSet', :foreign_key => 'sample_set_id'
   default_scope -> { order('created_at DESC') }
   validates :owner_id, presence: true

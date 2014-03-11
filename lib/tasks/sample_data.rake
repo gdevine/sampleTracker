@@ -30,5 +30,12 @@ namespace :db do
                                                    ) }
     end
     
+    users = User.all(limit: 2)
+    5.times do
+      users.each { |user| user.facilities.create!(code: "FACCODE-#{rand(5)}",
+                                                  description: "Some additional info about this sample set"
+                                                  ) }
+    end
+    
   end
 end

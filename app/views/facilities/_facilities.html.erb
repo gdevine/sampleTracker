@@ -1,0 +1,20 @@
+<% if @facilities.any? %>
+  <%= will_paginate @facilities %>
+  <table class="table table-bordered table-striped table-hover" width="647">
+    <thead>
+      <tr>
+        <th>Facility ID</th>
+        <th>Facility Code</th>
+        <th>Description</th>
+        <th>Contact</th>
+        <th>View?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render partial: 'facilities/facilities_table', collection: @facilities, as: :facility %>
+    </tbody>
+  </table>
+  
+<% else %>
+  <p>No Facilities found</p>
+<% end %>
