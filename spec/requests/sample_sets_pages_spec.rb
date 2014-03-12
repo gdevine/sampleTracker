@@ -26,18 +26,18 @@ describe "sample_set pages:" do
       
       describe "with sample sets in the system" do
         before do
-          FactoryGirl.create(:sample_set, owner: user, project_id: 3)
-          FactoryGirl.create(:sample_set, owner: user, project_id: 4)
+          FactoryGirl.create(:sample_set, owner: user)
+          FactoryGirl.create(:sample_set, owner: user)
           visit sample_sets_path
         end
                 
         it "should have correct table heading" do
-          expect(page).to have_selector('table tr th', text: 'Sample Set ID')
+          expect(page).to have_selector('table tr th', text: 'Facility')
         end
                    
         it "should list each sample_set" do
           SampleSet.paginate(page: 1).each do |ss|
-            expect(page).to have_selector('table tr td', text: ss.id)
+            expect(page).to have_selector('table tr td', text: ss.facility_id)
           end
         end
         
@@ -58,28 +58,39 @@ describe "sample_set pages:" do
   describe "New page" do
     
     describe "for signed-in users" do
-    
+      
+      let!(:myfacility) { FactoryGirl.create(:facility, contact: user, description: 'a new description') } 
       before { sign_in user }
-      before { visit new_sample_set_path }
+      before { visit new_sample_set_path }            
       
       it { should have_content('New Sample Set') }
+      it { should have_content('MYFAC_') }
       it { should have_title(full_title('New Sample Set')) }
       it { should_not have_title('| Home') }
+      it { should have_selector('#sample_set_facility_id') }
       
       describe "with invalid information" do
-  
+        
         it "should not create a sample_set" do
           expect { click_button "Submit" }.not_to change(SampleSet, :count)
         end
-  
+                
+        before do
+          click_button "Submit"
+        end
+        describe "should return an error" do
+          it { should have_content('error') }
+        end
+        
       end
   
       describe "with valid information" do
-  
+        
+        let(:numsamples) { 50 }
         before do
-          fill_in 'sample_set_facility_id'  , with: 1 
+          find('#sample_set_facility_id').find(:xpath, 'option['+myfacility.id.to_s+']').select_option
           fill_in 'sample_set_project_id'   , with: 1
-          fill_in 'sample_set_num_samples'  , with: 50
+          fill_in 'sample_set_num_samples'  , with: numsamples
           fill_in 'sample_set_sampling_date', with: Date.new(2012, 12, 3)
         end
         
@@ -88,11 +99,10 @@ describe "sample_set pages:" do
         end
         
         it "should create the correct number of new samples based on sample_set" do
-          expect { click_button "Submit" }.to change(Sample, :count).by(50)
+          expect { click_button "Submit" }.to change(Sample, :count).by(numsamples)
         end
         
-      end
-      
+      end  
       
     end
     
@@ -192,6 +202,8 @@ describe "sample_set pages:" do
     describe "for signed-in users" do
     
       before { sign_in user }
+      let!(:myfacility) { FactoryGirl.create(:facility, contact: user) }
+      let!(:myfacility) { sample_set.facility }
       before { visit edit_sample_set_path(sample_set) }
       
       it { should have_content('Edit Sample Set ' + sample_set.id.to_s) }
@@ -201,7 +213,7 @@ describe "sample_set pages:" do
       describe "with invalid information" do
         
           before do
-            fill_in 'sample_set_facility_id', with: ''
+            fill_in 'sample_set_project_id', with: ''
             click_button "Update"
           end
           
@@ -214,8 +226,8 @@ describe "sample_set pages:" do
       describe "with valid information" do
   
         before do
-          fill_in 'sample_set_facility_id'  , with: 3
-          fill_in 'sample_set_project_id'   , with: 4
+          find('#sample_set_facility_id').find(:xpath, 'option['+myfacility.id.to_s+']').select_option
+          fill_in 'sample_set_project_id'  , with: 3
           fill_in 'sample_set_num_samples'  , with: 20
           fill_in 'sample_set_sampling_date', with: Date.new(2012, 12, 6)
         end

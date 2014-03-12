@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Facility do
 
   let(:contact) { FactoryGirl.create(:user) }
-  before { @facility = contact.facilities.build(contact: contact, code:"FACE", description: "Lorem ipsum") }
+  before { @facility = contact.facilities.build(contact: contact, code:"FACE3", description: "Lorem ipsum") }
 
   subject { @facility }
 
@@ -36,6 +36,15 @@ describe Facility do
     before { @facility.code = "a" * 12 }
     it { should_not be_valid }
   end  
+  
+  describe "when facility code is already taken" do
+    before do
+      facility_with_same_code = @facility.dup
+      facility_with_same_code.save
+    end
+
+    it { should_not be_valid }
+  end
   
   
   describe "sample_set associations" do

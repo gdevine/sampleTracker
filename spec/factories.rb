@@ -12,7 +12,7 @@ FactoryGirl.define do
   end
   
   factory :facility do
-    code 'FACE' 
+    sequence(:code)  { |n| "MYFAC_#{n}" }
     description 'A description of this facility'
     association :contact, :factory  => :user
   end

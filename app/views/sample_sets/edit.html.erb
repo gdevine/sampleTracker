@@ -7,12 +7,12 @@
       <%= render 'shared/error_messages', object: f.object %>
 
       <%= f.label :facility_id, 'Facility' %>
-      <%= f.number_field :facility_id, :min => 0 %>
+      <%= collection_select(:sample_set, :facility_id, Facility.all, :id, :code) %>
       
       <%= f.label :project_id, 'Project' %>
       <%= f.number_field :project_id, :min => 0 %>
 
-      <%= f.label :sampling_date , 'Sampling Date' %>
+      <%= f.label :sampling_date, 'Sampling Date' %>
       <%= f.date_field :sampling_date %>
 
       <%= f.label :num_samples, 'Number of Samples Required' %>
@@ -23,6 +23,5 @@
 
       <%= f.submit "Update", class: "btn btn-large btn-primary" %>
     <% end %>
-
   </div>
 </div>

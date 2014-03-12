@@ -14,7 +14,7 @@ class SamplesController < ApplicationController
   
   def show
     @sample = Sample.find(params[:id])
-    @qr = RQRCode::QRCode.new( sample_url, :size => 2, :level => :l )
+    @qr = RQRCode::QRCode.new( sample_url, :size => 3, :level => :l )
   end
 
   def create

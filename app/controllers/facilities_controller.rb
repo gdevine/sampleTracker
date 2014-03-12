@@ -59,4 +59,5 @@ class FacilitiesController < ApplicationController
       @facility = current_user.facilities.find_by(id: params[:id])
       redirect_to root_url if @facility.nil?
     end
+    
 end

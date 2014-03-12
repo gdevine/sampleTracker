@@ -5,6 +5,6 @@ class Facility < ActiveRecord::Base
   default_scope -> { order('code ASC') }
   
   validates :contact_id, presence: true
-  validates :code, presence: true, length: { maximum: 10 }
+  validates :code, presence: true, length: { maximum: 10 }, uniqueness: { case_sensitive: false }
   validates :description, presence: true
 end

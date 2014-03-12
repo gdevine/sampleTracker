@@ -7,7 +7,7 @@
       <%= render 'shared/error_messages', object: f.object %>
 
       <%= f.label :facility_id, 'Facility' %>
-      <%= f.number_field :facility_id, :min => 0 %>
+      <%= collection_select(:sample_set, :facility_id, Facility.all, :id, :code) %>
       
       <%= f.label :project_id, 'Project' %>
       <%= f.number_field :project_id, :min => 0 %>
