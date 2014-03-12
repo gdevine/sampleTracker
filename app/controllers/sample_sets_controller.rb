@@ -8,7 +8,7 @@ class SampleSetsController < ApplicationController
   
   def new
     @sample_set = SampleSet.new
-    @choices = pop_dropdown
+    # @choices = pop_fac_dropdown
   end
   
   def show
@@ -25,14 +25,14 @@ class SampleSetsController < ApplicationController
       redirect_to root_url
     else
       @sample_sets = []
-      @choices = pop_dropdown
+      @choices = pop_fac_dropdown
       render 'new'
     end
   end
   
   def edit
     @sample_set = SampleSet.find(params[:id])
-    @choices = pop_dropdown
+    @choices = pop_fac_dropdown
   end
   
   def update
@@ -41,7 +41,7 @@ class SampleSetsController < ApplicationController
       flash[:success] = "Sample Set updated"
       redirect_to @sample_set
     else
-      @choices = pop_dropdown
+      @choices = pop_fac_dropdown
       render 'edit'
     end
   end
@@ -63,14 +63,6 @@ class SampleSetsController < ApplicationController
       redirect_to root_url if @sample_set.nil?
     end
     
-    def pop_dropdown
-      all_facs = Facility.all
-      fac_dropdown = []
-      
-      all_facs.each do |fac|
-        fac_dropdown.push << [fac.code.to_s, fac.id.to_i]
-      end
-      fac_dropdown
-    end    
+    
     
 end

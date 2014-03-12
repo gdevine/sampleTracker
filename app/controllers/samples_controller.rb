@@ -10,6 +10,7 @@ class SamplesController < ApplicationController
     
   def new
     @sample = Sample.new
+    @choices = pop_fac_dropdown
   end
   
   def show
@@ -24,12 +25,14 @@ class SamplesController < ApplicationController
       redirect_to root_url
     else
       @samples = []
+      @choices = pop_fac_dropdown
       render 'samples/new'
     end
   end
 
   def edit
     @sample = Sample.find(params[:id])
+    @choices = pop_fac_dropdown
   end
      
   def update
@@ -38,6 +41,7 @@ class SamplesController < ApplicationController
       flash[:success] = "Sample updated"
       redirect_to @sample
     else
+      @choices = pop_fac_dropdown
       render 'edit'
     end
   end

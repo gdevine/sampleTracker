@@ -59,27 +59,38 @@ describe "Sample pages:" do
     
     describe "for signed-in users" do
     
+      let!(:myfacility) { FactoryGirl.create(:facility, contact: user, description: 'a new description') } 
       before { sign_in user }
       before { visit new_sample_path }
       
       it { should have_content('New Sample') }
+      it { should have_content('MYFAC_') }
       it { should have_title(full_title('New Sample')) }
       it { should_not have_title('| Home') }
+      it { should have_selector('#sample_facility_id') }
       
       describe "with invalid information" do
   
         it "should not create a sample" do
           expect { click_button "Submit" }.not_to change(Sample, :count)
         end
+        
+        before do
+          click_button "Submit"
+        end
+        describe "should return an error" do
+          it { should have_content('error') }
+        end
   
       end
   
       describe "with valid information" do
   
+       let(:treenum) { 5 }
         before do
-          fill_in 'sample_facility_id', with: 1 
+          find('#sample_facility_id').find(:xpath, 'option['+myfacility.id.to_s+']').select_option
           fill_in 'sample_project_id', with: 1
-          fill_in 'sample_tree', with: 1
+          fill_in 'sample_tree', with: treenum
           fill_in 'sample_sampled', with: 'true'
           fill_in 'sample_date_sampled', with: Date.new(2012, 12, 3)
         end
@@ -176,11 +187,12 @@ describe "Sample pages:" do
   
   describe "edit page" do
     
-    let!(:sample) { FactoryGirl.create(:sample, owner: user, facility_id: 70) }
+    let!(:sample) { FactoryGirl.create(:sample, owner: user) }
     
     describe "for signed-in users" do
     
       before { sign_in user }
+      let!(:myfacility) { sample.facility }
       before { visit edit_sample_path(sample) }
       
       it { should have_content('Edit Sample ' + sample.id.to_s) }
@@ -190,7 +202,7 @@ describe "Sample pages:" do
       describe "with invalid information" do
         
           before do
-            fill_in 'sample_facility_id', with: ''
+            fill_in 'sample_project_id', with: ''
             click_button "Update"
           end
           
@@ -203,7 +215,7 @@ describe "Sample pages:" do
       describe "with valid information" do
   
         before do
-          fill_in 'sample_facility_id'  , with: 3
+          find('#sample_facility_id').find(:xpath, 'option['+myfacility.id.to_s+']').select_option
           fill_in 'sample_project_id'   , with: 4
           fill_in 'sample_date_sampled', with: Date.new(2012, 12, 6)
         end

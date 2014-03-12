@@ -202,7 +202,7 @@ describe "sample_set pages:" do
     describe "for signed-in users" do
     
       before { sign_in user }
-      let!(:myfacility) { FactoryGirl.create(:facility, contact: user) }
+      #let!(:myfacility) { FactoryGirl.create(:facility, contact: user) }
       let!(:myfacility) { sample_set.facility }
       before { visit edit_sample_set_path(sample_set) }
       
