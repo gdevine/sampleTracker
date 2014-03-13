@@ -8,7 +8,6 @@ class SampleSetsController < ApplicationController
   
   def new
     @sample_set = SampleSet.new
-    # @choices = pop_fac_dropdown
   end
   
   def show
@@ -25,14 +24,12 @@ class SampleSetsController < ApplicationController
       redirect_to root_url
     else
       @sample_sets = []
-      @choices = pop_fac_dropdown
       render 'new'
     end
   end
   
   def edit
     @sample_set = SampleSet.find(params[:id])
-    @choices = pop_fac_dropdown
   end
   
   def update
@@ -41,7 +38,6 @@ class SampleSetsController < ApplicationController
       flash[:success] = "Sample Set updated"
       redirect_to @sample_set
     else
-      @choices = pop_fac_dropdown
       render 'edit'
     end
   end
@@ -62,7 +58,6 @@ class SampleSetsController < ApplicationController
       @sample_set = current_user.sample_sets.find_by(id: params[:id])
       redirect_to root_url if @sample_set.nil?
     end
-    
     
     
 end
