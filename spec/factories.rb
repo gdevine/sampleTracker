@@ -17,6 +17,15 @@ FactoryGirl.define do
     association :contact, :factory  => :user
   end
   
+  factory :storage_location do
+    sequence(:code)  { |n| "MYSL_#{n}" }
+    description 'A description of this storage location'
+    address "Room 32, Building L9, HIE, UWS, Richmond" 
+    building "L9"
+    room 32
+    association :custodian, :factory  => :user
+  end
+  
   factory :sample_set do
     facility_id  1 
     project_id   4
@@ -31,7 +40,7 @@ FactoryGirl.define do
   factory :sample do
     sampled 'true'        
     date_sampled Date.new(2013, 11, 7)   
-    storage_location 'L9 Storage Room'
+    storage_location_id 9
     facility_id 1    
     project_id 4     
     comments "Some comments I've added"       
@@ -48,6 +57,7 @@ FactoryGirl.define do
     
     association :owner, :factory  => :user
     association :facility, :factory  => :facility
+    association :storage_location, :factory  => :storage_location
     association :sample_set, :factory  => :sample_set
   end
 end

@@ -20,6 +20,7 @@ describe User do
   it { should respond_to(:my_sample_sets) }
   it { should respond_to(:samples) }
   it { should respond_to(:facilities) }
+  it { should respond_to(:storage_locations) }
 
   it { should be_valid }
   it { should_not be_admin }

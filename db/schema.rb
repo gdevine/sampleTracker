@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140310204030) do
+ActiveRecord::Schema.define(version: 20140313054818) do
 
   create_table "facilities", force: true do |t|
     t.string   "code"
@@ -22,6 +22,19 @@ ActiveRecord::Schema.define(version: 20140310204030) do
   end
 
   add_index "facilities", ["code"], name: "index_facilities_on_code"
+
+  create_table "sample_locations", force: true do |t|
+    t.string   "code"
+    t.string   "building"
+    t.integer  "room"
+    t.text     "description"
+    t.integer  "custodian_id"
+    t.text     "address"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "sample_locations", ["code"], name: "index_sample_locations_on_code"
 
   create_table "sample_sets", force: true do |t|
     t.integer  "owner_id"
@@ -42,7 +55,6 @@ ActiveRecord::Schema.define(version: 20140310204030) do
     t.integer  "owner_id"
     t.boolean  "sampled"
     t.date     "date_sampled"
-    t.integer  "storage_location"
     t.integer  "facility_id"
     t.integer  "project_id"
     t.text     "comments"
@@ -58,9 +70,21 @@ ActiveRecord::Schema.define(version: 20140310204030) do
     t.string   "amount_stored"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "storage_location_id"
   end
 
   add_index "samples", ["owner_id", "facility_id", "created_at"], name: "index_samples_on_owner_id_and_facility_id_and_created_at"
+
+  create_table "storage_locations", force: true do |t|
+    t.string   "code"
+    t.string   "building"
+    t.integer  "room"
+    t.text     "description"
+    t.integer  "custodian_id"
+    t.text     "address"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", force: true do |t|
     t.string   "firstname"

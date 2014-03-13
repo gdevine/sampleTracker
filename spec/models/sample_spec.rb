@@ -19,6 +19,7 @@ describe Sample do
   it { should respond_to( :date_sampled    ) }
   it { should respond_to( :storage_location) }
   it { should respond_to( :facility_id     ) }
+  it { should respond_to( :storage_location_id ) }
   it { should respond_to( :project_id      ) }
   it { should respond_to( :comments        ) }
   it { should respond_to( :is_primary      ) }
@@ -29,7 +30,7 @@ describe Sample do
   it { should respond_to( :easting         ) }
   it { should respond_to( :vertical        ) }
   it { should respond_to( :material_type   ) }
-  it { should respond_to( :amount_collected) }
+  it { should respond_to( :amount_collected ) }
   it { should respond_to( :amount_stored   ) }
   
   its(:owner) { should eq owner }
