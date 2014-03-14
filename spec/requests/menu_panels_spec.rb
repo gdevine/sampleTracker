@@ -27,7 +27,7 @@ describe "Menu Panel:" do
     end
   end
   
-  # The menu bar shouldn't appear on the standard satic pages: contact page, help page etc
+  # The menu bar shouldn't appear on the standard static pages: contact page, help page etc
   describe "Help page" do
     describe "for signed-in users" do
       before { sign_in user }
