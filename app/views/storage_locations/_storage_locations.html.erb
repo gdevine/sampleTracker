@@ -1,0 +1,21 @@
+<% if @storage_locations.any? %>
+  <%= will_paginate @storage_locations %>
+  <table class="table table-bordered table-striped table-hover" width="647">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Code</th>
+        <th>Building</th>
+        <th>Room</th>
+        <th>Custodian</th>
+        <th>View?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render partial: 'storage_locations/storage_locations_table', collection: @storage_locations, as: :storage_location %>
+    </tbody>
+  </table>
+  
+<% else %>
+  <p>No Storage Locations found</p>
+<% end %>

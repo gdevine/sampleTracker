@@ -23,19 +23,6 @@ ActiveRecord::Schema.define(version: 20140313054818) do
 
   add_index "facilities", ["code"], name: "index_facilities_on_code"
 
-  create_table "sample_locations", force: true do |t|
-    t.string   "code"
-    t.string   "building"
-    t.integer  "room"
-    t.text     "description"
-    t.integer  "custodian_id"
-    t.text     "address"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "sample_locations", ["code"], name: "index_sample_locations_on_code"
-
   create_table "sample_sets", force: true do |t|
     t.integer  "owner_id"
     t.date     "sampling_date"
@@ -73,7 +60,7 @@ ActiveRecord::Schema.define(version: 20140313054818) do
     t.integer  "storage_location_id"
   end
 
-  add_index "samples", ["owner_id", "facility_id", "created_at"], name: "index_samples_on_owner_id_and_facility_id_and_created_at"
+  add_index "samples", ["owner_id", "created_at"], name: "index_samples_on_owner_id_and_created_at"
 
   create_table "storage_locations", force: true do |t|
     t.string   "code"

@@ -174,4 +174,29 @@ describe "Menu Panel:" do
     end
   end
   
+  describe "opening the storage location dropdown" do
+    before { sign_in user }
+    before { visit root_path }
+    
+    describe "and clicking the Create New link" do
+      before do
+        click_link('storage_locations_new')
+      end
+  
+      it "should open up the new storage location page" do
+        expect(page).to have_title('New Storage Location')
+      end
+    end
+    
+    describe "and clicking the View All link" do
+      before do
+        click_link('storage_locations_index')
+      end
+  
+      it "should open up the storage location index page" do
+        expect(page).to have_title('Storage Location List')
+      end
+    end
+  end
+  
 end

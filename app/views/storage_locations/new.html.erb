@@ -1,0 +1,27 @@
+<% provide(:title, 'New Storage Location') %>
+<% provide(:pageheading, 'New Storage Location') %>
+
+<div class="row">
+  <div class="span6 offset3">
+    <%= form_for(@storage_location) do |f| %>
+      <%= render 'shared/error_messages', object: f.object %>
+
+      <%= f.label :code, 'Storage Location Code' %>
+      <%= f.text_field :code %>
+      
+      <%= f.label :building, 'Building' %>
+      <%= f.text_field :building %>
+      
+      <%= f.label :room, 'Room' %>
+      <%= f.number_field :room, :min => 1 %>
+      
+      <%= f.label :address, 'Address' %>
+      <%= f.text_field :address %>
+      
+      <%= f.label :description, "Description" %>
+      <%= f.text_area :description, size: "60x12" %>
+
+      <%= f.submit "Submit", class: "btn btn-large btn-primary" %>
+    <% end %>
+  </div>
+</div>

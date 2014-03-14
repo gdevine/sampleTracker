@@ -144,20 +144,16 @@ describe "Facility pages:" do
          end 
          
          describe "should not see the edit and delete buttons" do
-           it { should_not have_button('Edit Sample') }
-           it { should_not have_button('Delete Sample') }
+           it { should_not have_button('Edit Facility') }
+           it { should_not have_button('Delete Facility') }
          end 
 
       end
       
       describe "should show correct associations" do
-        let!(:sample_set) { FactoryGirl.create(:sample_set, owner: user, 
-                                                          facility: facility, 
-                                                          num_samples: 20
-                                                    ) }
+        before { FactoryGirl.create(:sample_set, owner: user, facility: facility, num_samples: 20 ) }
         
         describe "when showing the samples belonging to this facility" do
-          
           let!(:first_sample_id) { facility.samples.first.id }
           let!(:last_sample_id) { facility.samples.last.id }
           before { visit facility_path(facility) }
@@ -168,7 +164,6 @@ describe "Facility pages:" do
         end
         
         describe "when showing the sample sets belonging to this facility" do
-          
           let!(:first_sample_set_id) { facility.sample_sets.first.id }
           let!(:last_sample_set_id) { facility.sample_sets.last.id }
           before { visit facility_path(facility) }
@@ -179,15 +174,15 @@ describe "Facility pages:" do
         end
       
       end
-      
+    
     end
     
     describe "for non signed-in users" do
       describe "should be redirected back to signin" do
         before { visit facility_path(facility) }
         it { should have_title('Sign in') }
-        it { should_not have_button('Edit Sample') }
-        it { should_not have_button('Delete Sample') }
+        it { should_not have_button('Edit Facility') }
+        it { should_not have_button('Delete Facility') }
       end
     end
     
@@ -241,7 +236,7 @@ describe "Facility pages:" do
           fill_in 'facility_description'   , with: 'A new description'
         end
         
-        it "should update, not add a sample" do
+        it "should update, not add a facility" do
           expect { click_button "Update" }.not_to change(Facility, :count).by(1)
         end
         

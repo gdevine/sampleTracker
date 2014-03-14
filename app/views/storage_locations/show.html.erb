@@ -1,0 +1,86 @@
+<% provide(:title, 'Storage Location View') %>
+<% provide(:pageheading, 'Storage Location '+ @storage_location.code) %>
+
+<!-- Add edit/delete buttons if current user -->
+<% if current_user?(@storage_location.custodian) %> 
+  <div class="row">  
+    <div class="span2 offset8">
+      <%= button_to "Edit Storage Location", {:action => 'edit' }, :method => :get, :class=>"btn btn-block" %>
+    </div>
+    <div class="span2">
+      <%= button_to "Delete Storage Location", @storage_location, method: :delete, data: { confirm: "Are you sure?" }, title: @storage_location.code, :class=>"btn btn-block btn-danger" %>
+    </div>
+  </div>
+<% end %>
+
+<div class="row">  
+  <div class="span3 offset3">
+    <h4>Storage Location ID</h4>
+  </div>
+  <div class="span3 offset1">
+    <h4><%= @storage_location.id %></h4>
+  </div>
+</div>
+
+<div class="row">  
+  <div class="span3 offset3">
+    <h4>Storage Location Code</h4>
+  </div>
+  <div class="span3 offset1">
+    <h4><%= @storage_location.code %></h4>
+  </div>
+</div>
+
+<div class="row">  
+  <div class="span3 offset3">
+    <h4>Building</h4>
+  </div>
+  <div class="span3 offset1">
+    <h4><%= @storage_location.building %></h4>
+  </div>
+</div>
+
+<div class="row">  
+  <div class="span3 offset3">
+    <h4>Room</h4>
+  </div>
+  <div class="span3 offset1">
+    <h4><%= @storage_location.room %></h4>
+  </div>
+</div>
+
+<div class="row">  
+  <div class="span3 offset3">
+    <h4>Address</h4>
+  </div>
+  <div class="span3 offset1">
+    <h4><%= @storage_location.address %></h4>
+  </div>
+</div>
+
+<div class="row">   
+  <div class="span3 offset3">
+    <h4>Custodian</h4>
+  </div>
+  <div class="span3 offset1">
+    <h4><%= @storage_location.custodian.firstname %> <%= @storage_location.custodian.surname %></h4>
+  </div>
+</div>
+
+<div class="row">  
+  <div class="span3 offset3">
+    <h4>Description</h4>
+  </div>
+  <div class="span3 offset1">
+    <h4><%= @storage_location.description %></h4>
+  </div>
+</div>
+
+
+<h2 class= "heading-separator">Samples associated with this storage location</h2>
+
+<div class="row">
+  <div class="span12">
+    <%= render 'samples/samples' %>
+  </div>
+</div>
