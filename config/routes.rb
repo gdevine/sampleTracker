@@ -7,6 +7,11 @@ SampleTracker::Application.routes.draw do
   resources :facilities
   resources :storage_locations
   
+  resources :sample_sets do
+    resources :samples
+  end
+  
+  
   root  'static_pages#home'
   match '/register',    to: 'users#new',    via: 'get'
   match '/help',        to: 'static_pages#help',    via: 'get'

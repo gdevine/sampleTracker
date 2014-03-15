@@ -31,7 +31,8 @@ describe Sample do
   it { should respond_to( :vertical        ) }
   it { should respond_to( :material_type   ) }
   it { should respond_to( :amount_collected ) }
-  it { should respond_to( :amount_stored   ) }
+  it { should respond_to( :amount_stored ) }
+  it { should respond_to( :facility ) }
   
   its(:owner) { should eq owner }
 

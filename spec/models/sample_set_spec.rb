@@ -19,6 +19,7 @@ describe SampleSet do
   it { should respond_to(:status) }
   it { should respond_to(:add_info) }
   it { should respond_to(:samples) }
+  it { should respond_to(:facility) }
   
   its(:owner) { should eq owner }
   

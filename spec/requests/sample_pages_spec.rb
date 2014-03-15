@@ -25,9 +25,10 @@ describe "Sample pages:" do
       end
       
       describe "with samples in the system" do
+        let!(:facility) { FactoryGirl.create(:facility) }
         before do
-          FactoryGirl.create(:sample, owner: user, facility_id: 3)
-          FactoryGirl.create(:sample, owner: user, facility_id: 4)
+          FactoryGirl.create(:sample, owner: user, tree: 45, facility: facility)
+          FactoryGirl.create(:sample, owner: user, tree: 46, facility: facility)
           visit samples_path
         end
                 
@@ -114,8 +115,9 @@ describe "Sample pages:" do
   
   describe "Show page" do
     
+    let!(:facility) { FactoryGirl.create(:facility, code: 'faccode2') }
     let!(:sample) { FactoryGirl.create(:sample, owner: user, 
-                                                facility_id: 5, 
+                                                facility: facility, 
                                                 project_id: 3, 
                                                 tree: 4,
                                                 date_sampled: Date.new(2012, 12, 3)

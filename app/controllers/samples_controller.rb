@@ -5,7 +5,12 @@ class SamplesController < ApplicationController
   before_action :correct_user,   only: :destroy
   
   def index   
-    @samples = Sample.paginate(page: params[:page])
+    if params[:sample_set_id]
+      # For generating the output excel file
+      @samples = SampleSet.find(params[:sample_set_id]).samples.paginate(page: params[:page])
+    else
+      @samples = Sample.paginate(page: params[:page])
+    end
   end
     
   def new

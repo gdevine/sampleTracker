@@ -63,8 +63,8 @@ describe "Static pages:" do
       describe "with sample sets" do
       
         before do
-          FactoryGirl.create(:sample, owner: user, facility_id: 3)
-          FactoryGirl.create(:sample, owner: user, facility_id: 4)
+          FactoryGirl.create(:sample, owner: user)
+          FactoryGirl.create(:sample, owner: user)
           sign_in user
           visit root_path
         end
