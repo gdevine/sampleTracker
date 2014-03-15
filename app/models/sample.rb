@@ -8,4 +8,13 @@ class Sample < ActiveRecord::Base
   validates :facility_id, presence: true
   validates :project_id, presence: true
   validates :date_sampled, presence: true
+  
+  def self.to_csv(options = {})
+    CSV.generate(options) do |csv|
+      csv << column_names
+      all.each do |sample|
+        csv << sample.attributes.values_at(*column_names)
+      end
+    end
+  end
 end

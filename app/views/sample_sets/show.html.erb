@@ -12,7 +12,7 @@
       <%= button_to "Delete Sample Set", @sample_set, method: :delete, data: { confirm: "Are you sure?" }, title: @sample_set.project_id, :class=>"btn btn-block btn-danger" %>
     </div>
     <div class="span2">
-      <%= button_to "Export Spreadsheet", '#', :class=>"btn btn-block" %>
+      <%= button_to "Export Spreadsheet", sample_set_samples_path(sample_set_id:@sample_set.id, format: "xls"), :method => "get", :class=>"btn btn-block" %>
     </div>
   </div>
 <% end %>

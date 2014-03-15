@@ -7,7 +7,20 @@ class SamplesController < ApplicationController
   def index   
     if params[:sample_set_id]
       # For generating the output excel file
-      @samples = SampleSet.find(params[:sample_set_id]).samples.paginate(page: params[:page])
+      @samples = SampleSet.find(params[:sample_set_id]).samples.to_a.sort
+      respond_to do |format|
+        format.html
+        format.csv { send_data @samples.to_csv }
+        format.xls do
+          myss = @samples.first.sample_set
+          myid = myss.id.to_s
+          mysurname = myss.owner.surname.delete(' ')
+          myfac = myss.facility.code.to_s
+          filename = 'Samples'+'_'+mysurname+'_'+myfac+'_'+myid
+          response.headers['Content-Disposition'] = 'attachment; filename="' + filename + '.xls"'
+          render "samples/index.xls.erb"
+        end
+      end
     else
       @samples = Sample.paginate(page: params[:page])
     end

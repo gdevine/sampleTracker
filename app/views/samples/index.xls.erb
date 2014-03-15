@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  
+  <ss:Styles>
+        <ss:Style ss:ID="1">
+            <ss:Font ss:Bold="1"/>
+        </ss:Style>
+    </ss:Styles>
+    
+  <Worksheet ss:Name="Sheet1">
+    <Table>
+      <ss:Column ss:Width="80"/>
+      <ss:Column ss:Width="80"/>
+      <ss:Column ss:Width="50"/>
+      <ss:Column ss:Width="50"/>
+      <ss:Column ss:Width="50"/>
+      <ss:Column ss:Width="120"/>
+      <ss:Column ss:Width="60"/>
+      <ss:Column ss:Width="60"/>
+      <ss:Column ss:Width="60"/>
+      <ss:Column ss:Width="100"/>
+      <ss:Column ss:Width="100"/>
+      <ss:Column ss:Width="100"/>
+      <ss:Column ss:Width="300"/>
+      <Row>
+        <Cell ss:StyleID="1"><Data ss:Type="String">Request Set ID</Data></Cell>
+        <Cell><Data ss:Type="String"><%= @samples.first.sample_set.id %></Data></Cell>
+      </Row>  
+      <Row>
+        <Cell ss:StyleID="1"><Data ss:Type="String" ss:Bold="3">Owner</Data></Cell>
+        <Cell><Data ss:Type="String"><%= @samples.first.owner.firstname %> <%= @samples.first.owner.surname %></Data></Cell>
+      </Row>
+      <Row>
+        <Cell ss:StyleID="1"><Data ss:Type="String">Facility</Data></Cell>
+        <Cell><Data ss:Type="String"><%= @samples.first.facility.code %></Data></Cell>
+      </Row>
+      <Row>
+        <Cell ss:StyleID="1"><Data ss:Type="String">Project</Data></Cell>
+        <Cell><Data ss:Type="String"><%= @samples.first.project_id %></Data></Cell>
+      </Row>
+      <Row></Row>      
+      <Row ss:StyleID="1">
+        <Cell><Data ss:Type="String">Sample ID</Data></Cell>
+        <Cell><Data ss:Type="String">Date Sampled</Data></Cell>
+        <Cell><Data ss:Type="String">Ring</Data></Cell>
+        <Cell><Data ss:Type="String">Tree</Data></Cell>
+        <Cell><Data ss:Type="String">Plot</Data></Cell>
+        <Cell><Data ss:Type="String">Sample Material Type</Data></Cell>
+        <Cell><Data ss:Type="String">Northing</Data></Cell>
+        <Cell><Data ss:Type="String">Easting</Data></Cell>
+        <Cell><Data ss:Type="String">Vertical</Data></Cell>
+        <Cell><Data ss:Type="String">Amount Collected</Data></Cell>
+        <Cell><Data ss:Type="String">Amount Stored</Data></Cell>
+        <Cell><Data ss:Type="String">Storage Location</Data></Cell>
+        <Cell><Data ss:Type="String">Comments</Data></Cell>
+      </Row>
+    <% @samples.each do |sample| %>
+      <Row>
+        <Cell><Data ss:Type="String"><%= sample.id %></Data></Cell>
+        <Cell><Data ss:Type="String"></Data></Cell>
+        <Cell><Data ss:Type="String"></Data></Cell>
+        <Cell><Data ss:Type="String"></Data></Cell>
+        <Cell><Data ss:Type="String"></Data></Cell>
+        <Cell><Data ss:Type="String"></Data></Cell>
+        <Cell><Data ss:Type="String"></Data></Cell>
+        <Cell><Data ss:Type="String"></Data></Cell>
+        <Cell><Data ss:Type="String"></Data></Cell>
+        <Cell><Data ss:Type="String"></Data></Cell>
+        <Cell><Data ss:Type="String"></Data></Cell>
+        <Cell><Data ss:Type="String"></Data></Cell>
+        <Cell><Data ss:Type="String"></Data></Cell>
+      </Row>
+    <% end %>
+    </Table>
+  </Worksheet>
+</Workbook>
