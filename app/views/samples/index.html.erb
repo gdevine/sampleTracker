@@ -1,6 +1,60 @@
 <% provide(:title, 'Sample List') %>
 <% provide(:pageheading, 'Sample List') %>
 
+
+
+<div class="panel-group" id="accordion">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+          
+          <button type="button" class="btn btn-block btn-info btn-lg">
+            <span class="glyphicon glyphicon-star"></span> Search/Filter results
+          </button>
+          
+        </a>
+      </h4>
+    </div>
+    <div id="collapseOne" class="panel-collapse collapse">
+      <div class="panel-body">
+
+        <div id="facets">
+          <h5>Tree</h5>
+          <ul>
+            
+            <% for row in @search.facet(:tree).rows %>
+              <li>
+                <% if params[:mytree].blank? %>
+                  <%= link_to row.value, params.merge({:mytree => row.value}) %> (<%= row.count %>)
+                <% else %>
+                  <strong><%= row.value %></strong> (<%= link_to "remove", params.except(:mytree) %>)
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+          <h5>Facility</h5>
+          <ul>
+            
+            <% for row in @search.facet(:facility_id).rows %>
+              <li>
+                <% if params[:myfacility].blank? %>
+                  <%= link_to row.value, params.merge({:myfacility => row.value}) %> (<%= row.count %>)
+                <% else %>
+                  <strong><%= row.value %></strong> (<%= link_to "remove", params.except(:myfacility) %>)
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
 <div class="row">
   <div class="span12">
     <%= render 'samples/samples' %>

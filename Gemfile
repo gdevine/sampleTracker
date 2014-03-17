@@ -9,6 +9,8 @@ gem 'faker', '1.1.2'
 gem 'will_paginate', '3.0.4'
 gem 'bootstrap-will_paginate', '0.0.9'
 gem 'rqrcode-with-patches'
+gem 'sunspot_rails'
+gem 'sunspot_solr'
 
 group :development, :test do
   gem 'sqlite3', '1.3.8'

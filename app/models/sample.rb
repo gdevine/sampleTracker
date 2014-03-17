@@ -9,6 +9,18 @@ class Sample < ActiveRecord::Base
   validates :project_id, presence: true
   validates :date_sampled, presence: true
   
+  searchable do
+    text :comments
+    integer :tree
+    integer :facility_id
+    # string :facility_code
+  end
+  
+  def facility_code
+    facility.code.to_s
+  end
+  
+    
   def self.to_csv(options = {})
     CSV.generate(options) do |csv|
       csv << column_names
