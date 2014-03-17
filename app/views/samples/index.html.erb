@@ -16,36 +16,83 @@
         </a>
       </h4>
     </div>
-    <div id="collapseOne" class="panel-collapse collapse">
+    <div id="collapseOne" class="panel-collapse collapse in">
       <div class="panel-body">
 
         <div id="facets">
-          <h5>Tree</h5>
-          <ul>
-            
-            <% for row in @search.facet(:tree).rows %>
-              <li>
-                <% if params[:mytree].blank? %>
-                  <%= link_to row.value, params.merge({:mytree => row.value}) %> (<%= row.count %>)
-                <% else %>
-                  <strong><%= row.value %></strong> (<%= link_to "remove", params.except(:mytree) %>)
+          <div class="row">
+            <div class="span2 offset1">
+              <h5>Facility</h5>  
+              <ul>
+                <% for row in @search.facet(:facility_code).rows %>
+                  <li>
+                    <% if params[:myfacility].blank? %>
+                      <%= link_to row.value, params.merge({:myfacility => row.value}).except(:page) %> (<%= row.count %>)
+                    <% else %>
+                      <strong><%= row.value %></strong> (<%= link_to "remove", params.except(:myfacility, :page) %>)
+                    <% end %>
+                  </li>
                 <% end %>
-              </li>
-            <% end %>
-          </ul>
-          <h5>Facility</h5>
-          <ul>
-            
-            <% for row in @search.facet(:facility_id).rows %>
-              <li>
-                <% if params[:myfacility].blank? %>
-                  <%= link_to row.value, params.merge({:myfacility => row.value}) %> (<%= row.count %>)
-                <% else %>
-                  <strong><%= row.value %></strong> (<%= link_to "remove", params.except(:myfacility) %>)
+              </ul>
+            </div>
+            <div class="span2">
+              <h5>Month Sampled</h5>  
+              <ul>
+                <% for row in @search.facet(:month_sampled).rows %>
+                  <li>
+                    <% if params[:mymonthsampled].blank? %>
+                      <%= link_to row.value, params.merge({:mymonthsampled => row.value}).except(:page) %> (<%= row.count %>)
+                    <% else %>
+                      <strong><%= row.value %></strong> (<%= link_to "remove", params.except(:mymonthsampled, :page) %>)
+                    <% end %>
+                  </li>
                 <% end %>
-              </li>
-            <% end %>
-          </ul>
+              </ul>
+            </div>
+            <div class="span2">
+              <h5>Sample Type</h5>  
+              <ul>
+                <% for row in @search.facet(:material_type).rows %>
+                  <li>
+                    <% if params[:mymaterialtype].blank? %>
+                      <%= link_to row.value, params.merge({:mymaterialtype => row.value}).except(:page) %> (<%= row.count %>)
+                    <% else %>
+                      <strong><%= row.value %></strong> (<%= link_to "remove", params.except(:mymaterialtype, :page) %>)
+                    <% end %>
+                  </li>
+                <% end %>
+              </ul>
+            </div>
+            <div class="span2">
+              <h5>Project</h5>  
+              <ul>
+                <% for row in @search.facet(:project_id).rows %>
+                  <li>
+                    <% if params[:myprojectid].blank? %>
+                      <%= link_to row.value, params.merge({:myprojectid => row.value}).except(:page) %> (<%= row.count %>)
+                    <% else %>
+                      <strong><%= row.value %></strong> (<%= link_to "remove", params.except(:myprojectid, :page) %>)
+                    <% end %>
+                  </li>
+                <% end %>
+              </ul>
+            </div>
+            <div class="span2">
+              <h5>Tree</h5>
+              <ul>
+                <% for row in @search.facet(:tree).rows %>
+                  <li>
+                    <% if params[:mytree].blank? %>
+                      <%= link_to row.value, params.merge({:mytree => row.value}).except(:page) %> (<%= row.count %>)
+                    <% else %>
+                      <strong><%= row.value %></strong> (<%= link_to "remove", params.except(:mytree, :page) %>)
+                    <% end %>
+                  </li>
+                <% end %>
+              </ul>
+            </div>
+          </div>  
+        
         </div>
       </div>
     </div>

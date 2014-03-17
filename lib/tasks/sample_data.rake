@@ -45,28 +45,31 @@ namespace :db do
                               building: building,
                               address: address,
                               description: description,
-                              custodian_id: 1+ rand(3))
+                              custodian_id: 1+ rand(4))
     end
     
     
-    # Create a set of sample sets associated with users (samples will be created by default)
-    users = User.all(limit: 3)
+    # Create a set of sample sets (that are still to be sampled) associated with users (samples will be created by default)
+    users = User.all(limit: 5)
     50.times do
-      users.each { |user| user.sample_sets.create!(facility_id: 1 + rand(5), 
-                                                   project_id: 1 + rand(5), 
-                                                   num_samples: 1 + rand(5),
-                                                   status: 'Pending',
+      users.each { |user| user.sample_sets.create!(facility_id: 1 + rand(7), 
+                                                   project_id: 1 + rand(7), 
+                                                   num_samples: 1 + rand(7),
+                                                   status: 'Pending Sampling',
                                                    sampling_date: Date.today+(100*rand()),
                                                    add_info: "Some additional info about this sample set"
                                                    ) }
     end      
     
     
-    # Attach a storage location to some of the samples
+    # Attach a storage location to some of the samples and mark as completed
     samples = Sample.all.to_a[0..50]
     samples.each do |sample|
       sample.storage_location = StorageLocation.find(1 + rand(5))
       sample.sampled = true
+      status = 'Completed'
+      sample.material_type=['Leaf', 'Soil', 'Bark', 'Litter'].sample
+      tree = 1+ rand(10)
       sample.save
     end    
     

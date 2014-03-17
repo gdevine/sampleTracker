@@ -1,6 +1,11 @@
 <% if @samples.any? %>
-  <%= will_paginate @samples %>
+  <% if defined? @search %>
+    <h5><%= @search.total %> results</h5> 
+  <% else %>
+    <h5><%= @samples.count %> results</h5>
+  <% end %>
   
+  <%= will_paginate @samples %>
   <table class="table table-bordered table-striped table-hover" width="647">
     <thead>
       <tr>
@@ -8,8 +13,8 @@
         <th>Owner</th>
         <th>Facility</th>
         <th>Project</th>
-        <th>Member of Sample Set</th>
-        <th>Tree</th>
+        <th>Sample Set</th>
+        <th>Sample Type</th>
         <th>Date Sampled</th>
         <th>Storage Location</th>
         <th>Sampled?</th>

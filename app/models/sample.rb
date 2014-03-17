@@ -12,15 +12,21 @@ class Sample < ActiveRecord::Base
   searchable do
     text :comments
     integer :tree
-    integer :facility_id
-    # string :facility_code
+    string :facility_code
+    string :month_sampled
+    string :material_type
+    integer :project_id
   end
   
   def facility_code
     facility.code.to_s
   end
   
-    
+  def month_sampled
+    date_sampled.strftime("%B %Y")
+  end
+  
+ 
   def self.to_csv(options = {})
     CSV.generate(options) do |csv|
       csv << column_names
