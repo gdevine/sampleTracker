@@ -23,7 +23,11 @@ namespace :db do
                    password_confirmation: password)
     end
     
-    # Create dummy facilities
+    # Create dummy (and a FACE) facilities
+    fac = Facility.create!(code: 'FACE',
+                       description: 'The FACE facility is situated at UWS HAwkesbury and contains 6 rings',
+                       contact_id: 1)
+                       
     10.times do |n|
       code = "FACIL-#{n+1}"
       description = "Some additional info about this facility"
@@ -54,7 +58,7 @@ namespace :db do
     50.times do
       users.each { |user| user.sample_sets.create!(facility_id: 1 + rand(7), 
                                                    project_id: 1 + rand(7), 
-                                                   num_samples: 1 + rand(15),
+                                                   num_samples: 1 + rand(30),
                                                    status: 'Pending Sampling',
                                                    sampling_date: Date.today+(100*rand()),
                                                    add_info: "Some additional info about this sample set"
@@ -63,7 +67,7 @@ namespace :db do
     
     
     # Attach a storage location to some of the samples and mark as completed
-    samples = Sample.all.to_a[0..250]
+    samples = Sample.all.to_a[0..2000]
     samples.each do |sample|
       sample.storage_location = StorageLocation.find(1 + rand(5))
       sample.sampled = true
