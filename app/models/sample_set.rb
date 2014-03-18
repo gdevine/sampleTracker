@@ -20,7 +20,6 @@ class SampleSet < ActiveRecord::Base
       cs = self.samples.build(facility_id: facility_id,
                               project_id: project_id,
                               owner_id: owner_id,
-                              date_sampled: Date.today+(100*rand()),
                               sampled: false)
       cs.save
     end

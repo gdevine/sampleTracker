@@ -9,6 +9,9 @@
 /log/*.log
 /tmp
 
+# Ignore solr files
+/solr/data
+
 # Ignore other unneeded files.
 database.yml
 doc/

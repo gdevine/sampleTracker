@@ -7,7 +7,6 @@ class Sample < ActiveRecord::Base
   validates :owner_id, presence: true
   validates :facility_id, presence: true
   validates :project_id, presence: true
-  validates :date_sampled, presence: true
   
   searchable do
     text :comments
@@ -23,7 +22,9 @@ class Sample < ActiveRecord::Base
   end
   
   def month_sampled
-    date_sampled.strftime("%B %Y")
+    if date_sampled?
+      date_sampled.strftime("%B %Y")
+    end
   end
   
  

@@ -34,7 +34,7 @@ namespace :db do
     end    
     
     # Create dummy storage locations    
-    6.times do |n|
+    10.times do |n|
       code = "L-#{n+1}R-#{n+3}"
       room = "#{n+3}"
       building = "L-#{n+1}"
@@ -50,11 +50,11 @@ namespace :db do
     
     
     # Create a set of sample sets (that are still to be sampled) associated with users (samples will be created by default)
-    users = User.all(limit: 5)
+    users = User.all(limit: 10)
     50.times do
       users.each { |user| user.sample_sets.create!(facility_id: 1 + rand(7), 
                                                    project_id: 1 + rand(7), 
-                                                   num_samples: 1 + rand(7),
+                                                   num_samples: 1 + rand(15),
                                                    status: 'Pending Sampling',
                                                    sampling_date: Date.today+(100*rand()),
                                                    add_info: "Some additional info about this sample set"
@@ -63,13 +63,14 @@ namespace :db do
     
     
     # Attach a storage location to some of the samples and mark as completed
-    samples = Sample.all.to_a[0..50]
+    samples = Sample.all.to_a[0..250]
     samples.each do |sample|
       sample.storage_location = StorageLocation.find(1 + rand(5))
       sample.sampled = true
-      status = 'Completed'
-      sample.material_type=['Leaf', 'Soil', 'Bark', 'Litter'].sample
-      tree = 1+ rand(10)
+      sample.material_type = ['Leaf', 'Soil', 'Bark', 'Litter'].sample
+      sample.tree = 1 + rand(10)
+      sample.ring = 1 + rand(5)
+      sample.date_sampled = Date.today-(100*rand())
       sample.save
     end    
     
