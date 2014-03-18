@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Sample Request Set <%= @sample_set.id %> has been created</h1>
+    <p>Hi <%= @contact.firstname.capitalize %>,</p>
+    <p>      <%= @owner.firstname.capitalize %> <%= @owner.surname.capitalize %> has created a new sample request set.</p>
+    
+    <br/>
+    <p>Sampling Date: <%= @sample_set.sampling_date %></p>
+    <p>Facility: <%= @sample_set.facility.code %></p>
+    <p>Project: <%= @sample_set.project_id %></p>
+    <p>Number of Samples requested: <%= @sample_set.num_samples %></p>
+    <p>Additional Comments: <%= @sample_set.add_info %></p>
+    <br/>
+    <p>If there are any issues with collecting on this date can you please email <%= @owner.firstname.capitalize %> (<%= @owner.email %>) and let them know. 
+    <br/>
+    <p>You can see the full details of this request set on the HIE Sample Tracker <%= link_to "here", sample_set_url(@sample_set) %> </p>
+    
+  </body>
+</html>

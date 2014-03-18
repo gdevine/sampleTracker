@@ -54,8 +54,8 @@ namespace :db do
     
     
     # Create a set of sample sets (that are still to be sampled) associated with users (samples will be created by default)
-    users = User.all(limit: 10)
-    50.times do
+    users = User.all(limit: 5)
+    40.times do
       users.each { |user| user.sample_sets.create!(facility_id: 1 + rand(7), 
                                                    project_id: 1 + rand(7), 
                                                    num_samples: 1 + rand(30),
@@ -67,7 +67,7 @@ namespace :db do
     
     
     # Attach a storage location to some of the samples and mark as completed
-    samples = Sample.all.to_a[0..2000]
+    samples = Sample.all.to_a[0..200]
     samples.each do |sample|
       sample.storage_location = StorageLocation.find(1 + rand(5))
       sample.sampled = true

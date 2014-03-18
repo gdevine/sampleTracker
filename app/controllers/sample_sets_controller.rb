@@ -19,7 +19,7 @@ class SampleSetsController < ApplicationController
     @sample_set = current_user.sample_sets.build(sample_set_params)
     @sample_set.status = 'Pending'
     if @sample_set.save
-      #create_samples
+      UserMailer.newss_email(@sample_set).deliver
       flash[:success] = "Sample Set created!"
       redirect_to root_url
     else
@@ -35,6 +35,7 @@ class SampleSetsController < ApplicationController
   def update
     @sample_set = SampleSet.find(params[:id])
     if @sample_set.update_attributes(sample_set_params)
+      UserMailer.updatedss_email(@sample_set).deliver
       flash[:success] = "Sample Set updated"
       redirect_to @sample_set
     else
