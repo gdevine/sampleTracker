@@ -11,6 +11,7 @@
 
 # Ignore solr files
 /solr/data
+/solr/test
 
 # Ignore other unneeded files.
 database.yml

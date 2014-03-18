@@ -45,7 +45,7 @@ class SamplesController < ApplicationController
     @sample = Sample.find(params[:id])
     @qr = RQRCode::QRCode.new( sample_url, :size => 3, :level => :l )
   end
-
+  
   def create
     @sample = current_user.samples.build(sample_params)
     if @sample.save
@@ -94,4 +94,15 @@ class SamplesController < ApplicationController
       @sample = current_user.samples.find_by(id: params[:id])
       redirect_to root_url if @sample.nil?
     end
+    
+    def qr_code
+      respond_to do |format|
+        format.html
+        format.svg  { render :qrcode => request.url, :level => :l, :unit => 10 }
+        format.png  { render :qrcode => request.url }
+        format.gif  { render :qrcode => request.url }
+        format.jpeg { render :qrcode => request.url }
+      end
+    end
+
 end
