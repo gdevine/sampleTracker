@@ -24,7 +24,7 @@ class SamplesController < ApplicationController
     else
       @search = Sample.search do
         fulltext params[:search]
-        facet :facility_code, :tree, :month_sampled, :material_type, :project_id
+        facet :tree, :facility_code, :month_sampled, :material_type, :project_id
         with(:tree, params[:mytree]) if params[:mytree].present?
         with(:facility_code, params[:myfacility]) if params[:myfacility].present?
         with(:month_sampled, params[:mymonthsampled]) if params[:mymonthsampled].present?
@@ -34,6 +34,7 @@ class SamplesController < ApplicationController
       end
       # @samples = Sample.paginate(page: params[:page])
       @samples = @search.results
+      puts 'bla'
     end
   end
     
