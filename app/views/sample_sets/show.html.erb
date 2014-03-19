@@ -4,7 +4,7 @@
 <!-- Add edit/delete buttons if current user -->
 <% if current_user?(@sample_set.owner) %> 
   <div class="row">  
-    <div class="span2 offset6">
+    <div class="span2 offset4">
       <%= button_to "Edit Sample Set", {:action => 'edit' }, :method => :get, :class=>"btn btn-block" %>
     </div>
     <div class="span2">
@@ -13,6 +13,9 @@
     </div>
     <div class="span2">
       <%= button_to "Export Spreadsheet", sample_set_samples_path(sample_set_id:@sample_set.id, format: "xls"), :method => "get", :class=>"btn btn-block" %>
+    </div>
+    <div class="span2">
+      <%= button_to "Print QR codes", sample_set_samples_path(sample_set_id:@sample_set.id, format: "pdf"), :formtarget => '_blank', :method => "get", :class=>"btn btn-block" %>
     </div>
   </div>
 <% end %>

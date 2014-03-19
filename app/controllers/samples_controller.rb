@@ -1,4 +1,4 @@
-require 'rqrcode'
+require 'prawn/qrcode'
 
 class SamplesController < ApplicationController
   before_action :signed_in_user, only: [:index, :new, :show, :update, :edit, :create, :destroy]
@@ -20,11 +20,21 @@ class SamplesController < ApplicationController
           response.headers['Content-Disposition'] = 'attachment; filename="' + filename + '.xls"'
           render "samples/index.xls.erb"
         end
+        format.pdf do
+          pdf = Prawn::Document.new
+          @samples.each do |sample|
+            qrcode = RQRCode::QRCode.new(sample_url(sample.id), :level=>:h, :size => 4)
+            pdf.render_qr_code(qrcode)
+            pdf.text sample.id.to_s
+            pdf.move_down 15
+          end
+          send_data pdf.render "MyQRs.pdf", type: "application/pdf", disposition: "inline"
+        end
       end
     else
       @search = Sample.search do
         fulltext params[:search]
-        facet :facility_code, :tree, :month_sampled, :material_type, :project_id
+        facet :tree, :facility_code, :month_sampled, :material_type, :project_id
         with(:tree, params[:mytree]) if params[:mytree].present?
         with(:facility_code, params[:myfacility]) if params[:myfacility].present?
         with(:month_sampled, params[:mymonthsampled]) if params[:mymonthsampled].present?
@@ -34,6 +44,7 @@ class SamplesController < ApplicationController
       end
       # @samples = Sample.paginate(page: params[:page])
       @samples = @search.results
+      puts 'bla'
     end
   end
     
