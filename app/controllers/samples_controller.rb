@@ -28,7 +28,7 @@ class SamplesController < ApplicationController
             pdf.text sample.id.to_s
             pdf.move_down 15
           end
-          send_data pdf.render "MyQRs.pdf", type: "application/pdf", disposition: "inline"
+          send_data pdf.render, type: "application/pdf", disposition: "inline"
         end
       end
     else
