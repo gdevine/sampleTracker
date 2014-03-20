@@ -22,12 +22,24 @@ class SamplesController < ApplicationController
         end
         format.pdf do
           pdf = Prawn::Document.new
-          @samples.each do |sample|
-            qrcode = RQRCode::QRCode.new(sample_url(sample.id), :level=>:h, :size => 4)
-            pdf.render_qr_code(qrcode)
-            pdf.text sample.id.to_s
-            pdf.move_down 15
+          # @samples.each do |sample|
+          
+          samples = @samples.to_a
+          s = 0
+          i = 1
+          while s < @samples.count-1 do
+            for j in 0..4 
+              # qrcode = RQRCode::QRCode.new(sample_url(samples[s].id), :level=>:h, :size => 4)
+              qrcode = RQRCode::QRCode.new("hiesamples.uws.edu.au/samples/123", :level=>:h, :size => 4)
+              pdf.bounding_box([125*j, 11+i*63], :width => 42, :height => 55) do
+                pdf.render_qr_code(qrcode)
+                pdf.text samples[s].id.to_s
+                s += 1
+              end
+            end
+            i += 1
           end
+           
           send_data pdf.render, type: "application/pdf", disposition: "inline"
         end
       end
@@ -44,7 +56,6 @@ class SamplesController < ApplicationController
       end
       # @samples = Sample.paginate(page: params[:page])
       @samples = @search.results
-      puts 'bla'
     end
   end
     
