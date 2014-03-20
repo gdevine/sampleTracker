@@ -29,8 +29,7 @@ class SamplesController < ApplicationController
           i = 1
           while s < @samples.count-1 do
             for j in 0..4 
-              # qrcode = RQRCode::QRCode.new(sample_url(samples[s].id), :level=>:h, :size => 4)
-              qrcode = RQRCode::QRCode.new("hiesamples.uws.edu.au/samples/123", :level=>:h, :size => 4)
+              qrcode = RQRCode::QRCode.new(sample_url(samples[s].id), :level=>:h, :size => 4)
               pdf.bounding_box([125*j, 11+i*63], :width => 42, :height => 55) do
                 pdf.render_qr_code(qrcode)
                 pdf.text samples[s].id.to_s
