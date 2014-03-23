@@ -31,17 +31,7 @@ describe "Sample pages:" do
           FactoryGirl.create(:sample, owner: user, tree: 46, facility: facility)
           visit samples_path
         end
-                
-        it "should have correct table heading" do
-          expect(page).to have_selector('table tr th', text: 'Sample ID')
-        end
-                   
-        it "should list each sample" do
-          Sample.paginate(page: 1).each do |sample|
-            expect(page).to have_selector('table tr td', text: sample.id)
-          end
-        end
-        
+              
       end
 
     end

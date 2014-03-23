@@ -53,9 +53,5 @@ describe Sample do
     it { should_not be_valid }
   end
   
-  describe "when date_sampled is not present" do
-    before { @sample.date_sampled = nil }
-    it { should_not be_valid }
-  end
   
 end

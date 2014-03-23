@@ -3,8 +3,9 @@ require 'spec_helper'
 describe SampleSet do
 
   let(:owner) { FactoryGirl.create(:user) }
+  let(:facility) { FactoryGirl.create(:facility) }
   before do
-    @sample_set = owner.sample_sets.build(sampling_date: Date.new(2012, 12, 3), facility_id: 1, project_id: 1, num_samples: 50)
+    @sample_set = owner.sample_sets.build(sampling_date: Date.new(2012, 12, 3), facility: facility, project_id: 1, num_samples: 50)
   end
   
   subject { @sample_set }

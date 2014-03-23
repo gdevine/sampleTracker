@@ -125,11 +125,11 @@
     </div>
     <div class="row">     
       <div class="span3">
-        <h4>Tree</h4>
+        <h4>Plot</h4>
       </div>
       <div class="span3 offset1">
-        <% if @sample.tree.present? %>
-          <h4><%= @sample.tree %></h4>
+        <% if @sample.plot.present? %>
+          <h4><%= @sample.plot %></h4>
         <% else %>
           <h4></h4>
         <% end %>
@@ -142,6 +142,18 @@
       <div class="span3 offset1">
         <% if @sample.ring.present? %>
           <h4><%= @sample.ring %></h4>
+        <% else %>
+          <h4></h4>
+        <% end %>
+      </div>
+    </div>
+    <div class="row">     
+      <div class="span3">
+        <h4>Tree</h4>
+      </div>
+      <div class="span3 offset1">
+        <% if @sample.tree.present? %>
+          <h4><%= @sample.tree %></h4>
         <% else %>
           <h4></h4>
         <% end %>
@@ -166,18 +178,6 @@
       <div class="span3 offset1">
         <% if @sample.easting.present? %>
           <h4><%= @sample.easting %></h4>
-        <% else %>
-          <h4></h4>
-        <% end %>
-      </div>
-    </div>
-    <div class="row">     
-      <div class="span3">
-        <h4>Height</h4>
-      </div>
-      <div class="span3 offset1">
-        <% if @sample.vertical.present? %>
-          <h4><%= @sample.vertical %></h4>
         <% else %>
           <h4></h4>
         <% end %>
@@ -241,6 +241,8 @@
       </div>
     </div>
   </div>
+  
+  
   <div class="span4">
     <div class="row">
       <div class="span2 offset1">

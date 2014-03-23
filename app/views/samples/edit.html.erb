@@ -15,15 +15,42 @@
       <%= f.label :sample_set_id, 'Sample Set' %>
       <%= f.number_field :sample_set_id, :min => 0 %>
 
-      <%= f.label :tree, 'Tree' %>
-      <%= f.number_field :tree, :min => 0 %>
-
+      <%= f.label :sampled, "Sampled?" %>
+      <%= f.check_box :sampled %>
+      
       <%= f.label :date_sampled, 'Date Sampled' %>
       <%= f.date_field :date_sampled %>
+    
+      <%= f.label :material_type, "Sample Type" %>
+      <%= f.text_field :material_type %>
       
-      <%= f.label :sampled, "Sampled?" %>
-      <%= f.text_field :sampled %>
-
+      <%= f.label :plot, 'Plot' %>
+      <%= f.number_field :plot, :min => 0 %>
+      
+      <%= f.label :ring, 'Ring' %>
+      <%= f.number_field :ring, :min => 0 %>
+      
+      <%= f.label :tree, 'Tree' %>
+      <%= f.number_field :tree, :min => 0 %>
+      
+      <%= f.label :northing, 'Northing' %>
+      <%= f.number_field :northing, :min => 0 %>
+      
+      <%= f.label :easting, 'Easting' %>
+      <%= f.number_field :easting, :min => 0 %>
+      
+      <%= f.label :vertical, 'Height' %>
+      <%= f.number_field :vertical, :min => 0 %>
+      
+      <%= f.label :amount_collected, "Amount Collected" %>
+      <%= f.text_field :amount_collected %>
+      
+      <%= f.label :amount_stored, "Amount Stored" %>
+      <%= f.text_field :amount_stored %>
+      
+      <%= f.label :storage_location_id, "Storage Location" %>
+      <%= collection_select(:sample, :storage_location_id, StorageLocation.all, :id, :code) %>
+      
       <%= f.label :comments, "Additional Comments" %>
       <%= f.text_area :comments, size: "60x12" %>
 
