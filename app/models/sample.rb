@@ -3,6 +3,8 @@ class Sample < ActiveRecord::Base
   belongs_to :facility, :class_name => 'Facility', :foreign_key => 'facility_id'
   belongs_to :sample_set, :class_name => 'SampleSet', :foreign_key => 'sample_set_id'
   belongs_to :storage_location, :class_name => 'StorageLocation', :foreign_key => 'storage_location_id'
+  belongs_to :parent, :class_name => 'Sample', :foreign_key => 'parent_id'
+  has_many :subsamples, :class_name => 'Sample', :foreign_key => 'parent_id', dependent: :destroy
   default_scope -> { order('created_at DESC') }
   validates :owner_id, presence: true
   validates :facility_id, presence: true

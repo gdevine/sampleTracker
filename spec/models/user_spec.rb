@@ -132,12 +132,9 @@ describe User do
   describe "sample_set associations" do
 
     before { @user.save }
-    let!(:older_sample_set) do
-      FactoryGirl.create(:sample_set, owner: @user, created_at: 1.day.ago)
-    end
-    let!(:newer_sample_set) do
-      FactoryGirl.create(:sample_set, owner: @user, created_at: 1.hour.ago)
-    end
+    let!(:older_sample_set) {FactoryGirl.create(:sample_set, owner: @user, created_at: 1.day.ago)}
+    let!(:newer_sample_set) {FactoryGirl.create(:sample_set, owner: @user, created_at: 1.hour.ago)}
+
 
     it "should have the right sample_sets in the right order" do
       expect(@user.sample_sets.to_a).to eq [newer_sample_set, older_sample_set]
