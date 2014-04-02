@@ -31,6 +31,16 @@ describe "Sample pages:" do
           FactoryGirl.create(:sample, owner: user, tree: 46, facility: facility)
           visit samples_path
         end
+        
+        it "should have correct table heading" do
+          expect(page).to have_selector('table tr th', text: 'Facility')
+        end
+                   
+        it "should list each sample" do
+          SampleSet.paginate(page: 1).each do |sample|
+            expect(page).to have_selector('table tr td', text: sample.facility_id)
+          end
+        end
               
       end
 
@@ -50,47 +60,95 @@ describe "Sample pages:" do
     
     describe "for signed-in users" do
     
-      let!(:myfacility) { FactoryGirl.create(:facility, contact: user, description: 'a new description') } 
-      before { sign_in user }
-      before { visit new_sample_path }
-      
-      it { should have_content('New Sample') }
-      it { should have_content('MYFAC_') }
-      it { should have_title(full_title('New Sample')) }
-      it { should_not have_title('| Home') }
-      it { should have_selector('#sample_facility_id') }
-      
-      describe "with invalid information" do
-  
-        it "should not create a sample" do
-          expect { click_button "Submit" }.not_to change(Sample, :count)
+      describe "when viewing a primary sample"
+    
+        let!(:myfacility) { FactoryGirl.create(:facility, contact: user, description: 'a new description') } 
+        before { sign_in user }
+        before { visit new_sample_path }
+        
+        it { should have_content('New Sample') }
+        it { should have_content('MYFAC_') }
+        it { should have_title(full_title('New Sample')) }
+        it { should_not have_title('| Home') }
+        it { should have_selector('#sample_facility_id') }
+        
+        describe "with invalid information" do
+    
+          it "should not create a sample" do
+            expect { click_button "Submit" }.not_to change(Sample, :count)
+          end
+          
+          before do
+            click_button "Submit"
+          end
+          describe "should return an error" do
+            it { should have_content('error') }
+          end
+    
+        end
+    
+        describe "with valid information" do
+    
+         let(:treenum) { 5 }
+          before do
+            find('#sample_facility_id').find(:xpath, 'option['+myfacility.id.to_s+']').select_option
+            fill_in 'sample_project_id', with: 1
+            fill_in 'sample_tree', with: treenum
+            fill_in 'sample_sampled', with: 'true'
+            fill_in 'sample_date_sampled', with: Date.new(2012, 12, 3)
+          end
+          
+          it "should create a sample" do
+            expect { click_button "Submit" }.to change(Sample, :count).by(1)
+          end
         end
         
-        before do
-          click_button "Submit"
-        end
-        describe "should return an error" do
-          it { should have_content('error') }
-        end
-  
-      end
-  
-      describe "with valid information" do
-  
-       let(:treenum) { 5 }
-        before do
-          find('#sample_facility_id').find(:xpath, 'option['+myfacility.id.to_s+']').select_option
-          fill_in 'sample_project_id', with: 1
-          fill_in 'sample_tree', with: treenum
-          fill_in 'sample_sampled', with: 'true'
-          fill_in 'sample_date_sampled', with: Date.new(2012, 12, 3)
-        end
-        
-        it "should create a sample" do
-          expect { click_button "Submit" }.to change(Sample, :count).by(1)
-        end
       end
       
+      describe "when viewing a subsample"
+    
+        let!(:myfacility) { FactoryGirl.create(:facility, contact: user, description: 'a new description') } 
+        before { sign_in user }
+        before { visit new_samples_sample_path }
+        
+        it { should have_content('New Sample') }
+        it { should have_content('MYFAC_') }
+        it { should have_title(full_title('New Sample')) }
+        it { should_not have_title('| Home') }
+        it { should have_selector('#sample_facility_id') }
+        
+        describe "with invalid information" do
+    
+          it "should not create a sample" do
+            expect { click_button "Submit" }.not_to change(Sample, :count)
+          end
+          
+          before do
+            click_button "Submit"
+          end
+          describe "should return an error" do
+            it { should have_content('error') }
+          end
+    
+        end
+    
+        describe "with valid information" do
+    
+         let(:treenum) { 5 }
+          before do
+            find('#sample_facility_id').find(:xpath, 'option['+myfacility.id.to_s+']').select_option
+            fill_in 'sample_project_id', with: 1
+            fill_in 'sample_tree', with: treenum
+            fill_in 'sample_sampled', with: 'true'
+            fill_in 'sample_date_sampled', with: Date.new(2012, 12, 3)
+          end
+          
+          it "should create a sample" do
+            expect { click_button "Submit" }.to change(Sample, :count).by(1)
+          end
+        end
+        
+      end
     end
     
     describe "for non signed-in users" do
@@ -131,6 +189,15 @@ describe "Sample pages:" do
         let!(:page_heading) {"Edit Sample " + sample.id.to_s}
         
         describe 'should have a page heading for editing the correct sample' do
+          it { should have_content(page_heading) }
+        end
+      end
+      
+      describe "when clicking the add subsample button" do
+        before { click_button "Add Subsample" }
+        let!(:page_heading) {"New Sample (subsample of #{sample.id.to_s})"}
+        
+        describe 'should have a page heading for adding a new subsample of the current sample' do
           it { should have_content(page_heading) }
         end
       end

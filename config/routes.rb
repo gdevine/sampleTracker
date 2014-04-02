@@ -8,7 +8,11 @@ SampleTracker::Application.routes.draw do
   resources :storage_locations
   
   resources :sample_sets do
-    resources :samples
+    resources :samples, only: [:index]
+  end
+  
+  resources :samples do
+    resources :samples, only: [:index]
   end
   
   

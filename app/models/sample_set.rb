@@ -13,7 +13,6 @@ class SampleSet < ActiveRecord::Base
   validates :sampling_date, presence: true
   
   
-  
   def create_samples
     # create a new batch of samples based on the num_samples attribute of sample_set
     num_samples.times do |n| 

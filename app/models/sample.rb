@@ -28,7 +28,6 @@ class Sample < ActiveRecord::Base
       date_sampled.strftime("%B %Y")
     end
   end
-  
  
   def self.to_csv(options = {})
     CSV.generate(options) do |csv|

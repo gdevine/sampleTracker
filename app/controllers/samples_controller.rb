@@ -116,14 +116,14 @@ class SamplesController < ApplicationController
       redirect_to root_url if @sample.nil?
     end
     
-    def qr_code
-      respond_to do |format|
-        format.html
-        format.svg  { render :qrcode => request.url, :level => :l, :unit => 10 }
-        format.png  { render :qrcode => request.url }
-        format.gif  { render :qrcode => request.url }
-        format.jpeg { render :qrcode => request.url }
-      end
-    end
+    # def qr_code
+      # respond_to do |format|
+        # format.html
+        # format.svg  { render :qrcode => request.url, :level => :l, :unit => 10 }
+        # format.png  { render :qrcode => request.url }
+        # format.gif  { render :qrcode => request.url }
+        # format.jpeg { render :qrcode => request.url }
+      # end
+    # end
 
 end
