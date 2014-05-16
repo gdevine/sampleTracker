@@ -12,7 +12,7 @@ SampleTracker::Application.routes.draw do
   end
   
   resources :samples do
-    resources :samples, only: [:index]
+    resources :samples, only: [:index, :new]
   end
   
   

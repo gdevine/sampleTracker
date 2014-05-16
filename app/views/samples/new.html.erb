@@ -1,33 +1,65 @@
 <% provide(:title, 'New Sample') %>
-<% provide(:pageheading, 'New Sample') %>
+
+<% if @parent %>
+  <% provide(:pageheading, 'New Sample (subsample of ' + @parent.id.to_s + ')') %>
+<% else %>
+  <% provide(:pageheading, 'New Sample') %>
+<% end %>
 
 <div class="row">
   <div class="span6 offset3">
     <%= form_for(@sample) do |f| %>
       <%= render 'shared/error_messages', object: f.object %>
-
-      <%= f.label :facility_id, 'Facility' %>
-      <%= collection_select(:sample, :facility_id, Facility.all, :id, :code) %>
       
-      <%= f.label :project_id, 'Project' %>
-      <%= f.number_field :project_id, :min => 0 %>
+      <% if !@parent %>
+
+	      <%= f.label :facility_id, 'Facility' %>
+	      <%= collection_select(:sample, :facility_id, Facility.all, :id, :code) %>
+	      
+	      <%= f.label :project_id, 'Project' %>
+	      <%= f.number_field :project_id, :min => 0 %>
+	
+	      <%= f.label :material_type, "Sample Type" %>
+	      <%= f.text_field :material_type %>
+	
+	      <%= f.label :date_sampled, 'Date Sampled' %>
+	      <%= f.date_field :date_sampled %>
+	      
+	      <%= f.label :plot, 'Plot' %>
+	      <%= f.number_field :plot, :min => 0 %>
+	      
+	      <%= f.label :tree, 'Tree' %>
+	      <%= f.number_field :tree, :min => 0 %>
+	      
+	      <%= f.label :ring, 'Ring' %>
+	      <%= f.number_field :ring, :min => 0 %>
+	      
+	      <%= f.label :northing, 'Northing' %>
+	      <%= f.number_field :northing, :min => 0 %>
+	      
+	      <%= f.label :easting, 'Easting' %>
+	      <%= f.number_field :easting, :min => 0 %>
+	      
+	      <%= f.label :vertical, 'Height' %>
+	      <%= f.number_field :vertical, :min => 0 %>
+	      
+	      <%= f.label :amount_collected, "Amount Collected" %>
+	      <%= f.text_field :amount_collected %>
+
+      <% end %>
+            
+      <%= f.label :amount_stored, "Amount Stored" %>
+      <%= f.text_field :amount_stored %>
       
-      <%= f.label :sample_set_id, 'Sample Set' %>
-      <%= f.number_field :sample_set_id, :min => 0 %>
-
-      <%= f.label :tree, 'Tree' %>
-      <%= f.number_field :tree, :min => 0 %>
-
-      <%= f.label :date_sampled, 'Date Sampled' %>
-      <%= f.date_field :date_sampled %>
+      <%= f.label :storage_location_id, "Storage Location" %>
+      <%= collection_select(:sample, :storage_location_id, StorageLocation.all, :id, :code) %>
       
-      <%= f.label :sampled, "Sampled?" %>
-      <%= f.text_field :sampled %>
-
       <%= f.label :comments, "Additional Comments" %>
       <%= f.text_area :comments, size: "60x12" %>
 
       <%= f.submit "Submit", class: "btn btn-large btn-primary" %>
+    
     <% end %>
+  
   </div>
 </div>

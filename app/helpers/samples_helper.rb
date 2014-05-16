@@ -1,5 +1,7 @@
 module SamplesHelper
-  def is_primarysample?(sample)
+  
+  def is_membersample?(sample)
     !sample.sample_set_id.nil?
-  end  
+  end
+      
 end

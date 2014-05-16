@@ -21,13 +21,22 @@
 
 
 <% provide(:title, 'Sample View') %>
-<% provide(:pageheading, 'Sample '+ @sample.id.to_s) %>
 
-<!-- Add edit/delete buttons if current user -->
+<% if @parent %>
+  <% provide(:pageheading, 'Sample ' + @sample.id.to_s + ' (subsample of ' + @parent.id.to_s + ')') %>
+<% else %>
+  <% provide(:pageheading, 'Sample ' + @sample.id.to_s) %>
+<% end %>
+
+
+<!-- Add edit/subsample/delete buttons if current user -->
 <% if current_user?(@sample.owner) %> 
   <div class="row">  
-    <div class="span2 offset8">
+    <div class="span2 offset5">
       <%= button_to "Edit Sample", {:action => 'edit' }, :method => :get, :class=>"btn btn-block" %>
+    </div>
+    <div class="span2">
+      <%= button_to "Add Subsample", new_sample_sample_path(sample_id:@sample.id), :method => :get, :class=>"btn btn-block" %>
     </div>
     <div class="span2">
       <%= button_to "Delete Sample", @sample, method: :delete, data: { confirm: "Are you sure?" }, title: @sample.project_id, :class=>"btn btn-block btn-danger" %>

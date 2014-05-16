@@ -155,8 +155,8 @@ describe "Storage Location pages:" do
       describe "should show correct sample associations" do
         let!(:facility) { FactoryGirl.create(:facility) }
         before do 
-          FactoryGirl.create(:sample, owner: user, facility_id: 2, storage_location_id: storage_location.id )
-          FactoryGirl.create(:sample, owner: user, facility_id: 3, storage_location_id: storage_location.id )
+          FactoryGirl.create(:sample, owner: user, facility_id: facility.id, storage_location_id: storage_location.id )
+          FactoryGirl.create(:sample, owner: user, facility_id: facility.id, storage_location_id: storage_location.id )
           visit storage_location_path(storage_location)
         end
         

@@ -53,17 +53,22 @@ class SamplesController < ApplicationController
         with(:project_id, params[:myprojectid]) if params[:myprojectid].present?
         paginate(:page => params[:page], :per_page => 20)
       end
-      # @samples = Sample.paginate(page: params[:page])
       @samples = @search.results
     end
   end
     
   def new
+    if params[:sample_id]
+      @parent = Sample.find(params[:sample_id])
+    end
     @sample = Sample.new
   end
   
   def show
     @sample = Sample.find(params[:id])
+    if @sample.parent_id
+      @parent = Sample.find(@sample.parent_id)
+    end
     @qr = RQRCode::QRCode.new( sample_url, :size => 3, :level => :l )
   end
   
@@ -108,22 +113,13 @@ class SamplesController < ApplicationController
                                      :tree, 
                                      :date_sampled, 
                                      :sampled, 
-                                     :comments)
+                                     :comments,
+                                     :parent_id)
     end
      
     def correct_user
       @sample = current_user.samples.find_by(id: params[:id])
       redirect_to root_url if @sample.nil?
     end
-    
-    # def qr_code
-      # respond_to do |format|
-        # format.html
-        # format.svg  { render :qrcode => request.url, :level => :l, :unit => 10 }
-        # format.png  { render :qrcode => request.url }
-        # format.gif  { render :qrcode => request.url }
-        # format.jpeg { render :qrcode => request.url }
-      # end
-    # end
 
 end

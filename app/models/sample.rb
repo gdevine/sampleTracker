@@ -4,12 +4,17 @@ class Sample < ActiveRecord::Base
   belongs_to :sample_set, :class_name => 'SampleSet', :foreign_key => 'sample_set_id'
   belongs_to :storage_location, :class_name => 'StorageLocation', :foreign_key => 'storage_location_id'
   belongs_to :parent, :class_name => 'Sample', :foreign_key => 'parent_id'
-  has_many :subsamples, :class_name => 'Sample', :foreign_key => 'parent_id', dependent: :destroy
+  has_many :subsamples, :class_name => 'Sample', :foreign_key => 'parent_id'
   default_scope -> { order('created_at DESC') }
   validates :owner_id, presence: true
   validates :facility_id, presence: true
   validates :project_id, presence: true
   
+  # validates :parent_id, presence: false, if: Proc.new { |a| a.is_primary? }
+  # validates :parent_id, presence: true, if: Proc.new { |a| !a.is_primary? }
+  
+  after_initialize :default_values
+
   searchable do
     text :comments
     integer :tree
@@ -37,4 +42,11 @@ class Sample < ActiveRecord::Base
       end
     end
   end
+  
+  
+  private
+    def default_values
+      self.sampled ||= false
+    end
+  
 end

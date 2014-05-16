@@ -19,6 +19,7 @@ class SampleSet < ActiveRecord::Base
       cs = self.samples.build(facility_id: facility_id,
                               project_id: project_id,
                               owner_id: owner_id,
+                              is_primary: true,
                               sampled: false)
       cs.save
     end

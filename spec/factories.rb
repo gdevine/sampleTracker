@@ -33,14 +33,13 @@ FactoryGirl.define do
     status 'Pending'
     add_info 'Some info about this sample set'
     sampling_date Date.new(2012, 12, 3)
+    
     association :owner, :factory  => :user
     association :facility, :factory  => :facility
   end
 
-  factory :sample do
-    sampled 'true'        
+  factory :sample do        
     date_sampled Date.new(2013, 11, 7)   
-    storage_location_id 9
     facility_id 1    
     project_id 4     
     comments "Some comments I've added"       
@@ -53,11 +52,13 @@ FactoryGirl.define do
     vertical 12.4       
     material_type 'leaf'  
     amount_collected '40g'
-    amount_stored '40g'  
+    amount_stored '40g'
+    sampled true  
     
     association :owner, :factory  => :user
     association :facility, :factory  => :facility
     association :storage_location, :factory  => :storage_location
-    association :sample_set, :factory  => :sample_set
+    # association :sample_set, :factory  => :sample_set
   end
+
 end

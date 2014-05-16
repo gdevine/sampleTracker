@@ -18,7 +18,6 @@ describe "sample_set pages:" do
       it { should_not have_title('| Home') }
       
       describe "with no sample sets in the system" do
-        
         it "should have an information message" do
           expect(page).to have_content('No Sample Sets found')
         end
