@@ -58,6 +58,7 @@ class SamplesController < ApplicationController
   end
     
   def new
+    # Include details of the parent if creating a new subsample
     if params[:sample_id]
       @parent = Sample.find(params[:sample_id])
     end
