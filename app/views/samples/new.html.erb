@@ -11,7 +11,21 @@
     <%= form_for(@sample) do |f| %>
       <%= render 'shared/error_messages', object: f.object %>
       
-      <% if !@parent %>
+      <% if @parent %>
+      
+	      <%= f.hidden_field :facility_id, :value => @parent.facility_id %>
+	      <%= f.hidden_field :project_id, :value => @parent.project_id %>
+	      <%= f.hidden_field :material_type, :value => @parent.material_type %>
+	      <%= f.hidden_field :date_sampled, :value => @parent.date_sampled %>
+	      <%= f.hidden_field :plot, :value => @parent.plot %>
+	      <%= f.hidden_field :tree, :value => @parent.tree %>
+	      <%= f.hidden_field :ring, :value => @parent.ring %>
+	      <%= f.hidden_field :northing, :value => @parent.northing %>
+	      <%= f.hidden_field :easting, :value => @parent.easting %>
+	      <%= f.hidden_field :vertical, :value => @parent.vertical %>
+	      <%= f.hidden_field :parent, :value => @parent.id %>
+	      
+	  <% else %>
 
 	      <%= f.label :facility_id, 'Facility' %>
 	      <%= collection_select(:sample, :facility_id, Facility.all, :id, :code) %>
@@ -45,8 +59,9 @@
 	      
 	      <%= f.label :amount_collected, "Amount Collected" %>
 	      <%= f.text_field :amount_collected %>
-
+	      
       <% end %>
+            
             
       <%= f.label :amount_stored, "Amount Stored" %>
       <%= f.text_field :amount_stored %>

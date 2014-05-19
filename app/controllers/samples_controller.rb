@@ -74,6 +74,10 @@ class SamplesController < ApplicationController
   
   def create
     @sample = current_user.samples.build(sample_params)
+    if params[:parent]
+      @sample.parent_id = parent
+    end
+    
     if @sample.save
       flash[:success] = "Sample created!"
       redirect_to root_url
@@ -109,12 +113,21 @@ class SamplesController < ApplicationController
       params.require(:sample).permit(:owner_id, 
                                      :facility_id, 
                                      :project_id,
-                                     :sample_set_id, 
+                                     :sample_set_id,
+                                     :material_type, 
+                                     :plot,
                                      :tree, 
+                                     :ring,
                                      :date_sampled, 
                                      :sampled, 
+                                     :northing,
+                                     :easting,
+                                     :vertical,
+                                     :amount_collected,
+                                     :amount_stored,
+                                     :storage_location_id,
                                      :comments,
-                                     :parent_id)
+                                     :parent)
     end
      
     def correct_user
