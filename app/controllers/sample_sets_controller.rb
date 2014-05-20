@@ -3,7 +3,7 @@ class SampleSetsController < ApplicationController
   before_action :correct_user,   only: :destroy
   
   def index   
-    @sample_sets = SampleSet.paginate(page: params[:page])
+    @sample_sets = SampleSet.paginate(page: params[:ss_page])
   end
   
   def new
@@ -52,7 +52,7 @@ class SampleSetsController < ApplicationController
   private
 
     def sample_set_params
-      params.require(:sample_set).permit(:owner_id, :facility_id, :project_id, :sampling_date, :num_samples, :status, :add_info)
+      params.require(:sample_set).permit(:owner_id, :facility_id, :project_id, :sampling_date, :num_samples, :status, :add_info, :ss_page)
     end
     
     def correct_user

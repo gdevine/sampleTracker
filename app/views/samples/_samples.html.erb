@@ -5,7 +5,7 @@
     <h5><%= @samples.count %> results</h5>
   <% end %>
   
-  <%= will_paginate @samples %>
+  <%= will_paginate @samples, :param_name => "s_page" %>
   <table class="table table-bordered table-striped table-hover" width="647">
     <thead>
       <tr>

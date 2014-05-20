@@ -28,7 +28,6 @@
   <% provide(:pageheading, 'Sample ' + @sample.id.to_s) %>
 <% end %>
 
-
 <!-- Add edit/subsample/delete buttons if current user -->
 <% if current_user?(@sample.owner) %> 
   <div class="row">  
@@ -43,6 +42,21 @@
     </div>
   </div>
 <% end %>
+
+
+<div class="row">
+  <div class="span10 offset1">
+    <% if @sample.sampled %>
+      <div class="well well-green">
+        This sample has been collected and documented
+      </div>
+    <% else %>
+      <div class="well well-red">
+        This sample is pending collection or documentation
+      </div>
+    <% end %>
+  </div>
+</div>
 
 
 <div class="row">
@@ -88,14 +102,6 @@
       </div>
     </div>
     
-    <div class="row">     
-      <div class="span3">
-        <h4>Sample taken?</h4>
-      </div>
-      <div class="span3 offset1">
-        <h4><%= @sample.sampled %></h4>
-      </div>
-    </div>
     <div class="row">     
       <div class="span3">
         <h4>Date sample taken</h4>
@@ -237,6 +243,7 @@
   
   
   <div class="span4">
+    
     <div class="row">
       <div class="span2 offset1">
         <%= render_qr_code(sample_url(@sample), 3) %>

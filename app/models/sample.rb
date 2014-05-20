@@ -6,9 +6,14 @@ class Sample < ActiveRecord::Base
   belongs_to :parent, :class_name => 'Sample', :foreign_key => 'parent_id'
   has_many :subsamples, :class_name => 'Sample', :foreign_key => 'parent_id'
   default_scope -> { order('created_at DESC') }
+  
+  ## Validations
   validates :owner_id, presence: true
   validates :facility_id, presence: true
   validates :project_id, presence: true
+  validates :storage_location_id, presence: true, if: "sampled?"  # A sample can't be marked as sampled if no storage location has been assigned
+  validates :date_sampled, presence: true, if: "sampled?"  # A sample can't be marked as sampled if no date sampled has been assigned
+  validate :sampled_only_with_valid_fields
   
   # validates :parent_id, presence: false, if: Proc.new { |a| a.is_primary? }
   # validates :parent_id, presence: true, if: Proc.new { |a| !a.is_primary? }
@@ -41,6 +46,11 @@ class Sample < ActiveRecord::Base
         csv << sample.attributes.values_at(*column_names)
       end
     end
+  end
+  
+  def sampled_only_with_valid_fields
+    errors.add(:sampled, "can only be marked as true if valid facility fields are supplied") if
+      self.sampled && !(self.plot && self.ring && self.tree) 
   end
   
   

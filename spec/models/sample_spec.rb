@@ -3,13 +3,11 @@ require 'spec_helper'
 describe Sample do
 
   let(:owner) { FactoryGirl.create(:user) }
-  before { @sample = owner.samples.build(date_sampled: Date.new(2012, 12, 3), 
-                                         facility: FactoryGirl.create(:facility), 
+  before { @sample = owner.samples.build(facility: FactoryGirl.create(:facility), 
                                          project_id: 1, 
                                          sample_set_id: 1,
                                          is_primary: true, 
-                                         sampled: true,
-                                         tree: 3) }
+                                         sampled: false) }
 
   subject { @sample }
   
@@ -60,5 +58,41 @@ describe Sample do
   describe "when it is part of a sample set" do
     its(:is_primary) { should eql true } 
   end
+  
+  describe "when a 'sampled' sample does not have a storage_location" do
+    before do 
+      @sample.storage_location_id = ""
+      @sample.sampled = true
+    end
+    
+    it { should_not be_valid }
+  end
+  
+  describe "when a 'sampled' sample does not have a date_sampled" do
+    before do 
+      @sample.storage_location_id = 1
+      @sample.plot = 3
+      @sample.tree = 4
+      @sample.ring = 4
+      @sample.date_sampled = ""
+      @sample.sampled = true
+    end
+    
+    it { should_not be_valid }
+  end
+  
+  describe "when a 'sampled' sample does not correct facility-based fields completed" do
+    before do 
+      @sample.storage_location_id = 1
+      @sample.plot = ''
+      @sample.tree = 4
+      @sample.ring = 4
+      @sample.sampled = true
+    end
+    
+    it { should_not be_valid }
+  end
+  
+  
   
 end

@@ -1,5 +1,5 @@
 <% if @sample_sets.any? %>
-  <%= will_paginate @sample_sets %>
+  <%= will_paginate @sample_sets, :param_name => "ss_page" %>
   <table class="table table-bordered table-striped table-hover" width="647">
     <thead>
       <tr>

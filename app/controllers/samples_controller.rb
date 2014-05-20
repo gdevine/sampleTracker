@@ -51,7 +51,7 @@ class SamplesController < ApplicationController
         with(:month_sampled, params[:mymonthsampled]) if params[:mymonthsampled].present?
         with(:material_type, params[:mymaterialtype]) if params[:mymaterialtype].present?
         with(:project_id, params[:myprojectid]) if params[:myprojectid].present?
-        paginate(:page => params[:page], :per_page => 20)
+        paginate(:page => params[:s_page], :per_page => 20)
       end
       @samples = @search.results
     end
