@@ -81,7 +81,7 @@ class SamplesController < ApplicationController
     
     if @sample.save
       flash[:success] = "Sample created!"
-      redirect_to root_url
+      redirect_to @sample
     else
       @samples = []
       render 'samples/new'

@@ -53,7 +53,7 @@ FactoryGirl.define do
     material_type 'leaf'  
     amount_collected '40g'
     amount_stored '40g'
-    sampled true  
+    sampled true
     
     association :owner, :factory  => :user
     association :facility, :factory  => :facility

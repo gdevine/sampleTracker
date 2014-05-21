@@ -34,9 +34,15 @@
     <div class="span2 offset5">
       <%= button_to "Edit Sample", {:action => 'edit' }, :method => :get, :class=>"btn btn-block" %>
     </div>
-    <div class="span2">
-      <%= button_to "Add Subsample", new_sample_sample_path(sample_id:@sample.id), :method => :get, :class=>"btn btn-block" %>
-    </div>
+    <% if @sample.sampled %>
+	    <div class="span2">
+	      <%= button_to "Add Subsample", new_sample_sample_path(sample_id:@sample.id), :method => :get, :class=>"btn btn-block" %>
+	    </div>
+	<% else %>
+		<div class="span2">
+	      <%= button_to "Add Subsample", new_sample_sample_path(sample_id:@sample.id), :method => :get, :class=>"btn btn-block", :id=>"subsample_button", :disabled=>"disabled", :title=>"Subsamples can only be created from completed samples"%>
+	    </div>
+    <% end %>
     <div class="span2">
       <%= button_to "Delete Sample", @sample, method: :delete, data: { confirm: "Are you sure?" }, title: @sample.project_id, :class=>"btn btn-block btn-danger" %>
     </div>
@@ -47,7 +53,7 @@
 <div class="row">
   <div class="span10 offset1">
     <% if @sample.sampled %>
-      <div class="well well-green">
+      <div class="well well-semigreen">
         This sample has been collected and documented
       </div>
     <% else %>

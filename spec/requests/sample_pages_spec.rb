@@ -61,53 +61,78 @@ describe "Sample pages:" do
   
   describe "Show page" do
     
-    let!(:sample) { FactoryGirl.create(:sample, owner: user) }                                          
+    let!(:sample) { FactoryGirl.create(:sample, owner: user,
+                                                sampled: false) }              
+                                                                            
+    let!(:sampled_sample) { FactoryGirl.create(:sample, owner: user, 
+                                                        tree: 3,
+                                                        plot: 1,
+                                                        ring:2,
+                                                        storage_location_id: 3,
+                                                        date_sampled: Date.new(2012, 12, 3),
+                                                        sampled: true
+                                                         ) }                                          
     
     describe "for signed-in users" do
       
       before { sign_in user }
-      before { visit sample_path(sample) }
       
-      let!(:page_heading) {"Sample " + sample.id.to_s}
-      
-      it { should have_selector('h1', :text => page_heading) }
-      it { should have_title(full_title('Sample View')) }
-      it { should_not have_title('| Home') }  
-      it { should have_button('Edit Sample') }
-      it { should have_button('Delete Sample') }
-      
-      describe "when clicking the edit button" do
-        before { click_button "Edit Sample" }
-        let!(:page_heading) {"Edit Sample " + sample.id.to_s}
+      describe "on a 'pending' sample" do
         
-        describe 'should have a page heading for editing the correct sample' do
-          it { should have_content(page_heading) }
+        before { visit sample_path(sample) }
+        
+        let!(:page_heading) {"Sample " + sample.id.to_s}
+        
+        it { should have_selector('h1', :text => page_heading) }
+        it { should have_title(full_title('Sample View')) }
+        it { should_not have_title('| Home') }  
+        it { should have_button('Edit Sample') }
+        it { should have_button('Delete Sample') } 
+        it { should have_selector('input[value="Add Subsample"][disabled="disabled"]') }  
+              
+        describe "when clicking the edit button" do
+          before { click_button "Edit Sample" }
+          let!(:page_heading) {"Edit Sample " + sample.id.to_s}
+          
+          describe 'should have a page heading for editing the correct sample' do
+            it { should have_content(page_heading) }
+          end
         end
+        
       end
       
-      describe "when clicking the add subsample button" do
-        before { click_button "Add Subsample" }
-        let!(:page_heading) {"New Sample (subsample of #{sample.id.to_s})"}
+      describe "on a 'sampled' sample" do
         
-        describe 'should have a page heading for adding a new subsample of the current sample' do
-          it { should have_content(page_heading) }
+        before { visit sample_path(sampled_sample) }
+        
+        it { should have_button('Add Subsample') }
+        it { should_not have_selector('input[value="Add Subsample"][disabled="disabled"]') }   # Check that it's not disabled
+        
+        describe "when clicking the add subsample button" do
+          before { click_button "Add Subsample" }
+          let!(:page_heading) {"New Sample (subsample of #{sampled_sample.id.to_s})"}
+          
+          describe 'should have a page heading for adding a new subsample of the current sample' do
+            it { should have_content(page_heading) }
+          end
         end
+        
       end
       
       describe "who don't own the current sample" do
-         let(:non_owner) { FactoryGirl.create(:user) }
-         before do 
-           sign_in non_owner
-           visit sample_path(sample)
-         end 
-         
-         describe "should not see the edit and delete buttons" do
-           it { should_not have_button('Edit Sample') }
-           it { should_not have_button('Delete Sample') }
-         end 
-
+        let(:non_owner) { FactoryGirl.create(:user) }
+        before do 
+          sign_in non_owner
+          visit sample_path(sample)
+        end 
+       
+        describe "should not see the edit and delete buttons" do
+          it { should_not have_button('Edit Sample') }
+          it { should_not have_button('Delete Sample') }
+          it { should_not have_button('Add Subsample') }
+        end 
       end
-      
+    
     end
     
     describe "for non signed-in users" do
@@ -116,6 +141,7 @@ describe "Sample pages:" do
         it { should have_title('Sign in') }
         it { should_not have_button('Edit Sample') }
         it { should_not have_button('Delete Sample') }
+        it { should_not have_button('Add Subsample') }
       end
     end
     
@@ -141,6 +167,7 @@ describe "Sample pages:" do
     describe "for signed-in users" do
       
       let!(:myfacility) { FactoryGirl.create(:facility, contact: user) } 
+      let!(:mystoragelocation) { FactoryGirl.create(:storage_location, custodian: user, code:'blabla') } 
       before { sign_in user }
       before { visit new_sample_path }            
       
@@ -150,6 +177,8 @@ describe "Sample pages:" do
       it { should_not have_title('| Home') }
       it { should have_selector('#sample_facility_id') }
       it { should_not have_selector('#sample_sample_set_id') }
+      
+      it { should_not have_content("Mark as 'Complete'?") }
             
       describe "with invalid information" do
         
@@ -172,7 +201,9 @@ describe "Sample pages:" do
           find('#sample_facility_id').find(:xpath, 'option['+myfacility.id.to_s+']').select_option
           fill_in 'sample_project_id', with: 1
           fill_in 'sample_tree', with: 4
-          # fill_in 'sample_sampled', with: true
+          fill_in 'sample_plot', with: 4
+          fill_in 'sample_ring', with: 1
+          find('#sample_storage_location_id').find(:xpath, 'option['+mystoragelocation.id.to_s+']').select_option
           fill_in 'sample_date_sampled', with: Date.new(2012, 12, 3)
         end
         
@@ -208,6 +239,8 @@ describe "Sample pages:" do
       it { should have_title(full_title('Edit Sample')) }
       it { should_not have_title('| Home') }
       it { should_not have_selector('#sample_sample_set_id') }
+      
+      it { should have_content("Mark as 'Complete'?") }
             
       describe "with invalid information" do
         

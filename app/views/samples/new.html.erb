@@ -12,7 +12,7 @@
       <%= render 'shared/error_messages', object: f.object %>
       
       <% if @parent %>
-      
+          <!-- Start with subsample case in which it should automatically adopt certain values of its parent-->
 	      <%= f.hidden_field :facility_id, :value => @parent.facility_id %>
 	      <%= f.hidden_field :project_id, :value => @parent.project_id %>
 	      <%= f.hidden_field :material_type, :value => @parent.material_type %>
@@ -24,9 +24,9 @@
 	      <%= f.hidden_field :easting, :value => @parent.easting %>
 	      <%= f.hidden_field :vertical, :value => @parent.vertical %>
 	      <%= f.hidden_field :parent, :value => @parent.id %>
-	      
+	      <%= f.hidden_field :sampled, :value => true %>        <!-- forcing 'sampled = true' for samples that are added as a subsample of another sample -->
 	  <% else %>
-
+          <!-- Expose all form fields for entry --> 
 	      <%= f.label :facility_id, 'Facility' %>
 	      <%= collection_select(:sample, :facility_id, Facility.all, :id, :code) %>
 	      
@@ -59,6 +59,8 @@
 	      
 	      <%= f.label :amount_collected, "Amount Collected" %>
 	      <%= f.text_field :amount_collected %>
+	      
+	      <%= f.hidden_field :sampled, :value => true %>    <!-- forcing 'sampled = true' for samples that are added directly -->
 	      
       <% end %>
             
