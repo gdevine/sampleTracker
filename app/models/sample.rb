@@ -49,7 +49,7 @@ class Sample < ActiveRecord::Base
   end
   
   def sampled_only_with_valid_fields
-    errors.add(:sampled, "can only be marked as true if valid facility fields are supplied") if
+    errors.add(:sampled, "can only be marked as complete if valid facility fields are supplied") if
       self.sampled && !(self.plot && self.ring && self.tree) 
   end
   

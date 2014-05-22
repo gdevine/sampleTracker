@@ -5,17 +5,19 @@
 <% else %>
   <% provide(:pageheading, 'New Sample') %>
 <% end %>
-
-<div class="row">
+  
+<div class="row">  
   <div class="span6 offset3">
     <%= form_for(@sample) do |f| %>
       <%= render 'shared/error_messages', object: f.object %>
       
       <% if @parent %>
           <!-- Start with subsample case in which it should automatically adopt certain values of its parent-->
+          <%= f.hidden_field :parent_id, :value => @parent.id %>
 	      <%= f.hidden_field :facility_id, :value => @parent.facility_id %>
 	      <%= f.hidden_field :project_id, :value => @parent.project_id %>
 	      <%= f.hidden_field :material_type, :value => @parent.material_type %>
+	      <%= f.hidden_field :sample_set_id, :value => '' %> <!-- A subsample does not have a sampleset directly attached to it-->
 	      <%= f.hidden_field :date_sampled, :value => @parent.date_sampled %>
 	      <%= f.hidden_field :plot, :value => @parent.plot %>
 	      <%= f.hidden_field :tree, :value => @parent.tree %>
@@ -23,8 +25,8 @@
 	      <%= f.hidden_field :northing, :value => @parent.northing %>
 	      <%= f.hidden_field :easting, :value => @parent.easting %>
 	      <%= f.hidden_field :vertical, :value => @parent.vertical %>
-	      <%= f.hidden_field :parent, :value => @parent.id %>
-	      <%= f.hidden_field :sampled, :value => true %>        <!-- forcing 'sampled = true' for samples that are added as a subsample of another sample -->
+	      <%= f.hidden_field :sampled, :value => 'true' %>        <!-- forcing 'sampled = true' for samples that are added as a subsample of another sample -->
+	      <%= f.hidden_field :amount_collected, :value => 'N/A' %> <!-- forcing 'amount collected = N/A' for subsamples -->
 	  <% else %>
           <!-- Expose all form fields for entry --> 
 	      <%= f.label :facility_id, 'Facility' %>
@@ -60,7 +62,7 @@
 	      <%= f.label :amount_collected, "Amount Collected" %>
 	      <%= f.text_field :amount_collected %>
 	      
-	      <%= f.hidden_field :sampled, :value => true %>    <!-- forcing 'sampled = true' for samples that are added directly -->
+	      <%= f.hidden_field :sampled, :value => 'true' %>    <!-- forcing 'sampled = true' for samples that are added directly -->
 	      
       <% end %>
             
@@ -74,9 +76,159 @@
       <%= f.label :comments, "Additional Comments" %>
       <%= f.text_area :comments, size: "60x12" %>
 
-      <%= f.submit "Submit", class: "btn btn-large btn-primary" %>
+      <%= f.submit "Submit", class: "btn btn-large btn-block btn-primary" %>
     
     <% end %>
   
   </div>
 </div>
+
+<% if @parent %>
+	<div class="row rowline"> 
+	  	<h2>Adopted details from parent sample</h2>
+	</div>
+	
+	<div class="row"> 
+	  <div class="span8 offset3">
+	    <div class="row">   
+	      <div class="span3">
+	        <h5>Owner</h5>
+	      </div>
+	      <div class="span3 offset1">
+	        <h5><%= @parent.owner.firstname %> <%= @parent.owner.surname %></h5>
+	      </div>
+	    </div>
+	    <div class="row">   
+	      <div class="span3">
+	        <h5>Facility</h5>
+	      </div>
+	      <div class="span3 offset1">
+	        <h5><%= @parent.facility.code %></h5>
+	      </div>
+	    </div>
+	    <div class="row">     
+	      <div class="span3">
+	        <h5>Project</h5>
+	      </div>
+	      <div class="span3 offset1">
+	        <h5><%= @parent.project_id %></h5>
+	      </div>
+	    </div>
+	    <div class="row">     
+	      <div class="span3">
+	        <h5>Member of Sample Set</h5>
+	      </div>
+	      <div class="span3 offset1">
+	        <h5><%= @parent.sample_set_id %></h5>
+	      </div>
+	    </div>
+	    
+	    <div class="row">     
+	      <div class="span3">
+	        <h5>Date sample taken</h5>
+	      </div>
+	      <div class="span3 offset1">
+	        <h5><%= @parent.date_sampled %></h5>
+	      </div>
+	    </div>
+	    <div class="row">     
+	      <div class="span3">
+	        <h5>Sample Type</h5>
+	      </div>
+	      <div class="span3 offset1">
+	        <% if @parent.material_type.present? %>
+	          <h5><%= @parent.material_type %></h5>
+	        <% else %>
+	          <h5></h5>
+	        <% end %>
+	      </div>
+	    </div>
+	    <div class="row">     
+	      <div class="span3">
+	        <h5>Plot</h5>
+	      </div>
+	      <div class="span3 offset1">
+	        <% if @parent.plot.present? %>
+	          <h5><%= @parent.plot %></h5>
+	        <% else %>
+	          <h5></h5>
+	        <% end %>
+	      </div>
+	    </div>
+	    <div class="row">     
+	      <div class="span3">
+	        <h5>Ring</h5>
+	      </div>
+	      <div class="span3 offset1">
+	        <% if @parent.ring.present? %>
+	          <h5><%= @parent.ring %></h5>
+	        <% else %>
+	          <h5></h5>
+	        <% end %>
+	      </div>
+	    </div>
+	    <div class="row">     
+	      <div class="span3">
+	        <h5>Tree</h5>
+	      </div>
+	      <div class="span3 offset1">
+	        <% if @parent.tree.present? %>
+	          <h5><%= @parent.tree %></h5>
+	        <% else %>
+	          <h5></h5>
+	        <% end %>
+	      </div>
+	    </div>
+	    <div class="row">     
+	      <div class="span3">
+	        <h5>Northing</h5>
+	      </div>
+	      <div class="span3 offset1">
+	        <% if @parent.northing.present? %>
+	          <h5><%= @parent.northing %></h5>
+	        <% else %>
+	          <h5></h5>
+	        <% end %>
+	      </div>
+	    </div>
+	    <div class="row">     
+	      <div class="span3">
+	        <h5>Easting</h5>
+	      </div>
+	      <div class="span3 offset1">
+	        <% if @parent.easting.present? %>
+	          <h5><%= @parent.easting %></h5>
+	        <% else %>
+	          <h5></h5>
+	        <% end %>
+	      </div>
+	    </div>
+	    <div class="row">     
+	      <div class="span3">
+	        <h5>Height</h5>
+	      </div>
+	      <div class="span3 offset1">
+	        <% if @parent.vertical.present? %>
+	          <h5><%= @parent.vertical %></h5>
+	        <% else %>
+	          <h5></h5>
+	        <% end %>
+	      </div>
+	    </div>
+	    <div class="row">     
+	      <div class="span3">
+	        <h5>Amount Collected</h5>
+	      </div>
+	      <div class="span3 offset1">
+	        <% if @parent.amount_collected.present? %>
+	          <h5><%= @parent.amount_collected %></h5>
+	        <% else %>
+	          <h5></h5>
+	        <% end %>
+	      </div>
+	    </div>
+	
+	  </div>
+	</div>
+	
+<% end %>

@@ -75,8 +75,9 @@ class SamplesController < ApplicationController
   
   def create
     @sample = current_user.samples.build(sample_params)
-    if params[:parent]
-      @sample.parent_id = parent
+    if params[:parent_id]
+      @parent = Sample.find(params[:parent_id])
+      @sample.parent_id = @parent
     end
     
     if @sample.save
@@ -128,7 +129,7 @@ class SamplesController < ApplicationController
                                      :amount_stored,
                                      :storage_location_id,
                                      :comments,
-                                     :parent)
+                                     :parent_id)
     end
      
     def correct_user
