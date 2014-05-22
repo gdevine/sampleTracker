@@ -1,9 +1,9 @@
 <% provide(:title, "Edit Sample") %>
 <% provide(:pageheading, 'Edit Sample '+ @sample.id.to_s) %>
 
+<%= form_for(@sample) do |f| %>
 <div class="row">
-  <div class="span6 offset3">
-    <%= form_for(@sample) do |f| %>
+  <div class="span6 offset1">
       <%= render 'shared/error_messages', object: f.object %>
 
       <%= f.label :facility_id, 'Facility' %>
@@ -11,9 +11,6 @@
       
       <%= f.label :project_id, 'Project' %>
       <%= f.number_field :project_id, :min => 0 %>
-
-      <%= f.label :sampled, "Sampled?" %>
-      <%= f.check_box :sampled %>
       
       <%= f.label :date_sampled, 'Date Sampled' %>
       <%= f.date_field :date_sampled %>
@@ -51,8 +48,17 @@
       <%= f.label :comments, "Additional Comments" %>
       <%= f.text_area :comments, size: "60x12" %>
 
-      <%= f.submit "Update Sample", class: "btn btn-large btn-primary" %>
-    <% end %>
+  </div>
+  <div class="span3 offset1 well well-semigreen center">
+      <%= f.label :sampled, "Mark as 'Complete'?" %>
+      <%= f.check_box :sampled %>
+  </div>	
+</div>
 
+<div class="row">
+  <div class="span6 offset3">
+      <%= f.submit "Update Sample", class: "btn btn-block btn-large btn-primary" %>
   </div>
 </div>
+
+<% end %>

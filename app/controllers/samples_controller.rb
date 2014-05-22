@@ -75,13 +75,17 @@ class SamplesController < ApplicationController
   
   def create
     @sample = current_user.samples.build(sample_params)
-    if params[:parent]
-      @sample.parent_id = parent
+    if params[:parent_id]
+      @parent = Sample.find(params[:parent_id])
+      @sample.parent_id = @parent
+      @sample.is_primary = false
+    else
+      @sample.is_primary = true
     end
     
     if @sample.save
       flash[:success] = "Sample created!"
-      redirect_to root_url
+      redirect_to @sample
     else
       @samples = []
       render 'samples/new'
@@ -128,7 +132,7 @@ class SamplesController < ApplicationController
                                      :amount_stored,
                                      :storage_location_id,
                                      :comments,
-                                     :parent)
+                                     :parent_id)
     end
      
     def correct_user

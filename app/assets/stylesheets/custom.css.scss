@@ -101,7 +101,6 @@ footer {
   }
 }
 
-
 /* mixins, variables, etc. */
 
 $grayMediumLight: #eaeaea;
@@ -219,17 +218,30 @@ input {
 
 /* Bootstrap wells */
 .well-red{
-background-color: rgba(255,100,100,0.3); // I don't know the .well color, so I used white as example
+background-color: rgba(255,100,100,0.2); // I don't know the .well color, so I used white as example
 }
 
 .well-green{
 background-color: rgba(100,255,100,0.3); // I don't know the .well color, so I used white as example
 }
 
+.well-semigreen{
+background-color: rgba(100,255,100,0.1); // I don't know the .well color, so I used white as example
+}
 
+
+/* Navbar */
 .navbar {
     .navbar-inner {
         background-color: #545454;
         background-image: none;
     }
+}
+
+
+/* Horizontal line on a bootstrap row class*/
+.rowline {
+  margin-top: 45px;
+  padding-top: 5px;
+  border-top: 1px solid $grayMediumLight;
 }

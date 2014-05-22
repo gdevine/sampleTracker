@@ -74,6 +74,7 @@ namespace :db do
       sample.material_type = ['Leaf', 'Soil', 'Bark', 'Litter'].sample
       sample.tree = 1 + rand(10)
       sample.ring = 1 + rand(5)
+      sample.plot = 1 + rand(7)
       sample.date_sampled = Date.today-(100*rand())
       sample.save
     end    

@@ -12,6 +12,7 @@
 # Ignore solr files
 /solr/data
 /solr/test
+/solr/development
 
 # Ignore other unneeded files.
 database.yml

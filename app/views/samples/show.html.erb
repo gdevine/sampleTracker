@@ -34,9 +34,19 @@
     <div class="span2 offset5">
       <%= button_to "Edit Sample", {:action => 'edit' }, :method => :get, :class=>"btn btn-block" %>
     </div>
-    <div class="span2">
-      <%= button_to "Add Subsample", new_sample_sample_path(sample_id:@sample.id), :method => :get, :class=>"btn btn-block" %>
-    </div>
+    <% if @parent %>
+	    <div class="span2">
+	      <%= button_to "Add Subsample", new_sample_sample_path(sample_id:@sample.id), :method => :get, :class=>"btn btn-block", :id=>"subsample_button", :disabled=>"disabled", :title=>"Subsamples can not be created from existing subsamples"%>
+	    </div>
+    <% elsif @sample.sampled %>
+	    <div class="span2">
+	      <%= button_to "Add Subsample", new_sample_sample_path(sample_id:@sample.id), :method => :get, :class=>"btn btn-block" %>
+	    </div>
+	<% else %>
+		<div class="span2">
+	      <%= button_to "Add Subsample", new_sample_sample_path(sample_id:@sample.id), :method => :get, :class=>"btn btn-block", :id=>"subsample_button", :disabled=>"disabled", :title=>"Subsamples can only be created from completed samples"%>
+	    </div>
+    <% end %>
     <div class="span2">
       <%= button_to "Delete Sample", @sample, method: :delete, data: { confirm: "Are you sure?" }, title: @sample.project_id, :class=>"btn btn-block btn-danger" %>
     </div>
@@ -47,7 +57,7 @@
 <div class="row">
   <div class="span10 offset1">
     <% if @sample.sampled %>
-      <div class="well well-green">
+      <div class="well well-semigreen">
         This sample has been collected and documented
       </div>
     <% else %>
@@ -61,182 +71,174 @@
 
 <div class="row">
   <div class="span7 offset1">
-    <div class="row">  
+    <div class="row">   
       <div class="span3">
-        <h4>Sample ID</h4>
+        <h5>Owner</h5>
       </div>
       <div class="span3 offset1">
-        <h4><%= @sample.id %></h4>
+        <h5><%= @sample.owner.firstname %> <%= @sample.owner.surname %></h5>
       </div>
     </div>
     <div class="row">   
       <div class="span3">
-        <h4>Owner</h4>
+        <h5>Facility</h5>
       </div>
       <div class="span3 offset1">
-        <h4><%= @sample.owner.firstname %> <%= @sample.owner.surname %></h4>
-      </div>
-    </div>
-    <div class="row">   
-      <div class="span3">
-        <h4>Facility</h4>
-      </div>
-      <div class="span3 offset1">
-        <h4><%= @sample.facility.code %></h4>
+        <h5><%= @sample.facility.code %></h5>
       </div>
     </div>
     <div class="row">     
       <div class="span3">
-        <h4>Project</h4>
+        <h5>Project</h5>
       </div>
       <div class="span3 offset1">
-        <h4><%= @sample.project_id %></h4>
+        <h5><%= @sample.project_id %></h5>
       </div>
     </div>
     <div class="row">     
       <div class="span3">
-        <h4>Member of Sample Set</h4>
+        <h5>Member of Sample Set</h5>
       </div>
       <div class="span3 offset1">
-        <h4><%= @sample.sample_set_id %></h4>
+        <h5><%= @sample.sample_set_id %></h5>
       </div>
     </div>
     
     <div class="row">     
       <div class="span3">
-        <h4>Date sample taken</h4>
+        <h5>Date sample taken</h5>
       </div>
       <div class="span3 offset1">
-        <h4><%= @sample.date_sampled %></h4>
+        <h5><%= @sample.date_sampled %></h5>
       </div>
     </div>
     <div class="row">     
       <div class="span3">
-        <h4>Sample Type</h4>
+        <h5>Sample Type</h5>
       </div>
       <div class="span3 offset1">
         <% if @sample.material_type.present? %>
-          <h4><%= @sample.material_type %></h4>
+          <h5><%= @sample.material_type %></h5>
         <% else %>
-          <h4></h4>
+          <h5></h5>
         <% end %>
       </div>
     </div>
     <div class="row">     
       <div class="span3">
-        <h4>Plot</h4>
+        <h5>Plot</h5>
       </div>
       <div class="span3 offset1">
         <% if @sample.plot.present? %>
-          <h4><%= @sample.plot %></h4>
+          <h5><%= @sample.plot %></h5>
         <% else %>
-          <h4></h4>
+          <h5></h5>
         <% end %>
       </div>
     </div>
     <div class="row">     
       <div class="span3">
-        <h4>Ring</h4>
+        <h5>Ring</h5>
       </div>
       <div class="span3 offset1">
         <% if @sample.ring.present? %>
-          <h4><%= @sample.ring %></h4>
+          <h5><%= @sample.ring %></h5>
         <% else %>
-          <h4></h4>
+          <h5></h5>
         <% end %>
       </div>
     </div>
     <div class="row">     
       <div class="span3">
-        <h4>Tree</h4>
+        <h5>Tree</h5>
       </div>
       <div class="span3 offset1">
         <% if @sample.tree.present? %>
-          <h4><%= @sample.tree %></h4>
+          <h5><%= @sample.tree %></h5>
         <% else %>
-          <h4></h4>
+          <h5></h5>
         <% end %>
       </div>
     </div>
     <div class="row">     
       <div class="span3">
-        <h4>Northing</h4>
+        <h5>Northing</h5>
       </div>
       <div class="span3 offset1">
         <% if @sample.northing.present? %>
-          <h4><%= @sample.northing %></h4>
+          <h5><%= @sample.northing %></h5>
         <% else %>
-          <h4></h4>
+          <h5></h5>
         <% end %>
       </div>
     </div>
     <div class="row">     
       <div class="span3">
-        <h4>Easting</h4>
+        <h5>Easting</h5>
       </div>
       <div class="span3 offset1">
         <% if @sample.easting.present? %>
-          <h4><%= @sample.easting %></h4>
+          <h5><%= @sample.easting %></h5>
         <% else %>
-          <h4></h4>
+          <h5></h5>
         <% end %>
       </div>
     </div>
     <div class="row">     
       <div class="span3">
-        <h4>Height</h4>
+        <h5>Height</h5>
       </div>
       <div class="span3 offset1">
         <% if @sample.vertical.present? %>
-          <h4><%= @sample.vertical %></h4>
+          <h5><%= @sample.vertical %></h5>
         <% else %>
-          <h4></h4>
+          <h5></h5>
         <% end %>
       </div>
     </div>
     <div class="row">     
       <div class="span3">
-        <h4>Amount Collected</h4>
+        <h5>Amount Collected</h5>
       </div>
       <div class="span3 offset1">
         <% if @sample.amount_collected.present? %>
-          <h4><%= @sample.amount_collected %></h4>
+          <h5><%= @sample.amount_collected %></h5>
         <% else %>
-          <h4></h4>
+          <h5></h5>
         <% end %>
       </div>
     </div>
     <div class="row">     
       <div class="span3">
-        <h4>Amount Stored</h4>
+        <h5>Amount Stored</h5>
       </div>
       <div class="span3 offset1">
         <% if @sample.amount_stored.present? %>
-          <h4><%= @sample.amount_stored %></h4>
+          <h5><%= @sample.amount_stored %></h5>
         <% else %>
-          <h4></h4>
+          <h5></h5>
         <% end %>
       </div>
     </div>
     <div class="row">     
       <div class="span3">
-        <h4>Storage Location</h4>
+        <h5>Storage Location</h5>
       </div>
       <div class="span3 offset1">
         <% if @sample.storage_location.present? %>
-          <h4><%= @sample.storage_location.code %></h4>
+          <h5><%= @sample.storage_location.code %></h5>
         <% else %>
-          <h4></h4>
+          <h5></h5>
         <% end %>
       </div>
     </div>
     
     <div class="row">     
       <div class="span3">
-        <h4>Comments</h4>
+        <h5>Comments</h5>
       </div>
       <div class="span3 offset1">
-        <h4><%= @sample.comments %></h4>
+        <h5><%= @sample.comments %></h5>
       </div>
     </div>
   </div>
@@ -251,7 +253,7 @@
     </div>
     <div class="row">
       <div class="span2 offset2">
-        <h4><%= @sample.id %></h4>
+        <h5><%= @sample.id %></h5>
       </div>
     </div>
   </div>
