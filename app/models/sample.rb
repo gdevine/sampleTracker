@@ -11,7 +11,7 @@ class Sample < ActiveRecord::Base
   validates :owner_id, presence: true
   validates :facility_id, presence: true
   validates :project_id, presence: true
-  validates :is_primary, presence: true
+  validates :is_primary, inclusion: [true,false]
   validates :storage_location_id, presence: true, if: "sampled?"  # A sample can't be marked as sampled if no storage location has been assigned
   validates :date_sampled, presence: true, if: "sampled?"  # A sample can't be marked as sampled if no date sampled has been assigned
   
