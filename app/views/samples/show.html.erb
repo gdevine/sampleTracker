@@ -31,9 +31,14 @@
 <!-- Add edit/subsample/delete buttons if current user -->
 <% if current_user?(@sample.owner) %> 
   <div class="row">  
-    <div class="span2 offset5">
+    <div class="span2 offset4">
       <%= button_to "Edit Sample", {:action => 'edit' }, :method => :get, :class=>"btn btn-block" %>
     </div>
+    <% if @parent %>
+      <div class="span2">
+        <%= button_to "View Parent", sample_path(id:@parent.id), :method => :get, :class=>"btn btn-block", :id=>"viewparent_button" %>
+      </div>
+    <% end %>
     <% if @parent %>
 	    <div class="span2">
 	      <%= button_to "Add Subsample", new_sample_sample_path(sample_id:@sample.id), :method => :get, :class=>"btn btn-block", :id=>"subsample_button", :disabled=>"disabled", :title=>"Subsamples can not be created from existing subsamples"%>

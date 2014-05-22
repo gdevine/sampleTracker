@@ -18,6 +18,7 @@ class Sample < ActiveRecord::Base
   #Custom validations
   validate :is_primary_only_with_no_parent
   validate :sampled_only_with_valid_fields
+  validate :has_parent_when_isprimary_is_false
 
   
   # validates :parent_id, presence: false, if: Proc.new { |a| a.is_primary? }
@@ -68,7 +69,7 @@ class Sample < ActiveRecord::Base
   
   def has_parent_when_isprimary_is_false
     errors.add(:base, "A non-primary sample (i.e. subsample) must have a parent") if
-      self.is_primary == 'false' && !self.parent_id 
+      self.is_primary == false && !self.parent_id 
   end
   
   ##
