@@ -82,7 +82,7 @@ describe "Sample pages:" do
                                                         sampled: true,
                                                         parent_id: sampled_sample.id,
                                                         is_primary: false
-                                                         ) }                                        
+                                                         ) }                                                                                      
     
     describe "for signed-in users" do
       
@@ -117,6 +117,7 @@ describe "Sample pages:" do
         before { visit sample_path(sampled_sample) }
         
         it { should have_button('Add Subsample') }
+        it { should_not have_button('View Parent') } 
         it { should_not have_selector('input[value="Add Subsample"][disabled="disabled"]') }   # Check that it's not disabled
         
         describe "when clicking the add subsample button" do

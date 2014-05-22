@@ -75,9 +75,9 @@ class SamplesController < ApplicationController
   
   def create
     @sample = current_user.samples.build(sample_params)
-    if params[:parent_id]
-      @parent = Sample.find(params[:parent_id])
-      @sample.parent_id = @parent
+    if sample_params[:parent_id]
+      @parent = Sample.find(sample_params[:parent_id])
+      @sample.parent_id = @parent.id
       @sample.is_primary = false
     else
       @sample.is_primary = true

@@ -12,8 +12,8 @@
       <%= render 'shared/error_messages', object: f.object %>
       
       <% if @parent %>
-          <!-- Start with subsample case in which it should automatically adopt certain values of its parent-->
-          <%= f.hidden_field :parent_id, :value => @parent.id %>
+        <!-- Start with subsample case in which it should automatically adopt certain values of its parent-->
+        <%= f.hidden_field :parent_id, :value => @parent.id %>
 	      <%= f.hidden_field :facility_id, :value => @parent.facility_id %>
 	      <%= f.hidden_field :project_id, :value => @parent.project_id %>
 	      <%= f.hidden_field :material_type, :value => @parent.material_type %>
