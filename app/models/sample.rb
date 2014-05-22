@@ -11,9 +11,14 @@ class Sample < ActiveRecord::Base
   validates :owner_id, presence: true
   validates :facility_id, presence: true
   validates :project_id, presence: true
+  validates :is_primary, presence: true
   validates :storage_location_id, presence: true, if: "sampled?"  # A sample can't be marked as sampled if no storage location has been assigned
   validates :date_sampled, presence: true, if: "sampled?"  # A sample can't be marked as sampled if no date sampled has been assigned
+  
+  #Custom validations
+  validate :is_primary_only_with_no_parent
   validate :sampled_only_with_valid_fields
+
   
   # validates :parent_id, presence: false, if: Proc.new { |a| a.is_primary? }
   # validates :parent_id, presence: true, if: Proc.new { |a| !a.is_primary? }
@@ -48,11 +53,25 @@ class Sample < ActiveRecord::Base
     end
   end
   
+  
+  ## Custom validations
+  
   def sampled_only_with_valid_fields
     errors.add(:sampled, "can only be marked as complete if valid facility fields are supplied") if
       self.sampled && !(self.plot && self.ring && self.tree) 
   end
   
+  def is_primary_only_with_no_parent
+    errors.add(:base, "A sample can not be marked as is_primary if it has a parent sample") if
+      self.is_primary && self.parent_id 
+  end
+  
+  def has_parent_when_isprimary_is_false
+    errors.add(:base, "A non-primary sample (i.e. subsample) must have a parent") if
+      self.is_primary == 'false' && !self.parent_id 
+  end
+  
+  ##
   
   private
     def default_values

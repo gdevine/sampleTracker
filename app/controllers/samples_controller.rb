@@ -78,6 +78,7 @@ class SamplesController < ApplicationController
     if params[:parent_id]
       @parent = Sample.find(params[:parent_id])
       @sample.parent_id = @parent
+      @sample.is_primary = false
     end
     
     if @sample.save

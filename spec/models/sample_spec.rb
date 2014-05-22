@@ -55,6 +55,11 @@ describe Sample do
     it { should_not be_valid }
   end
   
+  describe "when is_primary is not present" do
+    before { @sample.is_primary = '' }
+    it { should_not be_valid }
+  end
+  
   describe "when it is part of a sample set" do
     its(:is_primary) { should eql true } 
   end
@@ -93,6 +98,23 @@ describe Sample do
     it { should_not be_valid }
   end
   
+  describe "when a subsample with parent_id is marked as is_primary" do
+    before do 
+      @sample.parent_id = 3
+      @sample.is_primary = true
+    end
+    
+    it { should_not be_valid }
+  end
+  
+  describe "when a subsample doesn't have a parent_id" do
+    before do 
+      @sample.is_primary = false
+      @sample.parent_id = ''
+    end
+    
+    it { should_not be_valid }
+  end
   
   
 end

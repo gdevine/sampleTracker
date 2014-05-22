@@ -71,7 +71,18 @@ describe "Sample pages:" do
                                                         storage_location_id: 3,
                                                         date_sampled: Date.new(2012, 12, 3),
                                                         sampled: true
-                                                         ) }                                          
+                                                         ) }  
+                                                         
+    let!(:sub_sample) { FactoryGirl.create(:sample, owner: user, 
+                                                        tree: 4,
+                                                        plot: 1,
+                                                        ring:2,
+                                                        storage_location_id: 2,
+                                                        date_sampled: Date.new(2012, 12, 3),
+                                                        sampled: true,
+                                                        parent_id: sampled_sample.id,
+                                                        is_primary: false
+                                                         ) }                                        
     
     describe "for signed-in users" do
       
@@ -116,6 +127,16 @@ describe "Sample pages:" do
             it { should have_content(page_heading) }
           end
         end
+        
+      end
+      
+      describe "on a subsample" do
+        
+        before { visit sample_path(sub_sample) }
+        
+        it { should have_button('View Parent') } 
+        it { should have_content("Sample #{sub_sample.id.to_s} (subsample of #{sampled_sample.id.to_s})")}
+        it { should have_selector('input[value="Add Subsample"][disabled="disabled"]') } # Check that the add subsample button is disabled
         
       end
       

@@ -34,7 +34,11 @@
     <div class="span2 offset5">
       <%= button_to "Edit Sample", {:action => 'edit' }, :method => :get, :class=>"btn btn-block" %>
     </div>
-    <% if @sample.sampled %>
+    <% if @parent %>
+	    <div class="span2">
+	      <%= button_to "Add Subsample", new_sample_sample_path(sample_id:@sample.id), :method => :get, :class=>"btn btn-block", :id=>"subsample_button", :disabled=>"disabled", :title=>"Subsamples can not be created from existing subsamples"%>
+	    </div>
+    <% elsif @sample.sampled %>
 	    <div class="span2">
 	      <%= button_to "Add Subsample", new_sample_sample_path(sample_id:@sample.id), :method => :get, :class=>"btn btn-block" %>
 	    </div>
