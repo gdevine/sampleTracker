@@ -10,9 +10,7 @@
 /tmp
 
 # Ignore solr files
-/solr/data
-/solr/test
-/solr/development
+solr/data
 
 # Ignore other unneeded files.
 database.yml
