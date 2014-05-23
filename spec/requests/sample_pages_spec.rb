@@ -80,7 +80,7 @@ describe "Sample pages:" do
                                                         storage_location_id: 2,
                                                         date_sampled: Date.new(2012, 12, 3),
                                                         sampled: true,
-                                                        parent_id: sampled_sample.id,
+                                                        parent: sampled_sample,
                                                         is_primary: false
                                                          ) }                                                                                      
     
@@ -138,6 +138,20 @@ describe "Sample pages:" do
         it { should have_button('View Parent') } 
         it { should have_content("Sample #{sub_sample.id.to_s} (subsample of #{sampled_sample.id.to_s})")}
         it { should have_selector('input[value="Add Subsample"][disabled="disabled"]') } # Check that the add subsample button is disabled
+        
+        describe "when clicking the 'View Parent' button" do
+          let!(:page_heading) {"Sample #{sampled_sample.id}"}
+          before { click_button "View Parent" }
+          
+          describe 'should have a page heading for viewing the parent sample of the current sample' do
+            it { should have_content(page_heading) }
+          end
+          
+          describe "should have the Add Subsample button activated" do
+            it { should have_button('Add Subsample') }
+          end
+          
+        end
         
       end
       
