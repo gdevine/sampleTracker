@@ -71,6 +71,8 @@ class SamplesController < ApplicationController
       @parent = Sample.find(@sample.parent_id)
     end
     @qr = RQRCode::QRCode.new( sample_url, :size => 3, :level => :l )
+    # Attach my subsamples
+    @samples = @sample.subsamples.paginate(page: params[:page])
   end
   
   def create
@@ -107,8 +109,13 @@ class SamplesController < ApplicationController
   end
 
   def destroy
-    @sample.destroy
-    redirect_to samples_path
+    if @sample.subsamples.empty?
+      @sample.destroy
+      redirect_to samples_path
+    else
+      flash[:error] = "Unable to delete a Sample with associated Subsamples. Remove any Subsamples first."
+      redirect_to @sample
+    end
   end
  
  

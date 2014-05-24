@@ -41,8 +41,13 @@ class StorageLocationsController < ApplicationController
   end
 
   def destroy
-    @storage_location.destroy
-    redirect_to storage_locations_path
+    if @storage_location.samples.empty?
+      @storage_location.destroy
+      redirect_to storage_locations_path
+    else
+      flash[:error] = "Unable to delete a Storage location that contains samples and/or containers. Relocate these first."
+      redirect_to @storage_location
+    end
   end
  
  

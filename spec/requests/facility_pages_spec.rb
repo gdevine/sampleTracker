@@ -190,15 +190,37 @@ describe "Facility pages:" do
   
   
   describe "facility destruction" do
-    let!(:facility) { FactoryGirl.create(:facility, contact: user, code: 'ROSWS') }
+    let!(:facility_empty) { FactoryGirl.create(:facility, contact: user, code: 'FAC-empty') }
+    let!(:facility_with_content) { FactoryGirl.create(:facility, contact: user, code: 'FAC-full') }
+    let!(:sample) { FactoryGirl.create(:sample, owner: user, 
+                                                facility: facility_with_content,
+                                                ) }      
 
     describe "as correct user" do
       before { sign_in user }
-      before { visit facility_path(facility) }
+      
+      describe "of a facility with no content" do
+        before { visit facility_path(facility_empty) }
 
-      it "should delete a facility" do
-        expect { click_button "Delete Facility" }.to change(Facility, :count).by(-1)
+        it "should delete" do
+          expect { click_button "Delete Facility" }.to change(Facility, :count).by(-1)
+        end
       end
+      
+      describe "of a facility with content" do
+        before { visit facility_path(facility_with_content) }
+
+        it "should not delete" do
+          expect { click_button "Delete Facility" }.not_to change(Facility, :count)
+        end
+        describe "should display an error message" do
+          before { click_button "Delete Facility" }
+          let!(:error_message) {"Unable to delete a Facility that contains samples and/or sample sets."}
+          
+          it { should have_content(error_message) }
+        end
+      end
+      
     end
   end
   

@@ -5,10 +5,10 @@
 <% if current_user?(@storage_location.custodian) %> 
   <div class="row">  
     <div class="span2 offset8">
-      <%= button_to "Edit Storage Location", {:action => 'edit' }, :method => :get, :class=>"btn btn-block" %>
+      <%= button_to "Edit Location", {:action => 'edit' }, :method => :get, :class=>"btn btn-block" %>
     </div>
     <div class="span2">
-      <%= button_to "Delete Storage Location", @storage_location, method: :delete, data: { confirm: "Are you sure?" }, title: @storage_location.code, :class=>"btn btn-block btn-danger" %>
+      <%= button_to "Delete Location", @storage_location, method: :delete, data: { confirm: "Are you sure?" }, title: @storage_location.code, :class=>"btn btn-block btn-danger" %>
     </div>
   </div>
 <% end %>

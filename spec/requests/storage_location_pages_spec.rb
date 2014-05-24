@@ -126,11 +126,11 @@ describe "Storage Location pages:" do
       it { should have_selector('h1', :text => page_heading) }
       it { should have_title(full_title('Storage Location View')) }
       it { should_not have_title('| Home') }  
-      it { should have_button('Edit Storage Location') }
-      it { should have_button('Delete Storage Location') }
+      it { should have_button('Edit Location') }
+      it { should have_button('Delete Location') }
       
       describe "when clicking the edit button" do
-        before { click_button "Edit Storage Location" }
+        before { click_button "Edit Location" }
         let!(:page_heading) {"Edit Storage Location " + storage_location.code}
         
         describe 'should have a page heading for editing the correct storage location' do
@@ -146,8 +146,8 @@ describe "Storage Location pages:" do
          end 
          
          describe "should not see the edit and delete buttons" do
-           it { should_not have_button('Edit Storage Location') }
-           it { should_not have_button('Delete Storage Location') }
+           it { should_not have_button('Edit Location') }
+           it { should_not have_button('Delete Location') }
          end 
 
       end
@@ -185,15 +185,40 @@ describe "Storage Location pages:" do
   
   
   describe "storage location destruction" do
-    let!(:storage_location) { FactoryGirl.create(:storage_location, custodian: user, code: 'L33R10', description: 'A description of the storage location') }
-
+    let!(:storage_location_empty) { FactoryGirl.create(:storage_location, custodian: user) }
+    let!(:storage_location_with_samples) { FactoryGirl.create(:storage_location, custodian: user, 
+                                                                                 code: 'L33R10', 
+                                                                                 description: 'A description of the storage location') }
+    let!(:sample) { FactoryGirl.create(:sample, owner: user, 
+                                                storage_location: storage_location_with_samples,
+                                                sampled: true
+                                                ) }      
+                                                
     describe "as correct user" do
       before { sign_in user }
-      before { visit storage_location_path(storage_location) }
+      
+      describe "of an empty storage location" do
+        before { visit storage_location_path(storage_location_empty) }
 
-      it "should delete a storage location" do
-        expect { click_button "Delete Storage Location" }.to change(StorageLocation, :count).by(-1)
+        it "should delete" do
+          expect { click_button "Delete Location" }.to change(StorageLocation, :count).by(-1)
+        end
       end
+      
+      describe "of a non-empty storage location" do
+        before { visit storage_location_path(storage_location_with_samples) }
+        it "should not delete" do
+          expect { click_button "Delete Location" }.not_to change(StorageLocation, :count)
+        end
+        
+        describe "should display an error message" do
+          before { click_button "Delete Location" }
+          let!(:error_message) {"Unable to delete a Storage location that contains samples and/or containers. Relocate these first."}
+          
+          it { should have_content(error_message) }
+        end
+      end
+      
     end
   end
   

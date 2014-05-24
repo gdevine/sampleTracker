@@ -61,7 +61,7 @@ describe "Sample pages:" do
   
   describe "Show page" do
     
-    let!(:sample) { FactoryGirl.create(:sample, owner: user,
+    let!(:pending_sample) { FactoryGirl.create(:sample, owner: user,
                                                 sampled: false) }              
                                                                             
     let!(:sampled_sample) { FactoryGirl.create(:sample, owner: user, 
@@ -73,6 +73,15 @@ describe "Sample pages:" do
                                                         sampled: true
                                                          ) }  
                                                          
+    let!(:non_subs_sampled_sample) { FactoryGirl.create(:sample, owner: user, 
+                                                        tree: 3,
+                                                        plot: 1,
+                                                        ring:2,
+                                                        storage_location_id: 3,
+                                                        date_sampled: Date.new(2012, 12, 3),
+                                                        sampled: true
+                                                         ) }                                                       
+                                                         
     let!(:sub_sample) { FactoryGirl.create(:sample, owner: user, 
                                                         tree: 4,
                                                         plot: 1,
@@ -82,7 +91,18 @@ describe "Sample pages:" do
                                                         sampled: true,
                                                         parent: sampled_sample,
                                                         is_primary: false
-                                                         ) }                                                                                      
+                                                         ) }  
+                                                                  
+    let!(:sub_sample2) { FactoryGirl.create(:sample, owner: user, 
+                                                        tree: 4,
+                                                        plot: 1,
+                                                        ring:2,
+                                                        storage_location_id: 2,
+                                                        date_sampled: Date.new(2012, 11, 3),
+                                                        sampled: true,
+                                                        parent: sampled_sample,
+                                                        is_primary: false
+                                                         ) }                                                                                                                                                      
     
     describe "for signed-in users" do
       
@@ -90,9 +110,9 @@ describe "Sample pages:" do
       
       describe "on a 'pending' sample" do
         
-        before { visit sample_path(sample) }
+        before { visit sample_path(pending_sample) }
         
-        let!(:page_heading) {"Sample " + sample.id.to_s}
+        let!(:page_heading) {"Sample " + pending_sample.id.to_s}
         
         it { should have_selector('h1', :text => page_heading) }
         it { should have_title(full_title('Sample View')) }
@@ -103,7 +123,7 @@ describe "Sample pages:" do
               
         describe "when clicking the edit button" do
           before { click_button "Edit Sample" }
-          let!(:page_heading) {"Edit Sample " + sample.id.to_s}
+          let!(:page_heading) {"Edit Sample " + pending_sample.id.to_s}
           
           describe 'should have a page heading for editing the correct sample' do
             it { should have_content(page_heading) }
@@ -119,6 +139,7 @@ describe "Sample pages:" do
         it { should have_button('Add Subsample') }
         it { should_not have_button('View Parent') } 
         it { should_not have_selector('input[value="Add Subsample"][disabled="disabled"]') }   # Check that it's not disabled
+        it { should have_content("Subsamples associated with Sample #{sampled_sample.id.to_s}")}
         
         describe "when clicking the add subsample button" do
           before { click_button "Add Subsample" }
@@ -127,6 +148,16 @@ describe "Sample pages:" do
           describe 'should have a page heading for adding a new subsample of the current sample' do
             it { should have_content(page_heading) }
           end
+        end
+        
+        describe "should show the samples belonging to this sample set" do
+        
+          let!(:first_sample_id) { sampled_sample.subsamples.first.id }
+          let!(:last_sample_id) { sampled_sample.subsamples.last.id }
+          # before { visit sample_set_path(sample_set) }
+          it { should have_selector('table tr th', text: 'Sample ID') } 
+          it { should have_selector('table tr td', text: first_sample_id) } 
+          it { should have_selector('table tr td', text: last_sample_id) } 
         end
         
       end
@@ -138,6 +169,9 @@ describe "Sample pages:" do
         it { should have_button('View Parent') } 
         it { should have_content("Sample #{sub_sample.id.to_s} (subsample of #{sampled_sample.id.to_s})")}
         it { should have_selector('input[value="Add Subsample"][disabled="disabled"]') } # Check that the add subsample button is disabled
+        it { should have_content("Subsamples associated with Sample #{sub_sample.id}")}
+        it { should have_content("Subsamples can not be derived from existing Subsamples")}
+
         
         describe "when clicking the 'View Parent' button" do
           let!(:page_heading) {"Sample #{sampled_sample.id}"}
@@ -155,11 +189,31 @@ describe "Sample pages:" do
         
       end
       
+      describe "on a non-subsample containing 'sampled' sample" do
+        
+        before { visit sample_path(non_subs_sampled_sample) }
+        
+        it { should have_button('Add Subsample') }
+        it { should_not have_selector('input[value="Add Subsample"][disabled="disabled"]') }   # Check that it's not disabled
+        it { should have_content("Subsamples associated with Sample #{non_subs_sampled_sample.id}")}
+        it { should have_content("This Sample is not currently associated with any Subsamples")}
+        
+        describe "when clicking the add subsample button" do
+          before { click_button "Add Subsample" }
+          let!(:page_heading) {"New Sample (subsample of #{non_subs_sampled_sample.id.to_s})"}
+          
+          describe 'should have a page heading for adding a new subsample of the current sample' do
+            it { should have_content(page_heading) }
+          end
+        end
+        
+      end
+      
       describe "who don't own the current sample" do
         let(:non_owner) { FactoryGirl.create(:user) }
         before do 
           sign_in non_owner
-          visit sample_path(sample)
+          visit sample_path(pending_sample)
         end 
        
         describe "should not see the edit and delete buttons" do
@@ -173,7 +227,7 @@ describe "Sample pages:" do
     
     describe "for non signed-in users" do
       describe "should be redirected back to signin" do
-        before { visit sample_path(sample) }
+        before { visit sample_path(pending_sample) }
         it { should have_title('Sign in') }
         it { should_not have_button('Edit Sample') }
         it { should_not have_button('Delete Sample') }
@@ -185,16 +239,74 @@ describe "Sample pages:" do
   
   
   describe "sample destruction" do
-    let!(:sample) { FactoryGirl.create(:sample, owner: user, tree: 60) }
+    let!(:pending_sample) { FactoryGirl.create(:sample, owner: user, 
+                                                        sampled: false) }
+    
+    let!(:sampled_sample) { FactoryGirl.create(:sample, owner: user, 
+                                                        tree: 3,
+                                                        plot: 1,
+                                                        ring:2,
+                                                        storage_location_id: 3,
+                                                        date_sampled: Date.new(2012, 12, 3),
+                                                        sampled: true
+                                                        ) }      
+                                                             
+    let!(:non_subs_sampled_sample) { FactoryGirl.create(:sample, owner: user, 
+                                                        tree: 3,
+                                                        plot: 1,
+                                                        ring:2,
+                                                        storage_location_id: 3,
+                                                        date_sampled: Date.new(2012, 12, 3),
+                                                        sampled: true
+                                                         ) }                                                                                                                
+                                                         
+    let!(:sub_sample) { FactoryGirl.create(:sample, owner: user, 
+                                                        tree: 4,
+                                                        plot: 1,
+                                                        ring:2,
+                                                        storage_location_id: 2,
+                                                        date_sampled: Date.new(2012, 12, 3),
+                                                        sampled: true,
+                                                        parent: sampled_sample,
+                                                        is_primary: false
+                                                         ) }  
+    
+    
 
     describe "as correct user" do
       before { sign_in user }
-      before { visit sample_path(sample) }
+      
+      describe "of a non-complete sample" do
+        before { visit sample_path(pending_sample) }
 
-      it "should delete a sample" do
-        expect { click_button "Delete Sample" }.to change(Sample, :count).by(-1)
+        it "should delete" do
+          expect { click_button "Delete Sample" }.to change(Sample, :count).by(-1)
+        end
       end
+      
+      describe "of a completed non-subsamples sample" do
+        before { visit sample_path(non_subs_sampled_sample) }
+        it "should delete" do
+          expect { click_button "Delete Sample" }.to change(Sample, :count).by(-1)
+        end
+      end
+      
+      describe "of a completed sample with subsamples" do
+        before { visit sample_path(sampled_sample) }
+        it "should not delete" do
+          expect { click_button "Delete Sample" }.not_to change(Sample, :count)
+        end
+        
+        describe "should display an error message" do
+          before { click_button "Delete Sample" }
+          let!(:error_message) {"Unable to delete a Sample with associated Subsamples. Remove any Subsamples first."}
+          
+          it { should have_content(error_message) }
+        end
+      end
+      
     end
+    
   end
   
   

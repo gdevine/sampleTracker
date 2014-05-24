@@ -264,3 +264,20 @@
   </div>
 
 </div>
+
+
+<h2 class= "heading-separator">Subsamples associated with Sample <%= @sample.id %></h2>
+
+<div class="row">
+  <div class="span12">
+	<% if @sample.is_primary? %>
+	  <% if @sample.subsamples.empty? %>
+	    <h5 class="center">This Sample is not currently associated with any Subsamples</h5>
+	  <% else %>
+	    <%= render 'samples/samples' %>
+	  <% end %>
+	<% else %>
+      <h5 class="center">Subsamples can not be derived from existing Subsamples</h5>
+	<% end %>
+  </div>
+</div>

@@ -12,8 +12,8 @@ class FacilitiesController < ApplicationController
   
   def show
     @facility = Facility.find(params[:id])
-    @sample_sets = @facility.sample_sets.paginate(page: params[:page])
-    @samples = @facility.samples.paginate(page: params[:page])
+    @sample_sets = @facility.sample_sets.paginate(page: params[:ss_page], :per_page => 10)
+    @samples = @facility.samples.paginate(page: params[:s_page], :per_page => 10)
   end
 
   def create
@@ -42,8 +42,13 @@ class FacilitiesController < ApplicationController
   end
 
   def destroy
-    @facility.destroy
-    redirect_to facilities_path
+    if @facility.samples.empty? && @facility.sample_sets.empty?
+      @facility.destroy
+      redirect_to facilities_path
+    else
+      flash[:error] = "Unable to delete a Facility that contains samples and/or sample sets."
+      redirect_to @facility
+    end
   end
  
  
