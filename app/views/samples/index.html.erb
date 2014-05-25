@@ -1,8 +1,6 @@
 <% provide(:title, 'Sample List') %>
 <% provide(:pageheading, 'Sample List') %>
 
-
-
 <div class="panel-group" id="accordion">
   <div class="panel panel-default">
     <div class="panel-heading">
@@ -77,21 +75,51 @@
                 <% end %>
               </ul>
             </div>
-            <div class="span2">
-              <h5>Tree</h5>
+            <div class="span2 offset1">
+              <h5>Ring</h5>
               <ul>
-                <% for row in @search.facet(:tree).rows %>
+                <% for row in @search.facet(:ring).rows %>
                   <li>
-                    <% if params[:mytree].blank? %>
-                      <%= link_to row.value, params.merge({:mytree => row.value}).except(:page) %> (<%= row.count %>)
+                    <% if params[:my_ring].blank? %>
+                      <%= link_to row.value, params.merge({:my_ring => row.value}).except(:page) %> (<%= row.count %>)
                     <% else %>
-                      <strong><%= row.value %></strong> (<%= link_to "remove", params.except(:mytree, :page) %>)
+                      <strong><%= row.value %></strong> (<%= link_to "remove", params.except(:my_ring, :page) %>)
                     <% end %>
                   </li>
                 <% end %>
-              </ul>
+              </ul>	
             </div>
-          </div>  
+          </div>
+          <div class="row">
+            <div class="span2 offset1">
+              <h5>Primary?</h5>
+              <ul>
+                <% for row in @search.facet(:is_primary).rows %>
+                  <li>
+                    <% if params[:my_is_primary].blank? %>
+                      <%= link_to row.value, params.merge({:my_is_primary => row.value}).except(:page) %> (<%= row.count %>)
+                    <% else %>
+                      <strong><%= row.value %></strong> (<%= link_to "remove", params.except(:my_is_primary, :page) %>)
+                    <% end %>
+                  </li>
+                <% end %>
+              </ul>	
+            </div>
+            <div class="span2">
+              <h5>Completed?</h5>
+              <ul>
+                <% for row in @search.facet(:sampled).rows %>
+                  <li>
+                    <% if params[:my_sampled].blank? %>
+                      <%= link_to row.value, params.merge({:my_sampled => row.value}).except(:page) %> (<%= row.count %>)
+                    <% else %>
+                      <strong><%= row.value %></strong> (<%= link_to "remove", params.except(:my_sampled, :page) %>)
+                    <% end %>
+                  </li>
+                <% end %>
+              </ul>	
+            </div>
+          </div>
         
         </div>
       </div>

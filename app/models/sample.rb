@@ -19,20 +19,19 @@ class Sample < ActiveRecord::Base
   validate :is_primary_only_with_no_parent
   validate :sampled_only_with_valid_fields
   validate :has_parent_when_isprimary_is_false
-
-  
-  # validates :parent_id, presence: false, if: Proc.new { |a| a.is_primary? }
-  # validates :parent_id, presence: true, if: Proc.new { |a| !a.is_primary? }
   
   after_initialize :default_values
 
   searchable do
     text :comments
     integer :tree
+    integer :ring
     string :facility_code
     string :month_sampled
     string :material_type
     integer :project_id
+    string :is_primary
+    string :sampled
   end
   
   def facility_code
