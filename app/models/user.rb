@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
   has_many :samples, :class_name => 'Sample', :foreign_key => 'owner_id', dependent: :destroy
   has_many :facilities, :class_name => 'Facility', :foreign_key => 'contact_id'
   has_many :storage_locations, :class_name => 'StorageLocation', :foreign_key => 'custodian_id'
+  has_many :containers, :class_name => 'Container', :foreign_key => 'owner_id'
   
   before_save { self.email = email.downcase }
   before_create :create_remember_token

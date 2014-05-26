@@ -21,6 +21,7 @@ describe User do
   it { should respond_to(:samples) }
   it { should respond_to(:facilities) }
   it { should respond_to(:storage_locations) }
+  it { should respond_to(:containers) }
 
   it { should be_valid }
   it { should_not be_admin }
@@ -202,6 +203,24 @@ describe User do
     
     it "should deal with orphaned facilities upon contact/user deletion" do
     end
+  end
+  
+  
+  describe "container associations" do
+    
+    before { @user.save }
+    
+    let!(:older_container) do
+      FactoryGirl.create(:container, owner: @user, created_at: 1.day.ago)
+    end
+    let!(:newer_container) do
+      FactoryGirl.create(:container, owner: @user, created_at: 1.hour.ago)
+    end
+
+    it "should have the right containers in the right order" do
+      expect(@user.containers.to_a).to eq [newer_container, older_container]
+    end
+    
   end
   
 end

@@ -2,6 +2,7 @@ class Sample < ActiveRecord::Base
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_id'
   belongs_to :facility, :class_name => 'Facility', :foreign_key => 'facility_id'
   belongs_to :sample_set, :class_name => 'SampleSet', :foreign_key => 'sample_set_id'
+  belongs_to :container, :class_name => 'Container', :foreign_key => 'container_id'
   belongs_to :storage_location, :class_name => 'StorageLocation', :foreign_key => 'storage_location_id'
   belongs_to :parent, :class_name => 'Sample', :foreign_key => 'parent_id'
   has_many :subsamples, :class_name => 'Sample', :foreign_key => 'parent_id'
@@ -19,6 +20,7 @@ class Sample < ActiveRecord::Base
   validate :is_primary_only_with_no_parent
   validate :sampled_only_with_valid_fields
   validate :has_parent_when_isprimary_is_false
+  validate :same_storage_location_and_container_location
   
   after_initialize :default_values
 
@@ -69,6 +71,12 @@ class Sample < ActiveRecord::Base
   def has_parent_when_isprimary_is_false
     errors.add(:base, "A non-primary sample (i.e. subsample) must have a parent") if
       self.is_primary == false && !self.parent_id 
+  end
+  
+  def same_storage_location_and_container_location
+    #To test that a sample's location is the same as a container it's held within 
+    errors.add(:base, "A sample's storage location and container location must be the same") if
+      self.container.storage_location != self.storage_location 
   end
   
   ##

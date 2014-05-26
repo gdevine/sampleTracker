@@ -26,6 +26,13 @@ FactoryGirl.define do
     association :custodian, :factory  => :user
   end
   
+  factory :container do
+    container_type 'box'
+    description 'A description of this container'
+    storage_location_id 1
+    association :owner, :factory  => :user
+  end
+  
   factory :sample_set do
     facility_id  1 
     project_id   4

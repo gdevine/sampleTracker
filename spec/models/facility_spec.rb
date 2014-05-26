@@ -4,7 +4,7 @@ describe Facility do
 
   let(:contact) { FactoryGirl.create(:user) }
   before { @facility = contact.facilities.build(contact: contact, code:"FACE3", description: "Lorem ipsum") }
-
+  
   subject { @facility }
 
   it { should respond_to(:code) }

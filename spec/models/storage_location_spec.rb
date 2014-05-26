@@ -20,6 +20,7 @@ describe Facility do
   it { should respond_to(:description) }
   it { should respond_to(:custodian) }
   it { should respond_to(:samples) }
+  it { should respond_to(:containers) }
   
   its(:custodian) { should eq custodian}
   

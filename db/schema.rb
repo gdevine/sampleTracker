@@ -11,7 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140323012314) do
+ActiveRecord::Schema.define(version: 20140526044219) do
+
+  create_table "containers", force: true do |t|
+    t.string   "container_type"
+    t.text     "description"
+    t.integer  "storage_location_id"
+    t.integer  "owner_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "containers", ["owner_id", "created_at"], name: "index_containers_on_owner_id_and_created_at"
 
   create_table "facilities", force: true do |t|
     t.string   "code"
@@ -59,6 +70,7 @@ ActiveRecord::Schema.define(version: 20140323012314) do
     t.datetime "updated_at"
     t.integer  "storage_location_id"
     t.integer  "parent_id"
+    t.integer  "container_id"
   end
 
   add_index "samples", ["owner_id", "created_at"], name: "index_samples_on_owner_id_and_created_at"

@@ -4,6 +4,7 @@ describe Sample do
 
   let(:owner) { FactoryGirl.create(:user) }
   before { @sample = owner.samples.build(facility: FactoryGirl.create(:facility), 
+                                         container: FactoryGirl.create(:container), 
                                          project_id: 1, 
                                          sample_set_id: 1,
                                          is_primary: true, 
@@ -19,6 +20,8 @@ describe Sample do
   it { should respond_to( :storage_location) }
   it { should respond_to( :facility_id ) }
   it { should respond_to( :storage_location_id ) }
+  it { should respond_to( :container_id ) }
+  it { should respond_to( :container ) }
   it { should respond_to( :project_id  ) }
   it { should respond_to( :comments ) }
   it { should respond_to( :is_primary ) }
@@ -111,6 +114,18 @@ describe Sample do
     before do 
       @sample.is_primary = false
       @sample.parent_id = ''
+    end
+    
+    it { should_not be_valid }
+  end
+  
+  describe "when a sample's storage location is not the same as the location of a container it is housed in" do
+    let(:loc1) { FactoryGirl.create(:storage_location, code:'LOC1') }
+    let(:loc2) { FactoryGirl.create(:storage_location, code:'LOC2') }
+    
+    before do
+      @sample.storage_location = loc1
+      @sample.container.storage_location = loc2
     end
     
     it { should_not be_valid }
