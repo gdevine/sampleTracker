@@ -73,6 +73,9 @@
       <%= f.label :storage_location_id, "Storage Location" %>
       <%= collection_select(:sample, :storage_location_id, StorageLocation.all, :id, :code) %>
       
+      <%= f.label :container_id, "Container" %>
+      <%= collection_select(:sample, :container_id, Container.all, :id, :id) %>
+      
       <%= f.label :comments, "Additional Comments" %>
       <%= f.text_area :comments, size: "60x12" %>
 

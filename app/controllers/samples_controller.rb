@@ -86,6 +86,9 @@ class SamplesController < ApplicationController
     else
       @sample.is_primary = true
     end
+    if sample_params[:container_id]
+      @sample.storage_location_id = @sample.container.storage_location_id
+    end
     
     if @sample.save
       flash[:success] = "Sample created!"
@@ -141,6 +144,7 @@ class SamplesController < ApplicationController
                                      :amount_stored,
                                      :storage_location_id,
                                      :comments,
+                                     :container_id,
                                      :is_primary,
                                      :parent_id)
     end

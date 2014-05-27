@@ -1,0 +1,20 @@
+<% if @containers.any? %>
+  <%= will_paginate @containers %>
+  <table class="table table-bordered table-striped table-hover" width="647">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Type</th>
+        <th>Location</th>
+        <th>Owner</th>
+        <th>View?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render partial: 'containers/containers_table', collection: @containers, as: :container %>
+    </tbody>
+  </table>
+  
+<% else %>
+  <p>No Containers found</p>
+<% end %>

@@ -1,0 +1,22 @@
+<% provide(:title, "Edit Container") %>
+<% provide(:pageheading, 'Edit Container '+ @container.id.to_s ) %>
+
+<div class="row">
+  <div class="span6 offset3">
+    <%= form_for(@container) do |f| %>
+      <%= render 'shared/error_messages', object: f.object %>
+      
+      <%= f.label :container_type, 'Container Type' %>
+      <%= f.text_field :container_type %>
+      
+      <%= f.label :description, "Description" %>
+      <%= f.text_area :description, size: "60x12" %>
+      
+      <%= f.label :storage_location_id, "Storage Location" %>
+      <%= collection_select(:container, :storage_location_id, StorageLocation.all, :id, :code, include_blank:true) %>
+      
+      <%= f.submit "Update Container", class: "btn btn-large btn-primary" %>
+    <% end %>
+
+  </div>
+</div>

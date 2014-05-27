@@ -1,11 +1,12 @@
 SampleTracker::Application.routes.draw do
-  
+
   resources :users
   resources :sessions, only: [:new, :create, :destroy]
   resources :sample_sets
   resources :samples
   resources :facilities
   resources :storage_locations
+  resources :containers
   
   resources :sample_sets do
     resources :samples, only: [:index]

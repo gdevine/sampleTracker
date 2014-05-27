@@ -227,6 +227,22 @@
     </div>
     <div class="row">     
       <div class="span3">
+        <h5>Container</h5>
+      </div>
+      <div class="span3 offset1">
+        <% if @sample.container.present? %>
+          <h5><%= @sample.container.id %></h5>
+        <% else %>
+          <% if @sample.sampled? %>
+            <h5>N/A</h5>
+          <% else %>
+            <h5></h5>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+    <div class="row">     
+      <div class="span3">
         <h5>Storage Location</h5>
       </div>
       <div class="span3 offset1">

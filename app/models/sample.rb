@@ -76,7 +76,7 @@ class Sample < ActiveRecord::Base
   def same_storage_location_and_container_location
     #To test that a sample's location is the same as a container it's held within 
     errors.add(:base, "A sample's storage location and container location must be the same") if
-      self.container.storage_location != self.storage_location 
+      self.sampled && self.container && self.container.storage_location != self.storage_location 
   end
   
   ##

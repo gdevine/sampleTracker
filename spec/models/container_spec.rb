@@ -35,10 +35,10 @@ describe Container do
 
     before { @container.save }
     let!(:older_sample) do
-      FactoryGirl.create(:sample, owner: owner, container: @container, created_at: 1.day.ago)
+      FactoryGirl.create(:sample, owner: owner, container: @container, storage_location_id: @container.storage_location_id, created_at: 1.day.ago)
     end
     let!(:newer_sample) do
-      FactoryGirl.create(:sample, owner: owner, container: @container, created_at: 1.hour.ago)
+      FactoryGirl.create(:sample, owner: owner, container: @container, storage_location_id: @container.storage_location_id, created_at: 1.hour.ago)
     end
 
     it "should have the right samples in the right order" do

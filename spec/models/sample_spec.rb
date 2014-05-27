@@ -124,8 +124,9 @@ describe Sample do
     let(:loc2) { FactoryGirl.create(:storage_location, code:'LOC2') }
     
     before do
-      @sample.storage_location = loc1
-      @sample.container.storage_location = loc2
+      @sample.sampled = true
+      @sample.storage_location_id = loc1.id
+      @sample.container.storage_location_id = loc2.id      
     end
     
     it { should_not be_valid }

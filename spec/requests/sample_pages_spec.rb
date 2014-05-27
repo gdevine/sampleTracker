@@ -68,7 +68,6 @@ describe "Sample pages:" do
                                                         tree: 3,
                                                         plot: 1,
                                                         ring:2,
-                                                        storage_location_id: 3,
                                                         date_sampled: Date.new(2012, 12, 3),
                                                         sampled: true
                                                          ) }  
@@ -77,7 +76,6 @@ describe "Sample pages:" do
                                                         tree: 3,
                                                         plot: 1,
                                                         ring:2,
-                                                        storage_location_id: 3,
                                                         date_sampled: Date.new(2012, 12, 3),
                                                         sampled: true
                                                          ) }                                                       
@@ -86,7 +84,6 @@ describe "Sample pages:" do
                                                         tree: 4,
                                                         plot: 1,
                                                         ring:2,
-                                                        storage_location_id: 2,
                                                         date_sampled: Date.new(2012, 12, 3),
                                                         sampled: true,
                                                         parent: sampled_sample,
@@ -97,7 +94,6 @@ describe "Sample pages:" do
                                                         tree: 4,
                                                         plot: 1,
                                                         ring:2,
-                                                        storage_location_id: 2,
                                                         date_sampled: Date.new(2012, 11, 3),
                                                         sampled: true,
                                                         parent: sampled_sample,
@@ -246,7 +242,6 @@ describe "Sample pages:" do
                                                         tree: 3,
                                                         plot: 1,
                                                         ring:2,
-                                                        storage_location_id: 3,
                                                         date_sampled: Date.new(2012, 12, 3),
                                                         sampled: true
                                                         ) }      
@@ -255,7 +250,6 @@ describe "Sample pages:" do
                                                         tree: 3,
                                                         plot: 1,
                                                         ring:2,
-                                                        storage_location_id: 3,
                                                         date_sampled: Date.new(2012, 12, 3),
                                                         sampled: true
                                                          ) }                                                                                                                
@@ -264,7 +258,6 @@ describe "Sample pages:" do
                                                         tree: 4,
                                                         plot: 1,
                                                         ring:2,
-                                                        storage_location_id: 2,
                                                         date_sampled: Date.new(2012, 12, 3),
                                                         sampled: true,
                                                         parent: sampled_sample,
@@ -385,6 +378,7 @@ describe "Sample pages:" do
       
       it { should have_content('Edit Sample ' + sample.id.to_s) }
       it { should have_title(full_title('Edit Sample')) }
+      
       it { should_not have_title('| Home') }
       it { should_not have_selector('#sample_sample_set_id') }
       

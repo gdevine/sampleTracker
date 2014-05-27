@@ -52,6 +52,15 @@ namespace :db do
                               custodian_id: 1+ rand(4))
     end
     
+    # Create dummy containers    
+    10.times do |n|
+      container_type = "Type-#{n+1}"
+      description  = "This is a description of this container"
+      Container.create!(container_type: container_type,
+                        description: description,
+                        owner_id: 1+ rand(4),
+                        storage_location_id: 1+ rand(2))
+    end
     
     # Create a set of sample sets (that are still to be sampled) associated with users (samples will be created by default)
     users = User.all(limit: 5)

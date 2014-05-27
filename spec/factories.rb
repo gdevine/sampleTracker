@@ -29,8 +29,8 @@ FactoryGirl.define do
   factory :container do
     container_type 'box'
     description 'A description of this container'
-    storage_location_id 1
     association :owner, :factory  => :user
+    association :storage_location, :factory  => :storage_location
   end
   
   factory :sample_set do
@@ -65,7 +65,6 @@ FactoryGirl.define do
     association :owner, :factory  => :user
     association :facility, :factory  => :facility
     association :storage_location, :factory  => :storage_location
-    # association :sample_set, :factory  => :sample_set
   end
 
 end
