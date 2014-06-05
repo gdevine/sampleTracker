@@ -2,7 +2,8 @@ require 'prawn/qrcode'
 
 class SamplesController < ApplicationController
   before_action :signed_in_user, only: [:index, :new, :show, :update, :edit, :create, :destroy]
-  before_action :correct_user,   only: :destroy
+  before_action :correct_user, only: [:edit, :update, :destroy]
+  before_action :set_is_primary, :only => [:create, :update]
   
   def index   
     if params[:sample_set_id]
@@ -79,16 +80,6 @@ class SamplesController < ApplicationController
   
   def create
     @sample = current_user.samples.build(sample_params)
-    if sample_params[:parent_id]
-      @parent = Sample.find(sample_params[:parent_id])
-      @sample.parent_id = @parent.id
-      @sample.is_primary = false
-    else
-      @sample.is_primary = true
-    end
-    if sample_params[:container_id]
-      @sample.storage_location_id = @sample.container.storage_location_id
-    end
     
     if @sample.save
       flash[:success] = "Sample created!"
@@ -101,6 +92,10 @@ class SamplesController < ApplicationController
 
   def edit
     @sample = Sample.find(params[:id])
+    # Include details of the parent if editing a subsample
+    if @sample.parent_id
+      @parent = Sample.find(@sample.parent_id)
+    end
   end
      
   def update
@@ -152,6 +147,15 @@ class SamplesController < ApplicationController
     def correct_user
       @sample = current_user.samples.find_by(id: params[:id])
       redirect_to root_url if @sample.nil?
+    end
+    
+    # Set correct is_primary in the params hash
+    def set_is_primary
+      if !sample_params['parent_id'].blank?
+        params[:sample][:is_primary] = 'false'
+      else
+        params[:sample][:is_primary] = 'true'
+      end
     end
 
 end

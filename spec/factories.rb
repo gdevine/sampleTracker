@@ -49,8 +49,7 @@ FactoryGirl.define do
     date_sampled Date.new(2013, 11, 7)   
     facility_id 1    
     project_id 4     
-    comments "Some comments I've added"       
-    is_primary true     
+    comments "Some comments I've added"   
     ring 3           
     tree 4           
     plot 6           
@@ -61,6 +60,7 @@ FactoryGirl.define do
     amount_collected '40g'
     amount_stored '40g'
     sampled true
+    is_primary true
     
     association :owner, :factory  => :user
     association :facility, :factory  => :facility

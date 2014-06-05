@@ -1,6 +1,6 @@
 class StorageLocationsController < ApplicationController
   before_action :signed_in_user, only: [:index, :show, :new, :create, :edit, :update, :destroy]
-  before_action :correct_user,   only: :destroy
+  before_action :correct_user, only: [:edit, :update, :destroy]
   
   def index   
     @storage_locations = StorageLocation.paginate(page: params[:page])

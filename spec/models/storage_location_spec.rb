@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Facility do
+describe StorageLocation do
   
   let(:custodian) { FactoryGirl.create(:user) }
   before { @storage_location = custodian.storage_locations.build(code: "HIE-L9R32", 

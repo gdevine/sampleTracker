@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe Container do
-  let(:owner) { FactoryGirl.create(:user) }
   
-  before do 
-    @container = owner.containers.build(container_type: "box", description: "Lorem ipsum", storage_location_id: 1) 
-  end
+  let(:owner) { FactoryGirl.create(:user) }
+  let(:loc) { FactoryGirl.create(:storage_location, code:'LOC1') }
+  before { @container = owner.containers.build(container_type: "box", 
+                                               storage_location_id: loc.id) }
 
   subject { @container }
 
@@ -32,17 +32,19 @@ describe Container do
   end
   
   describe "sample associations" do
-
+    
     before { @container.save }
+    
     let!(:older_sample) do
-      FactoryGirl.create(:sample, owner: owner, container: @container, storage_location_id: @container.storage_location_id, created_at: 1.day.ago)
+      FactoryGirl.create(:sample, owner: owner, container: @container, storage_location: @container.storage_location, created_at: 1.day.ago)
     end
-    let!(:newer_sample) do
-      FactoryGirl.create(:sample, owner: owner, container: @container, storage_location_id: @container.storage_location_id, created_at: 1.hour.ago)
+    
+    let!(:newer_sample) do 
+      FactoryGirl.create(:sample, owner: owner, container: @container, storage_location: @container.storage_location, created_at: 1.hour.ago) 
     end
-
+    
     it "should have the right samples in the right order" do
-      expect(@container.samples.to_a).to eq [newer_sample, older_sample]
+      expect(Container.find_by(id:@container.id).samples.to_a).to eq [newer_sample, older_sample]
     end
     
   end

@@ -12,8 +12,8 @@
       <%= render 'shared/error_messages', object: f.object %>
       
       <% if @parent %>
-        <!-- Start with subsample case in which it should automatically adopt certain values of its parent-->
-        <%= f.hidden_field :parent_id, :value => @parent.id %>
+          <!-- Start with subsample case in which it should automatically adopt certain values of its parent-->
+          <%= f.hidden_field :parent_id, :value => @parent.id %>
 	      <%= f.hidden_field :facility_id, :value => @parent.facility_id %>
 	      <%= f.hidden_field :project_id, :value => @parent.project_id %>
 	      <%= f.hidden_field :material_type, :value => @parent.material_type %>
@@ -30,7 +30,7 @@
 	  <% else %>
           <!-- Expose all form fields for entry --> 
 	      <%= f.label :facility_id, 'Facility' %>
-	      <%= collection_select(:sample, :facility_id, Facility.all, :id, :code) %>
+	      <%= collection_select(:sample, :facility_id, Facility.all, :id, :code, include_blank:true) %>
 	      
 	      <%= f.label :project_id, 'Project' %>
 	      <%= f.number_field :project_id, :min => 0 %>
@@ -71,10 +71,10 @@
       <%= f.text_field :amount_stored %>
       
       <%= f.label :storage_location_id, "Storage Location" %>
-      <%= collection_select(:sample, :storage_location_id, StorageLocation.all, :id, :code) %>
+      <%= collection_select(:sample, :storage_location_id, StorageLocation.all, :id, :code, include_blank:true) %>
       
       <%= f.label :container_id, "Container" %>
-      <%= collection_select(:sample, :container_id, Container.all, :id, :id) %>
+      <%= collection_select(:sample, :container_id, Container.all, :id, :id, include_blank:true) %>
       
       <%= f.label :comments, "Additional Comments" %>
       <%= f.text_area :comments, size: "60x12" %>

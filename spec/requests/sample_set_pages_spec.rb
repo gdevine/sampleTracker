@@ -87,7 +87,7 @@ describe "sample_set pages:" do
         
         let(:numsamples) { 50 }
         before do
-          find('#sample_set_facility_id').find(:xpath, 'option['+myfacility.id.to_s+']').select_option
+          find('#sample_set_facility_id').find(:xpath, 'option['+(myfacility.id + 1).to_s+']').select_option
           fill_in 'sample_set_project_id'   , with: 1
           fill_in 'sample_set_num_samples'  , with: numsamples
           fill_in 'sample_set_sampling_date', with: Date.new(2012, 12, 3)
@@ -99,6 +99,12 @@ describe "sample_set pages:" do
         
         it "should create the correct number of new samples based on sample_set" do
           expect { click_button "Submit" }.to change(Sample, :count).by(numsamples)
+        end
+        
+        describe "should return to view page" do
+          before { click_button "Submit" }
+          it { should have_content('Sample Set created!') }
+          it { should have_title(full_title('Sample Set View')) }
         end
         
       end  
@@ -225,7 +231,7 @@ describe "sample_set pages:" do
       describe "with valid information" do
   
         before do
-          find('#sample_set_facility_id').find(:xpath, 'option['+myfacility.id.to_s+']').select_option
+          find('#sample_set_facility_id').find(:xpath, 'option['+(myfacility.id + 1).to_s+']').select_option
           fill_in 'sample_set_project_id'  , with: 3
           fill_in 'sample_set_num_samples'  , with: 20
           fill_in 'sample_set_sampling_date', with: Date.new(2012, 12, 6)

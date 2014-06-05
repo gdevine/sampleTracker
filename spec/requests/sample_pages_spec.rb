@@ -61,48 +61,15 @@ describe "Sample pages:" do
   
   describe "Show page" do
     
-    let!(:pending_sample) { FactoryGirl.create(:sample, owner: user,
-                                                sampled: false) }              
-                                                                            
-    let!(:sampled_sample) { FactoryGirl.create(:sample, owner: user, 
-                                                        tree: 3,
-                                                        plot: 1,
-                                                        ring:2,
-                                                        date_sampled: Date.new(2012, 12, 3),
-                                                        sampled: true
-                                                         ) }  
-                                                         
-    let!(:non_subs_sampled_sample) { FactoryGirl.create(:sample, owner: user, 
-                                                        tree: 3,
-                                                        plot: 1,
-                                                        ring:2,
-                                                        date_sampled: Date.new(2012, 12, 3),
-                                                        sampled: true
-                                                         ) }                                                       
-                                                         
-    let!(:sub_sample) { FactoryGirl.create(:sample, owner: user, 
-                                                        tree: 4,
-                                                        plot: 1,
-                                                        ring:2,
-                                                        date_sampled: Date.new(2012, 12, 3),
-                                                        sampled: true,
-                                                        parent: sampled_sample,
-                                                        is_primary: false
-                                                         ) }  
-                                                                  
-    let!(:sub_sample2) { FactoryGirl.create(:sample, owner: user, 
-                                                        tree: 4,
-                                                        plot: 1,
-                                                        ring:2,
-                                                        date_sampled: Date.new(2012, 11, 3),
-                                                        sampled: true,
-                                                        parent: sampled_sample,
-                                                        is_primary: false
-                                                         ) }                                                                                                                                                      
+    let!(:pending_sample)          { FactoryGirl.create(:sample, owner: user, sampled: false) }              
+    let!(:sampled_sample)          { FactoryGirl.create(:sample, owner: user, sampled: true) }  
+    let!(:non_subs_sampled_sample) { FactoryGirl.create(:sample, owner: user, sampled: true) }                                                  
+    let!(:sub_sample)              { FactoryGirl.create(:sample, owner: user, sampled: true, parent: sampled_sample, is_primary: false ) }  
+    let!(:sub_sample2)             { FactoryGirl.create(:sample, owner: user, sampled: true, parent: sampled_sample, is_primary: false ) }                                                                                                                                                      
     
     describe "for signed-in users" do
       
-      before { sign_in user }
+      before { sign_in user }  
       
       describe "on a 'pending' sample" do
         
@@ -339,13 +306,18 @@ describe "Sample pages:" do
       describe "with valid information" do
         
         before do
-          find('#sample_facility_id').find(:xpath, 'option['+myfacility.id.to_s+']').select_option
+          find('#sample_facility_id').find(:xpath, 'option['+(myfacility.id + 1).to_s+']').select_option
           fill_in 'sample_project_id', with: 1
           fill_in 'sample_tree', with: 4
           fill_in 'sample_plot', with: 4
           fill_in 'sample_ring', with: 1
-          find('#sample_storage_location_id').find(:xpath, 'option['+mystoragelocation.id.to_s+']').select_option
+          find('#sample_storage_location_id').find(:xpath, 'option['+(mystoragelocation.id + 1).to_s+']').select_option
           fill_in 'sample_date_sampled', with: Date.new(2012, 12, 3)
+        end
+        
+        describe "should return to view page" do
+          before { click_button "Submit" }
+          it { should have_content('Sample created!') }
         end
         
         it "should create a sample" do
@@ -369,11 +341,12 @@ describe "Sample pages:" do
   describe "edit page" do
     
     let!(:sample) { FactoryGirl.create(:sample, owner: user) }
+    let!(:subsample) { FactoryGirl.create(:sample, owner: user, is_primary: false, parent_id: sample.id) }
+    let!(:myfacility) { sample.facility }
     
-    describe "for signed-in users" do
+    describe "for signed-in users on a primary sample" do
     
       before { sign_in user }
-      let!(:myfacility) { sample.facility }
       before { visit edit_sample_path(sample) }
       
       it { should have_content('Edit Sample ' + sample.id.to_s) }
@@ -400,7 +373,7 @@ describe "Sample pages:" do
       describe "with valid information" do
   
         before do
-          find('#sample_facility_id').find(:xpath, 'option['+myfacility.id.to_s+']').select_option
+          find('#sample_facility_id').find(:xpath, 'option['+(myfacility.id+1).to_s+']').select_option
           fill_in 'sample_project_id'   , with: 4
           fill_in 'sample_date_sampled', with: Date.new(2012, 12, 6)
         end
@@ -414,6 +387,56 @@ describe "Sample pages:" do
           it { should have_content('Sample updated') }
         end
       
+      end
+      
+      describe "with changing the location when it is part of a container" do
+        
+        let!(:mystoragelocation) { FactoryGirl.create(:storage_location, custodian: user) } 
+        let!(:mycontainer) { FactoryGirl.create(:container, owner: user, storage_location_id: mystoragelocation.id ) }
+        let!(:container_sample) { FactoryGirl.create(:sample, owner: user, container_id: mycontainer.id, storage_location_id:mycontainer.storage_location.id, is_primary: true ) }
+        let!(:newstoragelocation) { FactoryGirl.create(:storage_location, custodian: user) } 
+  
+        before do
+          visit edit_sample_path(container_sample)
+          find('#sample_storage_location_id').find(:xpath, 'option['+(newstoragelocation.id+1).to_s+']').select_option
+        end
+        
+        it "should not change the sample count" do
+          expect { click_button "Update" }.not_to change(Sample, :count).by(1)
+        end
+        
+        describe "should return an error" do
+          let!(:error_message) {"Unable to change the location of a Sample that is housed in a container. Either remove the sample from the container or edit the location of the container directly"}
+          before { click_button "Update" }
+          
+          it { should have_title(full_title('Edit Sample')) }
+          it { should have_content(error_message) }
+        end
+      
+      end
+      
+    end
+    
+    describe "for signed-in users on a subsample" do
+      before { sign_in user }
+      before { visit edit_sample_path(subsample) }
+      
+      it { should have_content('Edit Sample ' + subsample.id.to_s + ' (subsample of '+subsample.parent_id.to_s+')' )}
+      it { should have_content('Adopted details from parent sample')}
+      
+      describe "with invalid information" do
+        before do
+          find('#sample_storage_location_id').find(:xpath, 'option[normalize-space(text())=""]').select_option
+          click_button "Update"
+        end
+        
+        describe "should return an error" do
+          it { should have_content('error') }
+        end
+        
+        describe "should be returned to edit subsample page" do
+          it { should have_content('Adopted details from parent sample') }
+        end
       end
       
     end

@@ -1,64 +1,251 @@
 <% provide(:title, "Edit Sample") %>
-<% provide(:pageheading, 'Edit Sample '+ @sample.id.to_s) %>
+
+<% if @parent %>
+  <% provide(:pageheading, 'Edit Sample '+ @sample.id.to_s + ' (subsample of '+@parent.id.to_s+')') %>
+<% else %>
+  <% provide(:pageheading, 'Edit Sample '+ @sample.id.to_s ) %>
+<% end %>
+
 
 <%= form_for(@sample) do |f| %>
-<div class="row">
-  <div class="span6 offset1">
-      <%= render 'shared/error_messages', object: f.object %>
-
-      <%= f.label :facility_id, 'Facility' %>
-      <%= collection_select(:sample, :facility_id, Facility.all, :id, :code) %>
+  <div class="row">
       
-      <%= f.label :project_id, 'Project' %>
-      <%= f.number_field :project_id, :min => 0 %>
-      
-      <%= f.label :date_sampled, 'Date Sampled' %>
-      <%= f.date_field :date_sampled %>
-    
-      <%= f.label :material_type, "Sample Type" %>
-      <%= f.text_field :material_type %>
-      
-      <%= f.label :plot, 'Plot' %>
-      <%= f.number_field :plot, :min => 0 %>
-      
-      <%= f.label :ring, 'Ring' %>
-      <%= f.number_field :ring, :min => 0 %>
-      
-      <%= f.label :tree, 'Tree' %>
-      <%= f.number_field :tree, :min => 0 %>
-      
-      <%= f.label :northing, 'Northing' %>
-      <%= f.number_field :northing, :min => 0 %>
-      
-      <%= f.label :easting, 'Easting' %>
-      <%= f.number_field :easting, :min => 0 %>
-      
-      <%= f.label :vertical, 'Height' %>
-      <%= f.number_field :vertical, :min => 0 %>
-      
-      <%= f.label :amount_collected, "Amount Collected" %>
-      <%= f.text_field :amount_collected %>
-      
-      <%= f.label :amount_stored, "Amount Stored" %>
-      <%= f.text_field :amount_stored %>
-      
+    <% if @parent %> 
+      <div class="span6 offset3">
+          <%= render 'shared/error_messages', object: f.object %>
+          <!-- Start with subsample case in which it should automatically adopt certain values of its parent-->
+	      <%= f.hidden_field :parent_id, :value => @parent.id %>
+	      <%= f.hidden_field :facility_id, :value => @parent.facility_id %>
+	      <%= f.hidden_field :project_id, :value => @parent.project_id %>
+	      <%= f.hidden_field :material_type, :value => @parent.material_type %>
+	      <%= f.hidden_field :sample_set_id, :value => '' %> <!-- A subsample does not have a sampleset directly attached to it-->
+	      <%= f.hidden_field :date_sampled, :value => @parent.date_sampled %>
+	      <%= f.hidden_field :plot, :value => @parent.plot %>
+	      <%= f.hidden_field :tree, :value => @parent.tree %>
+	      <%= f.hidden_field :ring, :value => @parent.ring %>
+	      <%= f.hidden_field :northing, :value => @parent.northing %>
+	      <%= f.hidden_field :easting, :value => @parent.easting %>
+	      <%= f.hidden_field :vertical, :value => @parent.vertical %>
+	      <%= f.hidden_field :sampled, :value => 'true' %>        <!-- forcing 'sampled = true' for samples that are added as a subsample of another sample -->
+	      <%= f.hidden_field :amount_collected, :value => 'N/A' %> <!-- forcing 'amount collected = N/A' for subsamples -->
+	<% else %>
+      <div class="span6 offset1">
+          <%= render 'shared/error_messages', object: f.object %>
+	      <!-- Expose all form fields for entry --> 
+	      <%= f.label :facility_id, 'Facility' %>
+	      <%= collection_select(:sample, :facility_id, Facility.all, :id, :code, include_blank:true) %>
+	      
+	      <%= f.label :project_id, 'Project' %>
+	      <%= f.number_field :project_id, :min => 0 %>
+	      
+	      <%= f.label :material_type, "Sample Type" %>
+	      <%= f.text_field :material_type %>
+	      
+	      <%= f.label :date_sampled, 'Date Sampled' %>
+	      <%= f.date_field :date_sampled %>
+	      
+	      <%= f.label :plot, 'Plot' %>
+	      <%= f.number_field :plot, :min => 0 %>
+	      
+	      <%= f.label :ring, 'Ring' %>
+	      <%= f.number_field :ring, :min => 0 %>
+	      
+	      <%= f.label :tree, 'Tree' %>
+	      <%= f.number_field :tree, :min => 0 %>
+	      
+	      <%= f.label :northing, 'Northing' %>
+	      <%= f.number_field :northing, :min => 0 %>
+	      
+	      <%= f.label :easting, 'Easting' %>
+	      <%= f.number_field :easting, :min => 0 %>
+	      
+	      <%= f.label :vertical, 'Height' %>
+	      <%= f.number_field :vertical, :min => 0 %>
+	      
+	      <%= f.label :amount_collected, "Amount Collected" %>
+	      <%= f.text_field :amount_collected %>
+	      
+	  <% end %>
+	  
+	  <%= f.label :amount_stored, "Amount Stored" %>
+	  <%= f.text_field :amount_stored %>
+	   
       <%= f.label :storage_location_id, "Storage Location" %>
-      <%= collection_select(:sample, :storage_location_id, StorageLocation.all, :id, :code) %>
-      
+      <%= collection_select(:sample, :storage_location_id, StorageLocation.all, :id, :code, include_blank:true) %>
+         
+      <%= f.label :container_id, "Container" %>
+      <%= collection_select(:sample, :container_id, Container.all, :id, :id, include_blank:true) %>
+     
       <%= f.label :comments, "Additional Comments" %>
       <%= f.text_area :comments, size: "60x12" %>
+      
+	  <% if @parent %> 
+	    <%= f.hidden_field :sampled, :value => 'true' %>    <!-- forcing 'sampled = true' for subsamples -->
+	    </div>
+	  <% else %>
+	      </div>
+		  <div class="span3 offset1 well well-semigreen center">
+		      <%= f.label :sampled, "Mark as 'Complete'?" %>
+		      <%= f.check_box :sampled %>
+		  </div>	
+	  <% end %>
 
   </div>
-  <div class="span3 offset1 well well-semigreen center">
-      <%= f.label :sampled, "Mark as 'Complete'?" %>
-      <%= f.check_box :sampled %>
-  </div>	
-</div>
 
-<div class="row">
-  <div class="span6 offset3">
+  <div class="row">
+    <div class="span6 offset3">
       <%= f.submit "Update Sample", class: "btn btn-block btn-large btn-primary" %>
+    </div>
   </div>
-</div>
 
+<% end %>
+
+<% if @parent %>
+	<div class="row rowline"> 
+	  	<h2>Adopted details from parent sample</h2>
+	</div>
+	
+	<div class="row"> 
+	  <div class="span8 offset3">
+	    <div class="row">   
+	      <div class="span3">
+	        <h5>Owner</h5>
+	      </div>
+	      <div class="span3 offset1">
+	        <h5><%= @parent.owner.firstname %> <%= @parent.owner.surname %></h5>
+	      </div>
+	    </div>
+	    <div class="row">   
+	      <div class="span3">
+	        <h5>Facility</h5>
+	      </div>
+	      <div class="span3 offset1">
+	        <h5><%= @parent.facility.code %></h5>
+	      </div>
+	    </div>
+	    <div class="row">     
+	      <div class="span3">
+	        <h5>Project</h5>
+	      </div>
+	      <div class="span3 offset1">
+	        <h5><%= @parent.project_id %></h5>
+	      </div>
+	    </div>
+	    <div class="row">     
+	      <div class="span3">
+	        <h5>Member of Sample Set</h5>
+	      </div>
+	      <div class="span3 offset1">
+	        <h5><%= @parent.sample_set_id %></h5>
+	      </div>
+	    </div>
+	    
+	    <div class="row">     
+	      <div class="span3">
+	        <h5>Date sample taken</h5>
+	      </div>
+	      <div class="span3 offset1">
+	        <h5><%= @parent.date_sampled %></h5>
+	      </div>
+	    </div>
+	    <div class="row">     
+	      <div class="span3">
+	        <h5>Sample Type</h5>
+	      </div>
+	      <div class="span3 offset1">
+	        <% if @parent.material_type.present? %>
+	          <h5><%= @parent.material_type %></h5>
+	        <% else %>
+	          <h5></h5>
+	        <% end %>
+	      </div>
+	    </div>
+	    <div class="row">     
+	      <div class="span3">
+	        <h5>Plot</h5>
+	      </div>
+	      <div class="span3 offset1">
+	        <% if @parent.plot.present? %>
+	          <h5><%= @parent.plot %></h5>
+	        <% else %>
+	          <h5></h5>
+	        <% end %>
+	      </div>
+	    </div>
+	    <div class="row">     
+	      <div class="span3">
+	        <h5>Ring</h5>
+	      </div>
+	      <div class="span3 offset1">
+	        <% if @parent.ring.present? %>
+	          <h5><%= @parent.ring %></h5>
+	        <% else %>
+	          <h5></h5>
+	        <% end %>
+	      </div>
+	    </div>
+	    <div class="row">     
+	      <div class="span3">
+	        <h5>Tree</h5>
+	      </div>
+	      <div class="span3 offset1">
+	        <% if @parent.tree.present? %>
+	          <h5><%= @parent.tree %></h5>
+	        <% else %>
+	          <h5></h5>
+	        <% end %>
+	      </div>
+	    </div>
+	    <div class="row">     
+	      <div class="span3">
+	        <h5>Northing</h5>
+	      </div>
+	      <div class="span3 offset1">
+	        <% if @parent.northing.present? %>
+	          <h5><%= @parent.northing %></h5>
+	        <% else %>
+	          <h5></h5>
+	        <% end %>
+	      </div>
+	    </div>
+	    <div class="row">     
+	      <div class="span3">
+	        <h5>Easting</h5>
+	      </div>
+	      <div class="span3 offset1">
+	        <% if @parent.easting.present? %>
+	          <h5><%= @parent.easting %></h5>
+	        <% else %>
+	          <h5></h5>
+	        <% end %>
+	      </div>
+	    </div>
+	    <div class="row">     
+	      <div class="span3">
+	        <h5>Height</h5>
+	      </div>
+	      <div class="span3 offset1">
+	        <% if @parent.vertical.present? %>
+	          <h5><%= @parent.vertical %></h5>
+	        <% else %>
+	          <h5></h5>
+	        <% end %>
+	      </div>
+	    </div>
+	    <div class="row">     
+	      <div class="span3">
+	        <h5>Amount Collected</h5>
+	      </div>
+	      <div class="span3 offset1">
+	        <% if @parent.amount_collected.present? %>
+	          <h5><%= @parent.amount_collected %></h5>
+	        <% else %>
+	          <h5></h5>
+	        <% end %>
+	      </div>
+	    </div>
+	
+	  </div>
+	</div>
+	
 <% end %>

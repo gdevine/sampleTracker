@@ -37,9 +37,9 @@ describe "Container pages:" do
         end
                    
         it "should list each container" do
-          Container.paginate(page: 1).each do |container|
-            expect(page).to have_selector('table tr td', text: container.id)
-            expect(page).to have_selector('table tr td', text: container.container_type)
+          Container.paginate(page: 1).each do |con|
+            expect(page).to have_selector('table tr td', text: con.id)
+            expect(page).to have_selector('table tr td', text: con.container_type)
           end
         end
         
@@ -136,7 +136,7 @@ describe "Container pages:" do
         end
       end
       
-      describe "who don't govern the current container" do
+      describe "who don't own the current container" do
          let(:non_owner) { FactoryGirl.create(:user) }
          before do 
            sign_in non_owner
@@ -151,20 +151,17 @@ describe "Container pages:" do
       end
       
       describe "should show correct sample associations" do
-        let!(:facility) { FactoryGirl.create(:facility) }
+        let!(:first_sample) { FactoryGirl.create(:sample, owner: user, container_id: container.id, storage_location_id:container.storage_location_id ) }
+        let!(:second_sample) { FactoryGirl.create(:sample, owner: user, container_id: container.id, storage_location_id:container.storage_location_id ) }
+        
         before do 
-          FactoryGirl.create(:sample, owner: user, facility_id: facility.id, container_id: container.id, storage_location_id:container.storage_location_id )
-          FactoryGirl.create(:sample, owner: user, facility_id: facility.id, container_id: container.id, storage_location_id:container.storage_location_id )
           visit container_path(container)
         end
         
-        let!(:first_sample_id) { container.samples.first.id }
-        let!(:last_sample_id) { container.samples.last.id }
-        
         it { should have_content('Samples held within this Container') }
         it { should have_selector('table tr th', text: 'Sample ID') } 
-        it { should have_selector('table tr td', text: first_sample_id) } 
-        it { should have_selector('table tr td', text: last_sample_id) } 
+        it { should have_selector('table tr td', text: first_sample.id) } 
+        it { should have_selector('table tr td', text: second_sample.id) } 
               
       end
       
@@ -223,22 +220,22 @@ describe "Container pages:" do
   
   describe "edit page" do
     
-    let!(:container) { FactoryGirl.create(:container, owner: user) }
     let!(:mystoragelocation) { FactoryGirl.create(:storage_location, custodian: user, code:'blabla') } 
+    let!(:mycontainer) { FactoryGirl.create(:container, owner: user, storage_location_id: mystoragelocation.id) } 
+    let!(:mysample) { FactoryGirl.create(:sample, owner: user, storage_location: mystoragelocation, container_id: mycontainer.id ) }   
     
     describe "for signed-in users" do
     
       before { sign_in user }
-      before { visit edit_container_path(container) }
+      before { visit edit_container_path(mycontainer) }
       
-      it { should have_content('Edit Container ' + container.id.to_s) }
+      it { should have_content('Edit Container ' + mycontainer.id.to_s) }
       it { should have_title(full_title('Edit Container')) }
       it { should_not have_title('| Home') }
       
       describe "with invalid information" do
         
           before do
-            # find('#container_storage_location_id').find(:xpath, 'option[0]').select_option
             find('#container_storage_location_id').find(:xpath, 'option[normalize-space(text())=""]').select_option
             click_button "Update"
           end
@@ -269,11 +266,32 @@ describe "Container pages:" do
       
       end
       
+      describe "with differing storage location for container and its contained samples" do
+        let!(:newstoragelocation) { FactoryGirl.create(:storage_location, custodian: user, code:'newsl') }
+        
+     
+        describe "should return to view page with containing sample location updated" do
+          before do 
+            fill_in 'container_container_type'  , with: 'box'
+            fill_in 'container_description'   , with: 'A new description'
+            find('#container_storage_location_id').find(:xpath, 'option['+ (newstoragelocation.id).to_s+']').select_option     
+            click_button "Update"
+          end
+          
+          it { should have_content('Container updated') }
+          it { should have_title(full_title('Container View')) }
+          
+          it { should have_selector('table tr th', text: 'Storage Location') } 
+          it { should have_selector('table tr td', text: mycontainer.storage_location.code) } 
+        end
+      
+      end
+      
     end
     
     describe "for non signed-in users" do
       describe "should be redirected back to signin" do
-        before { visit edit_container_path(container) }
+        before { visit edit_container_path(mycontainer) }
         it { should have_title('Sign in') }
       end
     end

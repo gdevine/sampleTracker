@@ -1,6 +1,6 @@
 class SampleSetsController < ApplicationController
   before_action :signed_in_user, only: [:index, :new, :show, :update, :edit, :create, :destroy]
-  before_action :correct_user,   only: :destroy
+  before_action :correct_user, only: [:edit, :update, :destroy]
   
   def index   
     @sample_sets = SampleSet.paginate(page: params[:ss_page])
@@ -21,7 +21,7 @@ class SampleSetsController < ApplicationController
     if @sample_set.save
       UserMailer.newss_email(@sample_set).deliver
       flash[:success] = "Sample Set created!"
-      redirect_to root_url
+      redirect_to @sample_set
     else
       @sample_sets = []
       render 'new'

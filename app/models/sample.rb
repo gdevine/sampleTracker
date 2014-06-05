@@ -12,7 +12,7 @@ class Sample < ActiveRecord::Base
   validates :owner_id, presence: true
   validates :facility_id, presence: true
   validates :project_id, presence: true
-  validates :is_primary, inclusion: [true,false]
+  validates :is_primary, inclusion: { in: [true, false] }
   validates :storage_location_id, presence: true, if: "sampled?"  # A sample can't be marked as sampled if no storage location has been assigned
   validates :date_sampled, presence: true, if: "sampled?"  # A sample can't be marked as sampled if no date sampled has been assigned
   
@@ -22,8 +22,12 @@ class Sample < ActiveRecord::Base
   validate :has_parent_when_isprimary_is_false
   validate :same_storage_location_and_container_location
   
+  
   after_initialize :default_values
-
+  # Callback to update sample's location based on changed container location
+  before_validation :update_sample_loc_on_cont_change, on: [:update, :create]
+  # before_validation :set_is_primary, on: [:update, :create]
+  
   searchable do
     text :comments
     integer :tree
@@ -75,15 +79,35 @@ class Sample < ActiveRecord::Base
   
   def same_storage_location_and_container_location
     #To test that a sample's location is the same as a container it's held within 
-    errors.add(:base, "A sample's storage location and container location must be the same") if
-      self.sampled && self.container && self.container.storage_location != self.storage_location 
+    errors.add(:base, "Unable to change the location of a Sample that is housed in a container. Either remove the sample from the container or edit the location of the container directly") if
+      self.container && self.container.storage_location_id != self.storage_location_id 
   end
   
-  ##
   
   private
     def default_values
       self.sampled ||= false
     end
   
+  protected
+    
+    # Update a samples' storage location to match container storage location
+    def update_sample_loc_on_cont_change
+       if self.container_id_changed?
+         if !self.container_id.blank?
+           self.storage_location_id = self.container.storage_location_id
+         end
+       end
+    end
+    
+    # Update a samples' is_primary based on existance of parent
+    # def set_is_primary
+      # if self.parent_id.blank?
+        # self.is_primary = true
+      # else
+        # self.is_primary = false
+      # end
+      # # puts self.parent_id.to_s
+    # end
+    
 end
