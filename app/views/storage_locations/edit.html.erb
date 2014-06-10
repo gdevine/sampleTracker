@@ -1,9 +1,9 @@
 <% provide(:title, "Edit Storage Location") %>
 <% provide(:pageheading, 'Edit Storage Location '+ @storage_location.code ) %>
 
-<div class="row">
-  <div class="span6 offset3">
-    <%= form_for(@storage_location) do |f| %>
+<%= form_for(@storage_location) do |f| %>
+  <div class="row">
+    <div class="span6 offset3">
       <%= render 'shared/error_messages', object: f.object %>
 
       <%= f.label :code, 'Storage Location Code' %>
@@ -20,9 +20,13 @@
       
       <%= f.label :description, "Description" %>
       <%= f.text_area :description, size: "60x12" %>
-
-      <%= f.submit "Update Storage Location", class: "btn btn-large btn-primary" %>
-    <% end %>
-
+    </div>
+    
+    <div class="row">
+      <div class="span4 offset5">
+        <%= f.submit "Update Storage Location", class: "btn btn-large btn-primary" %>
+      </div>
+    </div>
+    
   </div>
-</div>
+<% end %>

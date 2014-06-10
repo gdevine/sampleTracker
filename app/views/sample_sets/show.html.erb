@@ -23,25 +23,25 @@
 
 <div class="row">  
   <div class="span3 offset3">
-    <h4>Sample Set ID</h4>
-    <h4>Owner</h4>
-    <h4>Facility</h4>
-    <h4>Project</h4>
-    <h4>Number of Samples</h4>
-    <h4>Sampling Date</h4>
-    <h4>Status</h4>
-    <h4>Additional Info</h4>
+    <h5>Sample Set ID</h5>
+    <h5>Owner</h5>
+    <h5>Facility</h5>
+    <h5>Project</h5>
+    <h5>Number of Samples</h5>
+    <h5>Sampling Date</h5>
+    <h5>Status</h5>
+    <h5>Additional Info</h5>
   </div>
   
   <div class="span3 offset1">
-    <h4><%= @sample_set.id %></h4>
-    <h4><%= @sample_set.owner.firstname %> <%= @sample_set.owner.surname %></h4>
-    <h4><%= @sample_set.facility.code %></h4>
-    <h4><%= @sample_set.project_id %></h4>
-    <h4><%= @sample_set.num_samples %></h4>
-    <h4><%= @sample_set.sampling_date %></h4>
-    <h4><%= @sample_set.status %></h4>
-    <h4><%= @sample_set.add_info %></h4>
+    <h5><%= @sample_set.id %></h5>
+    <h5><%= @sample_set.owner.firstname %> <%= @sample_set.owner.surname %></h5>
+    <h5><%= @sample_set.facility.code %></h5>
+    <h5><%= @sample_set.project_id %></h5>
+    <h5><%= @sample_set.num_samples %></h5>
+    <h5><%= @sample_set.sampling_date %></h5>
+    <h5><%= @sample_set.status %></h5>
+    <h5><%= @sample_set.add_info %></h5>
   </div>
 </div>
 

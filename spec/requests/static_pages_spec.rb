@@ -85,6 +85,12 @@ describe "Static pages:" do
   
   end
     
+  describe "Dashboard page" do
+    before { visit dashboard_path }
+
+    it { should have_content('Dashboard') }
+    it { should have_title(full_title('Dashboard')) }
+  end
     
   describe "Help page" do
     before { visit help_path }

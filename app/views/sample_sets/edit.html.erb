@@ -1,9 +1,10 @@
 <% provide(:title, "Edit Sample Set") %>
 <% provide(:pageheading, 'Edit Sample Set '+ @sample_set.id.to_s) %>
 
-<div class="row">
-  <div class="span6 offset3">
-    <%= form_for(@sample_set) do |f| %>
+
+<%= form_for(@sample_set) do |f| %>
+  <div class="row">
+    <div class="span6 offset3">
       <%= render 'shared/error_messages', object: f.object %>
 
       <%= f.label :facility_id, 'Facility' %>
@@ -20,8 +21,13 @@
       
       <%= f.label :add_info, "Additional Information" %>
       <%= f.text_area :add_info, size: "60x12" %>
-
-      <%= f.submit "Update", class: "btn btn-large btn-primary" %>
-    <% end %>
+    </div>
+    
+    <div class="row">
+      <div class="span4 offset5">
+        <%= f.submit "Update", class: "btn btn-large btn-primary" %>
+      </div>
+    </div>
+    
   </div>
-</div>
+<% end %>

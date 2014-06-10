@@ -1,4 +1,8 @@
 class StaticPagesController < ApplicationController
+  
+  def dashboard    
+  end
+  
   def home
     if signed_in?
       @sample_sets = current_user.sample_sets.paginate(page: params[:ss_page], :per_page => 10)
