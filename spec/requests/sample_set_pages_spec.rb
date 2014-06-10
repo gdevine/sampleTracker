@@ -129,7 +129,7 @@ describe "sample_set pages:" do
       before { visit sample_set_path(sample_set) }
 
       it "should delete a sample_set" do
-        expect { click_button "Delete Sample Set" }.to change(SampleSet, :count).by(-1)
+        expect { click_link "Delete Sample Set" }.to change(SampleSet, :count).by(-1)
       end
     end
   end
@@ -149,11 +149,16 @@ describe "sample_set pages:" do
       it { should have_selector('h1', :text => page_heading) }
       it { should have_title(full_title('Sample Set View')) }
       it { should_not have_title('| Home') }  
-      it { should have_button('Edit Sample Set') }
-      it { should have_button('Delete Sample Set') }
       
-      describe "when clicking the edit button" do
-        before { click_button "Edit Sample Set" }
+      it { should have_link('Options') }
+      it { should have_link('Edit Sample Set') }
+      it { should have_link('Delete Sample Set') }     
+      it { should have_link('Export Spreadsheet') }
+      it { should have_link('Print QR codes') }
+      
+      
+      describe "when clicking the edit link" do
+        before { click_link "Edit Sample Set" }
         let!(:page_heading) {"Edit Sample Set " + sample_set.id.to_s}
         
         describe 'should have a page heading for editing the correct sample set' do
@@ -168,9 +173,9 @@ describe "sample_set pages:" do
            visit sample_set_path(sample_set)
          end 
          
-         describe "should not see the edit and delete buttons" do
-           it { should_not have_button('Edit Sample Set') }
-           it { should_not have_button('Delete Sample Set') }
+         describe "should not see the edit and delete links" do
+           it { should_not have_link('Edit Sample Set') }
+           it { should_not have_link('Delete Sample Set') }
          end 
 
       end
@@ -192,8 +197,8 @@ describe "sample_set pages:" do
       describe "should be redirected back to signin" do
         before { visit sample_set_path(sample_set) }
         it { should have_title('Sign in') }
-        it { should_not have_button('Edit Sample Set') }
-        it { should_not have_button('Delete Sample Set') }
+        it { should_not have_link('Edit Sample Set') }
+        it { should_not have_link('Delete Sample Set') }
       end
     end
     

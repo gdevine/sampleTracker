@@ -9,6 +9,7 @@ class SamplesController < ApplicationController
     if params[:sample_set_id]
       # For generating the output excel file
       @samples = SampleSet.find(params[:sample_set_id]).samples.to_a.sort
+      count = @samples.count
       respond_to do |format|
         format.html
         format.csv { send_data @samples.to_csv }
@@ -25,18 +26,21 @@ class SamplesController < ApplicationController
           pdf = Prawn::Document.new
           # @samples.each do |sample|
           
-          samples = @samples.to_a
+          # samples = @samples.to_a
           s = 0
           i = 1
-          while s < @samples.count-1 do
+          
+          until s == count-1 do
             for j in 0..4 
-              qrcode = RQRCode::QRCode.new(sample_url(samples[s].id), :level=>:h, :size => 4)
+              break if s == count
+              qrcode = RQRCode::QRCode.new(sample_url(@samples[s].id), :level=>:h, :size => 4)
               pdf.bounding_box([125*j, 11+i*63], :width => 42, :height => 55) do
                 pdf.render_qr_code(qrcode)
-                pdf.text samples[s].id.to_s
+                pdf.text 'S'+@samples[s].id.to_s, :size => 8
                 s += 1
               end
             end
+            break if s == count
             i += 1
           end
            
@@ -73,8 +77,6 @@ class SamplesController < ApplicationController
     if @sample.parent_id
       @parent = Sample.find(@sample.parent_id)
     end
-    @qr = RQRCode::QRCode.new( sample_url, :size => 3, :level => :l )
-    # Attach my subsamples
     @samples = @sample.subsamples.paginate(page: params[:page])
   end
   
@@ -104,6 +106,9 @@ class SamplesController < ApplicationController
       flash[:success] = "Sample updated"
       redirect_to @sample
     else
+      if @sample.parent_id
+        @parent = Sample.find(@sample.parent_id)
+      end
       render 'edit'
     end
   end

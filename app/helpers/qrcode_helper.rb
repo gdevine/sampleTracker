@@ -1,8 +1,8 @@
 module QrcodeHelper
 
-  def render_qr_code text, size = 50
+  def render_qr_code text, size = 10
     return if text.to_s.empty?
-    qr = RQRCode::QRCode.new(text)
+    qr = RQRCode::QRCode.new(text, size:6)
     sizeStyle = "width: #{size}px; height: #{size}px;"
 
     content_tag :table, class: "qrcode pull-right" do

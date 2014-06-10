@@ -179,43 +179,40 @@ describe "Container pages:" do
   end
   
   
-  # describe "storage location destruction" do
-    # let!(:storage_location_empty) { FactoryGirl.create(:storage_location, custodian: user) }
-    # let!(:storage_location_with_samples) { FactoryGirl.create(:storage_location, custodian: user, 
-                                                                                 # code: 'L33R10', 
-                                                                                 # description: 'A description of the storage location') }
-    # let!(:sample) { FactoryGirl.create(:sample, owner: user, 
-                                                # storage_location: storage_location_with_samples,
-                                                # sampled: true
-                                                # ) }      
-#                                                 
-    # describe "as correct user" do
-      # before { sign_in user }
-#       
-      # describe "of an empty storage location" do
-        # before { visit storage_location_path(storage_location_empty) }
-# 
-        # it "should delete" do
-          # expect { click_button "Delete Location" }.to change(StorageLocation, :count).by(-1)
-        # end
-      # end
-#       
-      # describe "of a non-empty storage location" do
-        # before { visit storage_location_path(storage_location_with_samples) }
-        # it "should not delete" do
-          # expect { click_button "Delete Location" }.not_to change(StorageLocation, :count)
-        # end
-#         
-        # describe "should display an error message" do
-          # before { click_button "Delete Location" }
-          # let!(:error_message) {"Unable to delete a Storage location that contains samples and/or containers. Relocate these first."}
-#           
-          # it { should have_content(error_message) }
-        # end
-      # end
-#       
-    # end
-  # end
+  describe "container destruction" do
+    let!(:container_empty) { FactoryGirl.create(:container, owner: user) }
+    let!(:container_with_samples) { FactoryGirl.create(:container, owner: user) }
+    let!(:sample) { FactoryGirl.create(:sample, owner: user, 
+                                                container: container_with_samples
+                                                ) }      
+                                                
+    describe "as correct user" do
+      before { sign_in user }
+      
+      describe "of an empty container" do
+        before { visit container_path(container_empty) }
+
+        it "should delete" do
+          expect { click_button "Delete Container" }.to change(Container, :count).by(-1)
+        end
+      end
+      
+      describe "of a non-empty container" do
+        before { visit container_path(container_with_samples) }
+        it "should not delete" do
+          expect { click_button "Delete Container" }.not_to change(Container, :count)
+        end
+        
+        describe "should display an error message" do
+          before { click_button "Delete Container" }
+          let!(:error_message) {"Unable to delete a Container that contains samples. Relocate these first."}
+          
+          it { should have_content(error_message) }
+        end
+      end
+      
+    end
+  end
   
   
   describe "edit page" do

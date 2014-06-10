@@ -1,3 +1,24 @@
+<style type="text/css">
+  table {
+    border-width: 0;
+    border-style: none;
+    border-color: #0000ff;
+    border-collapse: collapse;
+  }
+  td {
+    border-width: 0; 
+    border-style: none;
+    border-color: #0000ff; 
+    border-collapse: collapse; 
+    padding: 0; 
+    margin: 0; 
+    width: 10px; 
+    height: 10px; 
+  }
+  td.black { background-color: #000; }
+  td.white { background-color: #fff; }
+</style>
+
 <% provide(:title, 'Container View') %>
 <% provide(:pageheading, 'Container '+ @container.id.to_s) %>
 
@@ -13,49 +34,69 @@
   </div>
 <% end %>
 
-<div class="row">  
-  <div class="span3 offset3">
-    <h4>Container ID</h4>
+<div class="row">
+  <div class="span7 offset1">	
+	
+	<div class="row">  
+	  <div class="span3">
+	    <h4>Container ID</h4>
+	  </div>
+	  <div class="span3 offset1">
+	    <h4><%= @container.id %></h4>
+	  </div>
+	</div>
+	
+	<div class="row">  
+	  <div class="span3">
+	    <h4>Container Type</h4>
+	  </div>
+	  <div class="span3 offset1">
+	    <h4><%= @container.container_type %></h4>
+	  </div>
+	</div>
+	
+	<div class="row">  
+	  <div class="span3">
+	    <h4>Storage Location</h4>
+	  </div>
+	  <div class="span3 offset1">
+	    <h4><%= @container.storage_location.code %></h4>
+	  </div>
+	</div>
+	
+	<div class="row">   
+	  <div class="span3">
+	    <h4>Owner</h4>
+	  </div>
+	  <div class="span3 offset1">
+	    <h4><%= @container.owner.firstname %> <%= @container.owner.surname %></h4>
+	  </div>
+	</div>
+	
+	<div class="row">  
+	  <div class="span3">
+	    <h4>Description</h4>
+	  </div>
+	  <div class="span3 offset1">
+	    <h4><%= @container.description %></h4>
+	  </div>
+	</div>
   </div>
-  <div class="span3 offset1">
-    <h4><%= @container.id %></h4>
+  
+  <div class="span4">
+    
+    <div class="row">
+      <div class="span2 offset1">
+        <%= render_qr_code(container_url(@container), 3) %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="span2 offset2">
+        <h5>C<%= @container.id %></h5>
+      </div>
+    </div>
   </div>
-</div>
-
-<div class="row">  
-  <div class="span3 offset3">
-    <h4>Container Type</h4>
-  </div>
-  <div class="span3 offset1">
-    <h4><%= @container.container_type %></h4>
-  </div>
-</div>
-
-<div class="row">  
-  <div class="span3 offset3">
-    <h4>Storage Location</h4>
-  </div>
-  <div class="span3 offset1">
-    <h4><%= @container.storage_location.code %></h4>
-  </div>
-</div>
-
-<div class="row">   
-  <div class="span3 offset3">
-    <h4>Owner</h4>
-  </div>
-  <div class="span3 offset1">
-    <h4><%= @container.owner.firstname %> <%= @container.owner.surname %></h4>
-  </div>
-</div>
-
-<div class="row">  
-  <div class="span3 offset3">
-    <h4>Description</h4>
-  </div>
-  <div class="span3 offset1">
-    <h4><%= @container.description %></h4>
-  </div>
+  
 </div>
 
 

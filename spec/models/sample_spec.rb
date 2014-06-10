@@ -3,10 +3,17 @@ require 'spec_helper'
 describe Sample do
 
   let(:owner) { FactoryGirl.create(:user) }
+  let(:container) { FactoryGirl.create(:container) }
   before { @sample = owner.samples.build(facility: FactoryGirl.create(:facility), 
-                                         container: FactoryGirl.create(:container), 
+                                         date_sampled: Date.new(2013, 11, 7),
+                                         container: container,  
+                                         storage_location: container.storage_location,
                                          project_id: 1, 
+                                         ring: 3,           
+                                         tree: 4,           
+                                         plot: 6,    
                                          sample_set_id: 1,
+                                         amount_collected: '40g',
                                          is_primary: true, 
                                          sampled: false) }
 
@@ -69,7 +76,8 @@ describe Sample do
   
   describe "when a 'sampled' sample does not have a storage_location" do
     before do 
-      @sample.storage_location_id = ""
+      @sample.container_id = nil
+      @sample.storage_location_id = nil
       @sample.sampled = true
     end
     
@@ -120,16 +128,31 @@ describe Sample do
   end
   
   describe "when a sample's storage location is not the same as the location of a container it is housed in" do
-    let(:loc1) { FactoryGirl.create(:storage_location, code:'LOC1') }
-    let(:loc2) { FactoryGirl.create(:storage_location, code:'LOC2') }
+    let!(:loc1) { FactoryGirl.create(:storage_location, code:'LOC1') }
+    let!(:loc2) { FactoryGirl.create(:storage_location, code:'LOC2') }
     
     before do
+      @sample.save
       @sample.sampled = true
       @sample.storage_location_id = loc1.id
       @sample.container.storage_location_id = loc2.id      
     end
     
     it { should_not be_valid }
+  end
+  
+  describe "when a subsample's facility is not the same as its parent" do
+    let!(:newfacility) { FactoryGirl.create(:facility) }                     
+    let!(:parent_sample) { FactoryGirl.create(:sample, owner: owner, sampled: true, facility_id: newfacility.id, is_primary:true ) }  
+   
+    before do
+      @sample.sampled = true
+      @sample.parent_id = parent_sample.id
+      @sample.is_primary = false
+    end 
+    
+    it { should_not be_valid }
+    
   end
   
   

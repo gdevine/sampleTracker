@@ -12,7 +12,8 @@ class StorageLocationsController < ApplicationController
   
   def show
     @storage_location = StorageLocation.find(params[:id])
-    @samples = @storage_location.samples.paginate(page: params[:page])
+    @samples = @storage_location.samples.paginate(page: params[:page], :per_page => 20)
+    @containers = @storage_location.containers.paginate(page: params[:page], :per_page => 20)
   end
 
   def create

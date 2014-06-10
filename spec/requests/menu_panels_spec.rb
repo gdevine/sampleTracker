@@ -199,4 +199,29 @@ describe "Menu Panel:" do
     end
   end
   
+  describe "opening the container dropdown" do
+    before { sign_in user }
+    before { visit root_path }
+    
+    describe "and clicking the Create New link" do
+      before do
+        click_link('containers_new')
+      end
+  
+      it "should open up the new container page" do
+        expect(page).to have_title('New Container')
+      end
+    end
+    
+    describe "and clicking the View All link" do
+      before do
+        click_link('containers_index')
+      end
+  
+      it "should open up the container index page" do
+        expect(page).to have_title('Containers List')
+      end
+    end
+  end
+  
 end

@@ -170,6 +170,23 @@ describe "Storage Location pages:" do
               
       end
       
+      describe "should show correct container associations" do
+        before do 
+          FactoryGirl.create(:container, owner: user, storage_location_id: storage_location.id )
+          FactoryGirl.create(:container, owner: user, storage_location_id: storage_location.id )
+          visit storage_location_path(storage_location)
+        end
+        
+        let!(:first_container_id) { storage_location.containers.first.id }
+        let!(:last_container_id) { storage_location.containers.last.id }
+        
+        it { should have_content('Containers associated with this storage location') }
+        it { should have_selector('table tr th', text: 'ID') } 
+        it { should have_selector('table tr td', text: first_container_id) } 
+        it { should have_selector('table tr td', text: last_container_id) } 
+              
+      end
+      
     end
     
     describe "for non signed-in users" do

@@ -1,5 +1,6 @@
 <ul class="nav navbar-nav">
   <li><%= link_to "My Page", root_path %></li>
+  
   <li class="dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Samples<b class="caret"></b></a>
     <ul class="dropdown-menu">
@@ -11,7 +12,8 @@
       </li>
     </ul>
   </li>
-    <li class="dropdown">
+  
+  <li class="dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sample Sets<b class="caret"></b></a>
     <ul class="dropdown-menu">
       <li>
@@ -22,6 +24,19 @@
       </li>
     </ul>
   </li>
+  
+  <li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Containers<b class="caret"></b></a>
+    <ul class="dropdown-menu">
+      <li>
+        <%= link_to 'View All', containers_path, :id => 'containers_index' %>
+      </li>
+      <li>
+        <%= link_to 'Create New', new_container_path, :id => 'containers_new' %>
+      </li>
+    </ul>
+  </li>
+  
   <li class="dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Facilities<b class="caret"></b></a>
     <ul class="dropdown-menu">

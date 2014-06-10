@@ -23,6 +23,7 @@ class ContainersController < ApplicationController
 
   def show
     @container = Container.find(params[:id])
+    # Attach my contained samples
     @samples = @container.samples.paginate(page: params[:page])
   end
   
@@ -37,6 +38,16 @@ class ContainersController < ApplicationController
       redirect_to @container
     else
       render 'edit'
+    end
+  end
+  
+  def destroy
+    if @container.samples.empty?
+      @container.destroy
+      redirect_to containers_path
+    else
+      flash[:error] = "Unable to delete a Container that contains samples. Relocate these first."
+      redirect_to @container
     end
   end
   

@@ -6,6 +6,15 @@
   <% provide(:pageheading, 'Edit Sample '+ @sample.id.to_s ) %>
 <% end %>
 
+<% if @sample.subsamples.exists? %>
+  <div class="row">
+    <div class="span10 offset1">
+      <div class="well well-red">
+        Note - Editing a Parent Sample will automatically update all associated subsample details
+      </div>
+    </div>
+  </div>
+<% end %>
 
 <%= form_for(@sample) do |f| %>
   <div class="row">
@@ -84,7 +93,7 @@
 	    </div>
 	  <% else %>
 	      </div>
-		  <div class="span3 offset1 well well-semigreen center">
+		  <div class="span2 offset1 well well-semigreen center">
 		      <%= f.label :sampled, "Mark as 'Complete'?" %>
 		      <%= f.check_box :sampled %>
 		  </div>	
