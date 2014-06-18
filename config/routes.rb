@@ -2,11 +2,12 @@ SampleTracker::Application.routes.draw do
 
   resources :users
   resources :sessions, only: [:new, :create, :destroy]
-  resources :sample_sets
-  resources :samples
   resources :facilities
   resources :storage_locations
   resources :containers
+  resources :samples do
+    collection { post :import }
+  end
   
   resources :sample_sets do
     resources :samples, only: [:index]
@@ -17,9 +18,9 @@ SampleTracker::Application.routes.draw do
   end
   
   
-  root  'static_pages#home'
+  root  'static_pages#dashboard'
   match '/register',    to: 'users#new',    via: 'get'
-  match '/dashboard',   to: 'static_pages#dashboard', via: 'get'
+  match '/home',        to: 'static_pages#home',    via: 'get'
   match '/help',        to: 'static_pages#help',    via: 'get'
   match '/about',       to: 'static_pages#about',   via: 'get'
   match '/contact',     to: 'static_pages#contact', via: 'get'

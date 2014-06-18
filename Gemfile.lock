@@ -129,6 +129,10 @@ GEM
     rake (10.3.2)
     rdoc (3.12.2)
       json (~> 1.4)
+    roo (1.13.2)
+      nokogiri
+      rubyzip
+      spreadsheet (> 0.6.4)
     rqrcode (0.4.2)
     rsolr (1.0.10)
       builder (>= 2.1.2)
@@ -143,6 +147,7 @@ GEM
       rspec-core (~> 2.13.0)
       rspec-expectations (~> 2.13.0)
       rspec-mocks (~> 2.13.0)
+    ruby-ole (1.2.11.7)
     rubyzip (0.9.9)
     sass (3.2.19)
     sass-rails (4.0.3)
@@ -158,6 +163,8 @@ GEM
       multi_json (~> 1.0)
       rubyzip (< 1.0.0)
       websocket (~> 1.0.4)
+    spreadsheet (0.9.7)
+      ruby-ole (>= 1.0)
     sprockets (2.11.0)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -213,6 +220,7 @@ DEPENDENCIES
   prawn-qrcode
   rails (= 4.0.2)
   rails_12factor (= 0.0.2)
+  roo
   rspec-rails (= 2.13.1)
   sass-rails (~> 4.0.2)
   sdoc (= 0.3.20)

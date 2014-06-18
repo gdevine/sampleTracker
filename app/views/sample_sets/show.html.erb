@@ -52,3 +52,13 @@
     <%= render 'samples/samples' %>
   </div>
 </div>
+
+
+<% if current_user?(@sample_set.owner) %> 
+	<h2 class= "heading-separator">Batch upload of sample information</h2>
+	<%= form_tag import_samples_path, multipart: true do %>
+	  <%= file_field_tag :file %>
+	  <%= hidden_field_tag "sample_set_id", @sample_set.id %>
+	  <%= submit_tag "Import CSV" %>
+	<% end %>
+<% end %>

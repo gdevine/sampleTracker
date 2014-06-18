@@ -26,4 +26,3 @@ class SampleSet < ActiveRecord::Base
   end
   
 end
-

@@ -23,7 +23,7 @@ class UsersController < ApplicationController
       UserMailer.welcome_email(@user).deliver
       sign_in @user
       flash[:success] = "Welcome to the HIE Sample Tracker."
-      redirect_to root_url
+      redirect_to home_url
     else
       render 'new'
     end

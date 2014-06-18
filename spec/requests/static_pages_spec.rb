@@ -5,7 +5,7 @@ describe "Static pages:" do
   subject { page }
 
   describe "Home page" do
-    before { visit root_path }
+    before { visit home_path }
 
     it { should have_content('HIE Sample Tracker') }
     it { should have_content('') }
@@ -18,7 +18,7 @@ describe "Static pages:" do
       describe "with no sample sets" do
         before do
           sign_in user
-          visit root_path
+          visit home_path
         end
         
         it "should have an information message" do
@@ -33,7 +33,7 @@ describe "Static pages:" do
           FactoryGirl.create(:sample_set, owner: user, project_id: 3)
           FactoryGirl.create(:sample_set, owner: user, project_id: 4)
           sign_in user
-          visit root_path
+          visit home_path
         end
         
         
@@ -51,7 +51,7 @@ describe "Static pages:" do
       describe "with no samples" do
         before do
           sign_in user
-          visit root_path
+          visit home_path
         end
         
         it "should have an information message" do
@@ -66,7 +66,7 @@ describe "Static pages:" do
           FactoryGirl.create(:sample, owner: user)
           FactoryGirl.create(:sample, owner: user)
           sign_in user
-          visit root_path
+          visit home_path
         end
         
         it "should have correct table heading" do
@@ -86,7 +86,7 @@ describe "Static pages:" do
   end
     
   describe "Dashboard page" do
-    before { visit dashboard_path }
+    before { visit root_path }
 
     it { should have_content('Dashboard') }
     it { should have_title(full_title('Dashboard')) }

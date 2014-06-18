@@ -60,6 +60,20 @@ class Sample < ActiveRecord::Base
     end
   end
   
+  def self.import(file, sample_set_id)
+      CSV.foreach(file.path, headers: true) do |row|
+        sample_hash = row.to_hash
+        sample = Sample.find_by_id(row["id"])
+        if sample.sample_set_id == sample_set_id
+          sample.errors.add(:base, 'Sample found not part of Sample Set ' + sample_set_id)
+        end
+        sample_hash[:is_primary] = true
+        sample_hash[:sampled] = true
+        sample.update_attributes(sample_hash)
+        # sample.save
+      end
+  end
+  
   
   ## Custom validations
   

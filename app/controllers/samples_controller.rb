@@ -33,7 +33,7 @@ class SamplesController < ApplicationController
           until s == count-1 do
             for j in 0..4 
               break if s == count
-              qrcode = RQRCode::QRCode.new(sample_url(@samples[s].id), :dot=>5.send(), :level=>:h, :size => 4)
+              qrcode = RQRCode::QRCode.new(sample_url(@samples[s].id), :level=>:h, :size => 4)
               pdf.bounding_box([125*j, 11+i*63], :width => 42, :height => 55) do
                 pdf.render_qr_code(qrcode)
                 pdf.text 'S'+@samples[s].id.to_s, :size => 8
@@ -122,7 +122,29 @@ class SamplesController < ApplicationController
       redirect_to @sample
     end
   end
- 
+  
+  def import
+    # Import sample information from file
+    @sample_set = SampleSet.find(params[:sample_set_id])
+    begin
+      Sample.import(params[:file], params[:sample_set_id])
+      flash[:success] = "Samples imported successfully"
+      redirect_to @sample_set
+    rescue
+      flash[:error] = "Invalid CSV file uploaded"
+      redirect_to @sample_set
+    end
+  end
+  
+  def self.open_spreadsheet(file)
+    case File.extname(file.original_filename)
+    when ".csv" then Csv.new(file.path, nil, :ignore)
+    when ".xls" then Excel.new(file.path, nil, :ignore)
+    when ".xlsx" then Excelx.new(file.path, nil, :ignore)
+    else raise "Unknown file type: #{file.original_filename}"
+    end
+  end
+  
  
   private
   
