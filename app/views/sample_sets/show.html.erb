@@ -12,7 +12,8 @@
 		</a>
 		<ul class="dropdown-menu">
 		    <li><%= link_to "Edit Sample Set", :action => 'edit' %></li>
-		    <li><%= link_to "Export Spreadsheet", sample_set_samples_path(sample_set_id:@sample_set.id, format: "xls")%></li>
+		    <!-- # <li><%= link_to "Export Spreadsheet", sample_set_samples_path(sample_set_id:@sample_set.id, format: "xls")%></li> -->
+		    <li><%= link_to "Export CSV", sample_set_samples_path(sample_set_id:@sample_set.id, format: "csv")%></li>
 		    <li><%= link_to "Print QR codes", sample_set_samples_path(sample_set_id:@sample_set.id, format: "pdf"), :target => '_blank' %></li>
 		    <li><%= link_to "Delete Sample Set", @sample_set, :method => :delete, data: { confirm: "Are you sure?" }, :class=>"redtext" %></li>
 		</ul>
@@ -57,8 +58,8 @@
 <% if current_user?(@sample_set.owner) %> 
 	<h2 class= "heading-separator">Batch upload of sample information</h2>
 	<%= form_tag import_samples_path, multipart: true do %>
-	  <%= file_field_tag :file %>
+	  <%= file_field_tag :file, :style => 'width: 350px; margin-top: 14px;' %>
 	  <%= hidden_field_tag "sample_set_id", @sample_set.id %>
-	  <%= submit_tag "Import CSV" %>
+	  <%= submit_tag "Import CSV", :class => 'btn btn-sm btn-info' %>
 	<% end %>
 <% end %>

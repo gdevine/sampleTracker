@@ -153,7 +153,8 @@ describe "sample_set pages:" do
       it { should have_link('Options') }
       it { should have_link('Edit Sample Set') }
       it { should have_link('Delete Sample Set') }     
-      it { should have_link('Export Spreadsheet') }
+      # it { should have_link('Export Spreadsheet') }
+      it { should have_link('Export CSV') }
       it { should have_link('Print QR codes') }
       
       
@@ -174,6 +175,7 @@ describe "sample_set pages:" do
          end 
          
          describe "should not see the edit and delete links" do
+           it { should_not have_link('Options') }
            it { should_not have_link('Edit Sample Set') }
            it { should_not have_link('Delete Sample Set') }
          end 

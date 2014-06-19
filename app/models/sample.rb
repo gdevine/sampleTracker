@@ -51,11 +51,13 @@ class Sample < ActiveRecord::Base
     end
   end
  
-  def self.to_csv(options = {})
-    CSV.generate(options) do |csv|
+  def self.to_csv(all_samples)
+    CSV.generate do |csv|
+      # csv << column_names
+      column_names = %w(id date_sampled tree plot ring container_id storage_location_id material_type northing easting vertical amount_collected amount_stored comments)
       csv << column_names
-      all.each do |sample|
-        csv << sample.attributes.values_at(*column_names)
+      all_samples.each do |row|
+        csv << row.attributes.values_at(*column_names)
       end
     end
   end
