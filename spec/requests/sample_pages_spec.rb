@@ -85,6 +85,7 @@ describe "Sample pages:" do
         it { should have_link('Options') }
         it { should have_link('Edit Sample') }
         it { should have_link('Delete Sample') } 
+        it { should have_link('Print QR Code') } 
         it { should_not have_link("Add Subsample") }  
               
         describe "when clicking the edit link" do

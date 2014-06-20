@@ -124,11 +124,13 @@ describe "Container pages:" do
       it { should have_selector('h1', :text => page_heading) }
       it { should have_title(full_title('Container View')) }
       it { should_not have_title('| Home') }  
-      it { should have_button('Edit Container') }
-      it { should have_button('Delete Container') }
+      it { should have_link('Options') }
+      it { should have_link('Edit Container') }
+      it { should have_link('Print QR Code') }
+      it { should have_link('Delete Container') }
       
       describe "when clicking the edit button" do
-        before { click_button "Edit Container" }
+        before { click_link "Edit Container" }
         let!(:page_heading) {"Edit Container " + container.id.to_s}
         
         describe 'should have a page heading for editing the correct container' do
@@ -144,8 +146,8 @@ describe "Container pages:" do
          end 
          
          describe "should not see the edit and delete buttons" do
-           it { should_not have_button('Edit Container') }
-           it { should_not have_button('Delete Container') }
+           it { should_not have_link('Edit Container') }
+           it { should_not have_link('Delete Container') }
          end 
 
       end
@@ -171,8 +173,8 @@ describe "Container pages:" do
       describe "should be redirected back to signin" do
         before { visit container_path(container) }
         it { should have_title('Sign in') }
-        it { should_not have_button('Edit Container') }
-        it { should_not have_button('Delete Container') }
+        it { should_not have_link('Edit Container') }
+        it { should_not have_link('Delete Container') }
       end
     end
     
@@ -193,18 +195,18 @@ describe "Container pages:" do
         before { visit container_path(container_empty) }
 
         it "should delete" do
-          expect { click_button "Delete Container" }.to change(Container, :count).by(-1)
+          expect { click_link "Delete Container" }.to change(Container, :count).by(-1)
         end
       end
       
       describe "of a non-empty container" do
         before { visit container_path(container_with_samples) }
         it "should not delete" do
-          expect { click_button "Delete Container" }.not_to change(Container, :count)
+          expect { click_link "Delete Container" }.not_to change(Container, :count)
         end
         
         describe "should display an error message" do
-          before { click_button "Delete Container" }
+          before { click_link "Delete Container" }
           let!(:error_message) {"Unable to delete a Container that contains samples. Relocate these first."}
           
           it { should have_content(error_message) }

@@ -30,12 +30,8 @@ class SamplesController < ApplicationController
         end
         format.pdf do
           pdf = Prawn::Document.new
-          # @samples.each do |sample|
-          
-          # samples = @samples.to_a
           s = 0
           i = 1
-          
           until s == count-1 do
             for j in 0..4 
               break if s == count
@@ -84,6 +80,20 @@ class SamplesController < ApplicationController
       @parent = Sample.find(@sample.parent_id)
     end
     @samples = @sample.subsamples.paginate(page: params[:page])
+    
+    respond_to do |format|
+      format.html
+      format.pdf do
+        pdf = Prawn::Document.new
+        qrcode = RQRCode::QRCode.new(sample_url(@sample.id), :level=>:h, :size => 4)
+        pdf.bounding_box([0, 74], :width => 42, :height => 55) do
+          pdf.render_qr_code(qrcode)
+          pdf.text 'S'+@sample.id.to_s, :size => 8
+        end
+         
+        send_data pdf.render, type: "application/pdf", disposition: "inline"
+      end
+    end
   end
   
   def create

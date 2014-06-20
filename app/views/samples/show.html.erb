@@ -49,6 +49,7 @@
 		    <% if !@parent and @sample.sampled %>
 			    <li><%= link_to "Add Subsample", new_sample_sample_path(sample_id:@sample.id) %> </li>
 		    <% end %>
+		    <li><%= link_to "Print QR Code", sample_path(format: "pdf"), :target => '_blank' %></li>
 		    <li><%= link_to "Delete Sample", @sample, :method => :delete, data: { confirm: "Are you sure?" }, :class=>"redtext" %></li>
 		</ul>
 	  </div>

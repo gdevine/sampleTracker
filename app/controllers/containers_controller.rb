@@ -25,6 +25,20 @@ class ContainersController < ApplicationController
     @container = Container.find(params[:id])
     # Attach my contained samples
     @samples = @container.samples.paginate(page: params[:page])
+    
+    respond_to do |format|
+      format.html
+      format.pdf do
+        pdf = Prawn::Document.new
+        qrcode = RQRCode::QRCode.new(container_url(@container.id), :level=>:h, :size => 4)
+        pdf.bounding_box([0, 74], :width => 42, :height => 55) do
+          pdf.render_qr_code(qrcode)
+          pdf.text 'C'+@container.id.to_s, :size => 8
+        end
+         
+        send_data pdf.render, type: "application/pdf", disposition: "inline"
+      end
+    end
   end
   
   def edit
