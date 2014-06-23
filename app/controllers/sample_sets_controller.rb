@@ -47,7 +47,7 @@ class SampleSetsController < ApplicationController
 
   def destroy
     @sample_set.destroy
-    redirect_to sample_sets_path
+    redirect_to home_path
   end
   
   
