@@ -35,10 +35,9 @@
 	      <%= f.hidden_field :northing, :value => @parent.northing %>
 	      <%= f.hidden_field :easting, :value => @parent.easting %>
 	      <%= f.hidden_field :vertical, :value => @parent.vertical %>
-	      <%= f.hidden_field :sampled, :value => 'true' %>        <!-- forcing 'sampled = true' for samples that are added as a subsample of another sample -->
 	      <%= f.hidden_field :amount_collected, :value => 'N/A' %> <!-- forcing 'amount collected = N/A' for subsamples -->
 	<% else %>
-      <div class="span6 offset1">
+      <div class="span6 offset3">
           <%= render 'shared/error_messages', object: f.object %>
 	      <!-- Expose all form fields for entry --> 
 	      <%= f.label :facility_id, 'Facility' %>
@@ -87,17 +86,12 @@
      
       <%= f.label :comments, "Additional Comments" %>
       <%= f.text_area :comments, size: "60x12" %>
-      
-	  <% if @parent %> 
-	    <%= f.hidden_field :sampled, :value => 'true' %>    <!-- forcing 'sampled = true' for subsamples -->
-	    </div>
-	  <% else %>
-	      </div>
-		  <div class="span2 offset1 well well-semigreen center">
-		      <%= f.label :sampled, "Mark as 'Complete'?" %>
-		      <%= f.check_box :sampled %>
-		  </div>	
-	  <% end %>
+
+	  <div class="well well-semigreen center">
+	      <%= f.label :sampled, "Mark as 'Complete'?" %>
+	      <%= f.check_box :sampled %>
+	  </div>	
+	</div>	
 
   </div>
 

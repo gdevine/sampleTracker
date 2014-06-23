@@ -4,6 +4,7 @@ class SamplesController < ApplicationController
   before_action :signed_in_user, only: [:index, :new, :show, :update, :edit, :create, :destroy]
   before_action :correct_user, only: [:edit, :update, :destroy]
   before_action :set_is_primary, :only => [:create, :update]
+  before_action :check_completed, only: [:destroy]
   
   def index   
     if params[:sample_set_id]
@@ -132,7 +133,7 @@ class SamplesController < ApplicationController
   def destroy
     if @sample.subsamples.empty?
       @sample.destroy
-      redirect_to samples_path
+      redirect_to home_path
     else
       flash[:error] = "Unable to delete a Sample with associated Subsamples. Remove any Subsamples first."
       redirect_to @sample
@@ -198,6 +199,14 @@ class SamplesController < ApplicationController
         params[:sample][:is_primary] = 'false'
       else
         params[:sample][:is_primary] = 'true'
+      end
+    end
+    
+    def check_completed
+      @sample = Sample.find(params[:id])
+      if @sample.sampled?
+        flash[:error] = "Unable to delete a Sample marked as 'completed'. Mark as 'not complete' before attempting to delete"
+        redirect_to @sample
       end
     end
 

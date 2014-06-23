@@ -1,6 +1,8 @@
 class SampleSetsController < ApplicationController
   before_action :signed_in_user, only: [:index, :new, :show, :update, :edit, :create, :destroy]
   before_action :correct_user, only: [:edit, :update, :destroy]
+  before_action :correct_user, only: [:edit, :update, :destroy]
+  before_action :check_for_completed_samples, only: [:destroy]
   
   def index   
     @sample_sets = SampleSet.paginate(page: params[:ss_page])
@@ -60,5 +62,16 @@ class SampleSetsController < ApplicationController
       redirect_to root_url if @sample_set.nil?
     end
     
+    def check_for_completed_samples
+      @sample_set = SampleSet.find(params[:id])
+      if @sample_set.samples.exists?
+        @samples = @sample_set.samples.to_a
+        csa = @samples.select {|cs| cs["sampled"] == true}
+        if !csa.empty?  
+          flash[:error] = "Can not delete a Sample Set that contains Samples marked as complete"
+          redirect_to @sample_set
+        end
+      end
+    end
     
 end

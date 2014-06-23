@@ -125,12 +125,37 @@ describe "sample_set pages:" do
     let!(:sample_set) { FactoryGirl.create(:sample_set, owner: user, num_samples: 60) }
 
     describe "as correct user" do
-      before { sign_in user }
-      before { visit sample_set_path(sample_set) }
-
-      it "should delete a sample_set" do
-        expect { click_link "Delete Sample Set" }.to change(SampleSet, :count).by(-1)
+      before do
+        sign_in user
+        visit sample_set_path(sample_set)
       end
+      
+      describe "of a Sample Set with no completed Samples" do
+        it "should delete a sample_set" do
+          expect { click_link "Delete Sample Set" }.to change(SampleSet, :count).by(-1)
+        end
+      end
+      
+      describe "of a Sample Set with completed Samples" do
+        let!(:sample) { FactoryGirl.create(:sample, owner: user, 
+                                                sample_set_id: sample_set.id,
+                                                sampled: true
+                                                ) } 
+                                                
+        before { visit sample_set_path(sample_set) }
+        
+        it "should not delete" do
+          expect { click_link "Delete Sample Set" }.not_to change(SampleSet, :count)
+        end
+        
+        describe "should display an error message" do
+          before { click_link "Delete Sample Set" }
+          let!(:error_message) {"Can not delete a Sample Set that contains Samples marked as complete"}
+          it { should have_content(error_message) }
+        end
+        
+      end
+      
     end
   end
   

@@ -207,6 +207,7 @@ describe "Sample pages:" do
   
   describe "sample destruction" do
     let!(:facility) { FactoryGirl.create(:facility) }
+    
     let!(:pending_sample) { FactoryGirl.create(:sample, owner: user, 
                                                         sampled: false) }
     
@@ -217,7 +218,16 @@ describe "Sample pages:" do
                                                         facility_id: facility.id,
                                                         date_sampled: Date.new(2012, 12, 3),
                                                         sampled: true
-                                                        ) }      
+                                                        ) }    
+                                                         
+    let!(:noncomplete_sampled_sample) { FactoryGirl.create(:sample, owner: user, 
+                                                        tree: 3,
+                                                        plot: 1,
+                                                        ring:2,
+                                                        facility_id: facility.id,
+                                                        date_sampled: Date.new(2012, 12, 3),
+                                                        sampled: false
+                                                        ) }                                                      
                                                              
     let!(:non_subs_sampled_sample) { FactoryGirl.create(:sample, owner: user, 
                                                         tree: 3,
@@ -237,6 +247,17 @@ describe "Sample pages:" do
                                                         parent: sampled_sample,
                                                         is_primary: false
                                                          ) }  
+                                                         
+     let!(:sub_sample2) { FactoryGirl.create(:sample, owner: user, 
+                                                        facility_id: facility.id,
+                                                        tree: 4,
+                                                        plot: 1,
+                                                        ring:2,
+                                                        date_sampled: Date.new(2012, 12, 3),
+                                                        sampled: true,
+                                                        parent: noncomplete_sampled_sample,
+                                                        is_primary: false
+                                                         ) }                                                       
     
     
 
@@ -253,13 +274,34 @@ describe "Sample pages:" do
       
       describe "of a completed non-subsamples sample" do
         before { visit sample_path(non_subs_sampled_sample) }
-        it "should delete" do
-          expect { click_link "Delete Sample" }.to change(Sample, :count).by(-1)
+        it "should not delete" do
+          expect { click_link "Delete Sample" }.not_to change(Sample, :count)
+        end
+        
+        describe "should display an error message" do
+          before { click_link "Delete Sample" }
+          let!(:error_message) {"Unable to delete a Sample marked as 'completed'. Mark as 'not complete' before attempting to delete"}
+          
+          it { should have_content(error_message) }
         end
       end
       
       describe "of a completed sample with subsamples" do
         before { visit sample_path(sampled_sample) }
+        it "should not delete" do
+          expect { click_link "Delete Sample" }.not_to change(Sample, :count)
+        end
+        
+        describe "should display an error message" do
+          before { click_link "Delete Sample" }
+          let!(:error_message) {"Unable to delete a Sample marked as 'completed'. Mark as 'not complete' before attempting to delete"}
+          
+          it { should have_content(error_message) }
+        end
+      end
+      
+      describe "of a non-completed sample with subsamples" do
+        before { visit sample_path(noncomplete_sampled_sample) }
         it "should not delete" do
           expect { click_link "Delete Sample" }.not_to change(Sample, :count)
         end
