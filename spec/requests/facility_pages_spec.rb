@@ -124,11 +124,11 @@ describe "Facility pages:" do
       it { should have_selector('h1', :text => page_heading) }
       it { should have_title(full_title('Facility View')) }
       it { should_not have_title('| Home') }  
-      it { should have_button('Edit Facility') }
-      it { should have_button('Delete Facility') }
+      it { should have_link('Edit Facility') }
+      it { should have_link('Delete Facility') }
       
       describe "when clicking the edit button" do
-        before { click_button "Edit Facility" }
+        before { click_link "Edit Facility" }
         let!(:page_heading) {"Edit Facility " + facility.code}
         
         describe 'should have a page heading for editing the correct facility' do
@@ -144,8 +144,8 @@ describe "Facility pages:" do
          end 
          
          describe "should not see the edit and delete buttons" do
-           it { should_not have_button('Edit Facility') }
-           it { should_not have_button('Delete Facility') }
+           it { should_not have_link('Edit Facility') }
+           it { should_not have_link('Delete Facility') }
          end 
 
       end
@@ -181,8 +181,8 @@ describe "Facility pages:" do
       describe "should be redirected back to signin" do
         before { visit facility_path(facility) }
         it { should have_title('Sign in') }
-        it { should_not have_button('Edit Facility') }
-        it { should_not have_button('Delete Facility') }
+        it { should_not have_link('Edit Facility') }
+        it { should_not have_link('Delete Facility') }
       end
     end
     
@@ -203,7 +203,7 @@ describe "Facility pages:" do
         before { visit facility_path(facility_empty) }
 
         it "should delete" do
-          expect { click_button "Delete Facility" }.to change(Facility, :count).by(-1)
+          expect { click_link "Delete Facility" }.to change(Facility, :count).by(-1)
         end
       end
       
@@ -211,10 +211,10 @@ describe "Facility pages:" do
         before { visit facility_path(facility_with_content) }
 
         it "should not delete" do
-          expect { click_button "Delete Facility" }.not_to change(Facility, :count)
+          expect { click_link "Delete Facility" }.not_to change(Facility, :count)
         end
         describe "should display an error message" do
-          before { click_button "Delete Facility" }
+          before { click_link "Delete Facility" }
           let!(:error_message) {"Unable to delete a Facility that contains samples and/or sample sets."}
           
           it { should have_content(error_message) }
