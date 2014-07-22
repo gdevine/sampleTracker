@@ -1,6 +1,7 @@
 <% if @sample_sets.any? %>
+  <h5><%= @sample_sets.count %> results</h5>
   <%= will_paginate @sample_sets, :param_name => "ss_page" %>
-  <table class="table table-bordered table-striped table-hover" width="647">
+  <table class="table table-bordered table-striped table-hover">
     <thead>
       <tr>
         <th>Sample Set ID</th>

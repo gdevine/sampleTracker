@@ -3,10 +3,9 @@
 
 <!-- Add edit/delete links if current user -->
 <% if current_user?(@sample_set.owner) %> 
-  <div class="row bottomspace">  
-    <div class="span2 offset10">
-	  <div class="btn-group">
-		<a class="btn btn-info btn-large dropdown-toggle" data-toggle="dropdown" href="#" id="options_button">
+ <div class="row bottomspace">  
+    <div class="col-xs-12 col-sm-2 col-sm-push-10">
+		<a class="btn btn-block btn-info" data-toggle="dropdown" href="#" id="options_button">
 		  Options
 		  <span class="caret"></span>
 		</a>
@@ -17,49 +16,102 @@
 		    <li><%= link_to "Print QR codes", sample_set_samples_path(sample_set_id:@sample_set.id, format: "pdf"), :target => '_blank' %></li>
 		    <li><%= link_to "Delete Sample Set", @sample_set, :method => :delete, data: { confirm: "Are you sure?" }, :class=>"redtext" %></li>
 		</ul>
-	  </div>
-    </div>
+	</div>
   </div>
 <% end %>
 
-<div class="row">  
-  <div class="span3 offset3">
-    <h5>Sample Set ID</h5>
-    <h5>Owner</h5>
-    <h5>Facility</h5>
-    <h5>Project</h5>
-    <h5>Number of Samples</h5>
-    <h5>Sampling Date</h5>
-    <h5>Status</h5>
-    <h5>Additional Info</h5>
-  </div>
-  
-  <div class="span3 offset1">
-    <h5><%= @sample_set.id %></h5>
-    <h5><%= @sample_set.owner.firstname %> <%= @sample_set.owner.surname %></h5>
-    <h5><%= @sample_set.facility.code %></h5>
-    <h5><%= @sample_set.project_id %></h5>
-    <h5><%= @sample_set.num_samples %></h5>
-    <h5><%= @sample_set.sampling_date %></h5>
-    <h5><%= @sample_set.status %></h5>
-    <h5><%= @sample_set.add_info %></h5>
-  </div>
+
+
+<div class="topspace50">
+  	
+  	<div class="row">
+	  <div class="col-md-offset-4 col-md-2">
+	    <p class="text-left">Sample Set ID</p>
+	  </div>   
+	  <div class="col-md-4">
+	    <p class="text-muted"><%= @sample_set.id %></p>
+	  </div>
+	</div>
+	
+	<div class="row">
+	  <div class="col-md-offset-4 col-md-2">
+	    <p class="text-left">Owner</p>
+	  </div>   
+	  <div class="col-md-4">
+	    <p class="text-muted"><%= @sample_set.owner.firstname %> <%= @sample_set.owner.surname %></p>
+	  </div>
+	</div>
+	
+	<div class="row">
+	  <div class="col-md-offset-4 col-md-2">
+	    <p class="text-left">Facility</p>
+	  </div>   
+	  <div class="col-md-4">
+	    <p class="text-muted"><%= @sample_set.facility.code %></p>
+	  </div>
+	</div>
+	
+	<div class="row">
+	  <div class="col-md-offset-4 col-md-2">
+	    <p class="text-left">Project</p>
+	  </div>   
+	  <div class="col-md-4">
+	    <p class="text-muted"><%= @sample_set.project_id %></p>
+	  </div>
+	</div>
+	
+	<div class="row">
+	  <div class="col-md-offset-4 col-md-2">
+	    <p class="text-left">Number of Samples</p>
+	  </div>   
+	  <div class="col-md-4">
+	    <p class="text-muted"><%= @sample_set.num_samples %></p>
+	  </div>
+	</div>
+
+	<div class="row">
+	  <div class="col-md-offset-4 col-md-2">
+	    <p class="text-left">Sampling Date</p>
+	  </div>   
+	  <div class="col-md-4">
+	    <p class="text-muted"><%= @sample_set.sampling_date %></p>
+	  </div>
+	</div>
+
+	<div class="row">
+	  <div class="col-md-offset-4 col-md-2">
+	    <p class="text-left">Status</p>
+	  </div>   
+	  <div class="col-md-4">
+	    <p class="text-muted"><%= @sample_set.status %></p>
+	  </div>
+	</div>	
+
+	<div class="row">
+	  <div class="col-md-offset-4 col-md-2">
+	    <p class="text-left">Additional Info</p>
+	  </div>   
+	  <div class="col-md-4">
+	    <p class="text-muted"><%= @sample_set.add_info %></p>
+	  </div>
+	</div>
 </div>
 
-<h2 class= "heading-separator">Samples included in this sample set</h2>
+
+<h4 class= "heading-separator center">Samples included in this sample set</h4>
 
 <div class="row">
-  <div class="span12">
+  <div class="col-xs-12">
     <%= render 'samples/samples' %>
   </div>
 </div>
 
 
 <% if current_user?(@sample_set.owner) %> 
-	<h2 class= "heading-separator">Batch upload of sample information</h2>
+	<h4 class= "heading-separator center">Batch upload of sample information</h4>
 	<%= form_tag import_samples_path, multipart: true do %>
 	  <%= file_field_tag :file, :style => 'width: 350px; margin-top: 14px;' %>
 	  <%= hidden_field_tag "sample_set_id", @sample_set.id %>
-	  <%= submit_tag "Import CSV", :class => 'btn btn-sm btn-info' %>
+	  <%= submit_tag "Import CSV", :class => 'btn btn-sm btn-info col-md-3' %>
 	<% end %>
 <% end %>

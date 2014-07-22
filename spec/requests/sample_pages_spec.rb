@@ -375,6 +375,22 @@ describe "Sample pages:" do
         
       end  
       
+      describe "for a subsample" do
+        let!(:sample) { FactoryGirl.create(:sample, owner: user, facility_id: myfacility.id) }
+        
+        before { sign_in user }
+        before { visit sample_path(sample) }
+        
+        before { click_link "Add Subsample" }
+          
+        describe 'should have edit option for project but not facility' do
+          it { should have_selector('input[id="sample_facility_id"][type="hidden"]') }
+          it { should have_selector('input[id="sample_project_id"]') }
+          it { should_not have_selector('input[id="sample_project_id"][type="hidden"]') }
+        end
+        
+      end
+      
     end
     
     describe "for non signed-in users" do
@@ -483,6 +499,9 @@ describe "Sample pages:" do
       
       it { should have_content('Edit Sample ' + subsample.id.to_s + ' (subsample of '+subsample.parent_id.to_s+')' )}
       it { should have_content('Adopted details from parent sample')}
+      it { should have_selector('input[id="sample_facility_id"][type="hidden"]') }
+      it { should have_selector('input[id="sample_project_id"]') }
+      it { should_not have_selector('input[id="sample_project_id"][type="hidden"]') }
       
       describe "with invalid information" do
         before do
@@ -507,6 +526,7 @@ describe "Sample pages:" do
         it { should have_title('Sign in') }
       end
     end
+    
   end
   
 end
