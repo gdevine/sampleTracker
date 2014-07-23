@@ -27,26 +27,12 @@ textarea {
 
 /* typography */
 
-h1, h2, h3, h4, h5, h6 {
-  line-height: 1;
-}
-
 h1 {
-  font-size: 3em;
-  letter-spacing: -2px;
   margin-bottom: 30px;
   text-align: center;
 }
 
-h2 {
-  font-size: 1.2em;
-  letter-spacing: -1px;
-  margin-bottom: 30px;
-  text-align: center;
-  font-weight: normal;
-}
-
-h3 {
+h2, h3 {
   text-align: center;
 }
 
@@ -158,8 +144,10 @@ background-color: rgba(100,255,100,0.1); // I don't know the .well color, so I u
 /* Horizontal line on a bootstrap row class*/
 .rowline {
   margin-top: 45px;
-  padding-top: 5px;
+  margin-bottom: 35px;
+  padding-top: 35px;
   border-top: 1px solid;
+  border-color: #CDCDCD;
 }
 
 /* Spacings */
@@ -171,3 +159,5 @@ background-color: rgba(100,255,100,0.1); // I don't know the .well color, so I u
 .redtext {
   color: #CC0000 !important;
 }
+
+

@@ -60,7 +60,7 @@ class ContainersController < ApplicationController
       @container.destroy
       redirect_to containers_path
     else
-      flash[:error] = "Unable to delete a Container that contains samples. Relocate these first."
+      flash[:danger] = "Unable to delete a Container that contains samples. Relocate these first."
       redirect_to @container
     end
   end

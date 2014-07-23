@@ -17,7 +17,8 @@
         </div>
       <% end %>
       
-      <% if show_minibar?(request.path) %>
+      <%# if show_minibar?(request.path) %>
+      <% if signed_in? %>
         <%= render 'layouts/minibar' %>
       <% end %>
       

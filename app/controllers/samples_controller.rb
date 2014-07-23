@@ -135,7 +135,7 @@ class SamplesController < ApplicationController
       @sample.destroy
       redirect_to home_path
     else
-      flash[:error] = "Unable to delete a Sample with associated Subsamples. Remove any Subsamples first."
+      flash[:danger] = "Unable to delete a Sample with associated Subsamples. Remove any Subsamples first."
       redirect_to @sample
     end
   end
@@ -148,7 +148,7 @@ class SamplesController < ApplicationController
       flash[:success] = "Samples imported successfully"
       redirect_to @sample_set
     rescue
-      flash[:error] = "Invalid CSV file uploaded"
+      flash[:danger] = "Invalid CSV file uploaded"
       redirect_to @sample_set
     end
   end
@@ -205,7 +205,7 @@ class SamplesController < ApplicationController
     def check_completed
       @sample = Sample.find(params[:id])
       if @sample.sampled?
-        flash[:error] = "Unable to delete a Sample marked as 'completed'. Mark as 'not complete' before attempting to delete"
+        flash[:danger] = "Unable to delete a Sample marked as 'completed'. Mark as 'not complete' before attempting to delete"
         redirect_to @sample
       end
     end

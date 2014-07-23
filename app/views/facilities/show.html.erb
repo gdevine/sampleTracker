@@ -1,12 +1,11 @@
 <% provide(:title, 'Facility View') %>
 <% provide(:pageheading, 'Facility '+ @facility.code) %>
 
-<!-- Add edit/delete buttons if current user -->
+<!-- Add edit/delete links if current user -->
 <% if current_user?(@facility.contact) %> 
-  <div class="row bottomspace">  
-    <div class="span2 offset10">
-	  <div class="btn-group">
-		<a class="btn btn-info btn-large dropdown-toggle" data-toggle="dropdown" href="#" id="options_button">
+ <div class="row bottomspace">  
+    <div class="col-xs-12 col-sm-2 col-sm-push-10">
+		<a class="btn btn-block btn-info" data-toggle="dropdown" href="#" id="options_button">
 		  Options
 		  <span class="caret"></span>
 		</a>
@@ -14,60 +13,63 @@
 		    <li><%= link_to "Edit Facility", :action => 'edit' %></li>
 		    <li><%= link_to "Delete Facility", @facility, :method => :delete, data: { confirm: "Are you sure?" }, :class=>"redtext" %></li>
 		</ul>
-	  </div>
-    </div>
-  </div> 
+	</div>
+  </div>
 <% end %>
 
-<div class="row">  
-  <div class="span3 offset3">
-    <h5>Facility ID</h5>
-  </div>
-  <div class="span3 offset1">
-    <h5><%= @facility.id %></h5>
-  </div>
+<div class="topspace50">
+	
+	<div class="row">
+	  <div class="col-md-offset-4 col-md-2">
+	    <p class="text-left">Facility ID</p>
+	  </div>   
+	  <div class="col-md-4">
+	    <p class="text-muted"><%= @facility.id %></p>
+	  </div>
+	</div>
+	
+    <div class="row">
+	  <div class="col-md-offset-4 col-md-2">
+	    <p class="text-left">Facility Code</p>
+	  </div>   
+	  <div class="col-md-4">
+	    <p class="text-muted"><%= @facility.code %></p>
+	  </div>
+	</div>
+	
+    <div class="row">
+	  <div class="col-md-offset-4 col-md-2">
+	    <p class="text-left">Description</p>
+	  </div>   
+	  <div class="col-md-4">
+	    <p class="text-muted"><%= @facility.description %></p>
+	  </div>
+	</div>
+	
+    <div class="row">
+	  <div class="col-md-offset-4 col-md-2">
+	    <p class="text-left">Contact</p>
+	  </div>   
+	  <div class="col-md-4">
+	    <p class="text-muted"><%= @facility.contact.firstname %> <%= @facility.contact.surname %></p>
+	  </div>
+	</div>
+	
 </div>
 
-<div class="row">  
-  <div class="span3 offset3">
-    <h5>Facility Code</h5>
-  </div>
-  <div class="span3 offset1">
-    <h5><%= @facility.code %></h5>
-  </div>
-</div>
 
-<div class="row">  
-  <div class="span3 offset3">
-    <h5>Description</h5>
-  </div>
-  <div class="span3 offset1">
-    <h5><%= @facility.description %></h5>
-  </div>
-</div>
-
-<div class="row">   
-  <div class="span3 offset3">
-    <h5>Contact</h5>
-  </div>
-  <div class="span3 offset1">
-    <h5><%= @facility.contact.firstname %> <%= @facility.contact.surname %></h5>
-  </div>
-</div>
-
-
-<h2 class= "heading-separator">Sample Sets associated with this facility</h2>
+<h4 class= "heading-separator rowline center">Sample Sets associated with this facility</h4>
 
 <div class="row">
-  <div class="span12">
+  <div class="col-xs-12">
     <%= render 'sample_sets/sample_sets' %>
   </div>
 </div>
 
-<h2 class= "heading-separator">Samples associated with this facility</h2>
+<h4 class= "heading-separator rowline center">Samples associated with this facility</h4>
 
 <div class="row">
-  <div class="span12">
+  <div class="col-xs-12">
     <%= render 'samples/samples' %>
   </div>
 </div>

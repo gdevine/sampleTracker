@@ -2,32 +2,47 @@
 <% provide(:pageheading, 'Edit Sample Set '+ @sample_set.id.to_s) %>
 
 
-<%= form_for(@sample_set) do |f| %>
-  <div class="row">
-    <div class="span6 offset3">
-      <%= render 'shared/error_messages', object: f.object %>
-
-      <%= f.label :facility_id, 'Facility' %>
-      <%= collection_select(:sample_set, :facility_id, Facility.all, :id, :code, include_blank:true) %>
-      
-      <%= f.label :project_id, 'Project' %>
-      <%= f.number_field :project_id, :min => 0 %>
-
-      <%= f.label :sampling_date, 'Sampling Date' %>
-      <%= f.date_field :sampling_date %>
-
-      <%= f.label :num_samples, 'Number of Samples Required' %>
-      <%= f.number_field :num_samples, :min => 0, :max => 999 %>
-      
-      <%= f.label :add_info, "Additional Information" %>
-      <%= f.text_area :add_info, size: "60x12" %>
+<%= form_for @sample_set, :html => {:class => "form-horizontal"} do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+  
+  <div class="form-group">
+    <%= f.label :facility_id, 'Facility', :class => "col-lg-2 control-label" %>
+    <div class="col-lg-8">
+      <%= collection_select(:sample_set, :facility_id, Facility.all, :id, :code, {include_blank:true}, {:class=>"form-control"} ) %>
     </div>
-    
-    <div class="row">
-      <div class="span4 offset5">
-        <%= f.submit "Update", class: "btn btn-large btn-primary" %>
-      </div>
+  </div>
+  
+  <div class="form-group">
+	  <%= f.label :project_id, 'Project', :class => "col-lg-2 control-label"  %>
+	  <div class="col-lg-8">
+	    <%= f.number_field :project_id, :min => 0, :class => "form-control" %>  
+	  </div> 
+  </div> 
+  
+  <div class="form-group">
+    <%= f.label :date_sampled, 'Sampling Date', :class => "col-lg-2 control-label" %>
+    <div class="col-lg-8">
+      <%= f.date_field :sampling_date, :class => "form-control" %>
     </div>
-    
+  </div>
+
+  <div class="form-group">
+	  <%= f.label :num_samples, 'Number of Samples Required', :class => "col-lg-2 control-label"  %>
+	  <div class="col-lg-8">
+	    <%= f.number_field :num_samples, :min => 0, :class => "form-control" %>  
+	  </div> 
+  </div> 
+ 
+  <div class="form-group">
+	  <%= f.label :add_info, "Additional Information", :class => "col-lg-2 control-label"  %>
+	  <div class="col-lg-8">
+	    <%= f.text_area :add_info, size: "60x12", :class => "form-control" %>
+	  </div>
+  </div> 
+  
+  <div class="form-group">
+    <div class="col-sm-4 col-sm-offset-4 topspace50 bottomspace">
+      <%= f.submit "Submit", :class => "btn btn-large btn-primary" %>
+    </div>
   </div>
 <% end %>

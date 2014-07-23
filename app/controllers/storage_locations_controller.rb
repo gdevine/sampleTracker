@@ -46,7 +46,7 @@ class StorageLocationsController < ApplicationController
       @storage_location.destroy
       redirect_to storage_locations_path
     else
-      flash[:error] = "Unable to delete a Storage location that contains samples and/or containers. Relocate these first."
+      flash[:danger] = "Unable to delete a Storage location that contains samples and/or containers. Relocate these first."
       redirect_to @storage_location
     end
   end

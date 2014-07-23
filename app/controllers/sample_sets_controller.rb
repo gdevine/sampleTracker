@@ -68,7 +68,7 @@ class SampleSetsController < ApplicationController
         @samples = @sample_set.samples.to_a
         csa = @samples.select {|cs| cs["sampled"] == true}
         if !csa.empty?  
-          flash[:error] = "Can not delete a Sample Set that contains Samples marked as complete"
+          flash[:danger] = "Can not delete a Sample Set that contains Samples marked as complete"
           redirect_to @sample_set
         end
       end

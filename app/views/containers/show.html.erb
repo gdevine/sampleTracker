@@ -23,11 +23,10 @@
 <% provide(:pageheading, 'Container '+ @container.id.to_s) %>
 
 <!-- Add edit/delete buttons if current user -->
-<% if current_user?(@container.owner) %>
-   <div class="row bottomspace">  
-    <div class="span2 offset10">
-	  <div class="btn-group">
-		<a class="btn btn-info btn-large dropdown-toggle" data-toggle="dropdown" href="#" id="options_button">
+<% if current_user?(@container.owner) %> 
+ <div class="row bottomspace">  
+    <div class="col-xs-12 col-sm-2 col-sm-push-10">
+		<a class="btn btn-block btn-info" data-toggle="dropdown" href="#" id="options_button">
 		  Options
 		  <span class="caret"></span>
 		</a>
@@ -35,82 +34,84 @@
 		    <li><%= link_to "Edit Container", :action => 'edit' %></li>
 		    <li><%= link_to "Print QR Code", container_path(format: "pdf"), :target => '_blank' %></li>
 		    <li><%= link_to "Delete Container", @container, :method => :delete, data: { confirm: "Are you sure?" }, :class=>"redtext" %></li>
-		</ul>
-	  </div>
-    </div>
+	    </ul>
+	</div>
   </div>
 <% end %>
 
+
 <div class="row">
-  <div class="span7 offset1">	
+  <div class="col-md-9">	
 	
-	<div class="row">  
-	  <div class="span3">
-	    <h5>Container ID</h5>
-	  </div>
-	  <div class="span3 offset1">
-	    <h5><%= @container.id %></h5>
+	<div class="row">
+	  <div class="col-md-offset-2 col-md-3">
+	    <p class="text-left">Container</p>
+	  </div>   
+	  <div class="col-md-7">
+	    <p class="text-muted"><%= @container.id %></p>
 	  </div>
 	</div>
 	
-	<div class="row">  
-	  <div class="span3">
-	    <h5>Container Type</h5>
-	  </div>
-	  <div class="span3 offset1">
-	    <h5><%= @container.container_type %></h5>
-	  </div>
-	</div>
-	
-	<div class="row">  
-	  <div class="span3">
-	    <h5>Storage Location</h5>
-	  </div>
-	  <div class="span3 offset1">
-	    <h5><%= @container.storage_location.code %></h5>
+	<div class="row">
+	  <div class="col-md-offset-2 col-md-3">
+	    <p class="text-left">Container Type</p>
+	  </div>   
+	  <div class="col-md-7">
+	    <p class="text-muted"><%= @container.container_type %></p>
 	  </div>
 	</div>
 	
-	<div class="row">   
-	  <div class="span3">
-	    <h5>Owner</h5>
-	  </div>
-	  <div class="span3 offset1">
-	    <h5><%= @container.owner.firstname %> <%= @container.owner.surname %></h5>
+	<div class="row">
+	  <div class="col-md-offset-2 col-md-3">
+	    <p class="text-left">Storage Location</p>
+	  </div>   
+	  <div class="col-md-7">
+	    <p class="text-muted"><%= @container.storage_location.code %></p>
 	  </div>
 	</div>
 	
-	<div class="row">  
-	  <div class="span3">
-	    <h5>Description</h5>
-	  </div>
-	  <div class="span3 offset1">
-	    <h5><%= @container.description %></h5>
+	<div class="row">
+	  <div class="col-md-offset-2 col-md-3">
+	    <p class="text-left">Owner</p>
+	  </div>   
+	  <div class="col-md-7">
+	    <p class="text-muted"><%= @container.owner.firstname %> <%= @container.owner.surname %></p>
 	  </div>
 	</div>
+	
+	<div class="row">
+	  <div class="col-md-offset-2 col-md-3">
+	    <p class="text-left">Description</p>
+	  </div>   
+	  <div class="col-md-7">
+	    <p class="text-muted"><%= @container.description %></p>
+	  </div>
+	</div>
+	
   </div>
   
-  <div class="span4">
+  <div class="col-md-3">
     
     <div class="row">
-      <div class="span2 offset1">
-        <%= render_qr_code(container_url(@container), 3) %>
-      </div>
-    </div>
-    <div class="row">
-      <div class="span2 offset2">
-        <h5>C<%= @container.id %></h5>
-      </div>
-    </div>
+	  <div class="col-xs-5 col-md-9">
+	    <%= render_qr_code(container_url(@container), 3) %>
+	  </div>
+	</div>
+	<div class="row">
+	  <div class="col-xs-6 col-md-9">
+	    <h5 class="text-center">C<%= @container.id %></h5>
+	  </div>
+	</div>
+	
   </div>
   
 </div>
 
 
-<h2 class= "heading-separator">Samples held within this Container</h2>
+<h4 class= "heading-separator rowline center">Samples held within this Container</h4>
 
 <div class="row">
-  <div class="span12">
+  <div class="col-xs-12">
     <%= render 'samples/samples' %>
   </div>
 </div>

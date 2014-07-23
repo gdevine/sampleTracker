@@ -46,7 +46,7 @@ class FacilitiesController < ApplicationController
       @facility.destroy
       redirect_to facilities_path
     else
-      flash[:error] = "Unable to delete a Facility that contains samples and/or sample sets."
+      flash[:danger] = "Unable to delete a Facility that contains samples and/or sample sets."
       redirect_to @facility
     end
   end
