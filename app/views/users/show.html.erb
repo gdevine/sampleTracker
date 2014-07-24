@@ -1,20 +1,21 @@
 <% provide(:title, @user.firstname) %>
 <div class="row">
-  <aside class="span4">
     <section>
-      <h1>
-        <%= @user.firstname %> <%= @user.surname %>, <%= @user.email %>
-      </h1>
+      <h2>
+        <%= @user.firstname %> <%= @user.surname %>
+      </h2>
+      <h3>
+        <%= @user.email %>
+      </h3>
     </section>
-  </aside>
-  
-  <div class="span8">
-    <% if @user.sample_sets.any? %>
-      <h3>Sample Sets (<%= @user.sample_sets.count %>)</h3>
-      <ol class="sample_sets">
-        <%= render @sample_sets %>
-      </ol>
-      <%= will_paginate @sample_sets %>
-    <% end %>
-  </div>
+    
+	  <div class="span8">
+	    <% if @user.sample_sets.any? %>
+	      <h4 class= "heading-separator rowline center">Sample Sets History(<%= @user.sample_sets.count %>)</h4>
+	      <ol class="sample_sets">
+	        <%= render @sample_sets %>
+	      </ol>
+	      <%= will_paginate @sample_sets %>
+	    <% end %>
+	  </div>
 </div>

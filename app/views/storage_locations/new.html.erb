@@ -1,27 +1,48 @@
 <% provide(:title, 'New Storage Location') %>
 <% provide(:pageheading, 'New Storage Location') %>
 
-<div class="row">
-  <div class="span6 offset3">
-    <%= form_for(@storage_location) do |f| %>
-      <%= render 'shared/error_messages', object: f.object %>
-
-      <%= f.label :code, 'Storage Location Code' %>
-      <%= f.text_field :code %>
-      
-      <%= f.label :building, 'Building' %>
-      <%= f.text_field :building %>
-      
-      <%= f.label :room, 'Room' %>
-      <%= f.number_field :room, :min => 1 %>
-      
-      <%= f.label :address, 'Address' %>
-      <%= f.text_field :address %>
-      
-      <%= f.label :description, "Description" %>
-      <%= f.text_area :description, size: "60x12" %>
-
-      <%= f.submit "Submit", class: "btn btn-large btn-primary" %>
-    <% end %>
+<%= form_for @storage_location, :html => {:class => "form-horizontal"} do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+  
+  <div class="form-group">
+    <%= f.label :code, "Code", :class => "col-lg-2 control-label" %>
+    <div class="col-lg-8">
+      <%= f.text_field :code, :class => "form-control" %>
+    </div>
   </div>
-</div>
+  
+  <div class="form-group">
+    <%= f.label :building, "Building", :class => "col-lg-2 control-label" %>
+    <div class="col-lg-8">
+      <%= f.text_field :building, :class => "form-control" %>
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <%= f.label :room, "Room", :class => "col-lg-2 control-label" %>
+    <div class="col-lg-8">
+      <%= f.number_field :room, :min => 1, :class => "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :address, "Address", :class => "col-lg-2 control-label" %>
+    <div class="col-lg-8">
+      <%= f.text_field :address, :class => "form-control" %>
+    </div>
+  </div>
+      
+  <div class="form-group">
+    <%= f.label :description, "Description", :class => "col-lg-2 control-label" %>
+    <div class="col-lg-8">
+      <%= f.text_area :description, :size => "60x12", :class => "form-control" %>
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <div class="col-md-4 col-md-offset-4 topspace50 bottomspace">
+      <%= f.submit "Submit", :class => "btn btn-large btn-primary" %>
+    </div>
+  </div>  
+
+<% end %>

@@ -123,7 +123,7 @@ describe "Storage Location pages:" do
       
       let!(:page_heading) {"Storage Location " + storage_location.code}
       
-      it { should have_selector('h1', :text => page_heading) }
+      it { should have_selector('h2', :text => page_heading) }
       it { should have_title(full_title('Storage Location View')) }
       it { should_not have_title('| Home') }  
       it { should have_link('Edit Location') }

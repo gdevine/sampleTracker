@@ -171,7 +171,7 @@ describe "sample_set pages:" do
       
       let!(:page_heading) {"Sample Set " + sample_set.id.to_s}
       
-      it { should have_selector('h1', :text => page_heading) }
+      it { should have_selector('h2', :text => page_heading) }
       it { should have_title(full_title('Sample Set View')) }
       it { should_not have_title('| Home') }  
       

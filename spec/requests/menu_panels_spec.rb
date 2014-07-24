@@ -27,13 +27,13 @@ describe "Menu Panel:" do
     end
   end
   
-  # The menu bar shouldn't appear on the standard static pages: contact page, help page etc
+  # The menu bar should appear on the standard static pages: contact page, about page etc if logged in
   describe "Help page" do
     describe "for signed-in users" do
       before { sign_in user }
       before { visit help_path }
-      it 'should not have a nav#minibar bar' do
-        expect(page).not_to have_selector('nav#minibar')
+      it 'should have a nav#minibar bar' do
+        expect(page).to have_selector('nav#minibar')
       end
     end
     
@@ -49,8 +49,8 @@ describe "Menu Panel:" do
     describe "for signed-in users" do
       before { sign_in user }
       before { visit about_path }
-      it 'should not have a nav#minibar bar' do
-        expect(page).not_to have_selector("nav#minibar")
+      it 'should have a nav#minibar bar' do
+        expect(page).to have_selector("nav#minibar")
       end
     end
     
@@ -66,8 +66,8 @@ describe "Menu Panel:" do
     describe "for signed-in users" do
       before { sign_in user }
       before { visit contact_path }
-      it 'should not have a nav#minibar bar' do
-        expect(page).not_to have_selector('nav#minibar')
+      it 'should have a nav#minibar bar' do
+        expect(page).to have_selector('nav#minibar')
       end
     end
     

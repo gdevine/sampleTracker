@@ -1,26 +1,48 @@
 <% provide(:title, 'Register') %>
-<h1>Register</h1>
-<div class="row">
-  <div class="span6 offset3">
-    <%= form_for(@user) do |f| %>
-      <%= render 'shared/error_messages', object: f.object %>
+<% provide(:pageheading, 'Register') %>
 
-      <%= f.label :firstname %>
-      <%= f.text_field :firstname %>
-      
-      <%= f.label :surname %>
-      <%= f.text_field :surname %>
+<%= form_for @user, :html => {:class => "form-horizontal"} do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
 
-      <%= f.label :email %>
-      <%= f.text_field :email %>
-
-      <%= f.label :password %>
-      <%= f.password_field :password %>
-
-      <%= f.label :password_confirmation, "Confirmation" %>
-      <%= f.password_field :password_confirmation %>
-
-      <%= f.submit "Create my account", class: "btn btn-large btn-primary" %>
-    <% end %>
+  <div class="form-group">
+    <%= f.label :firstname, "First Name", :class => "col-lg-2 control-label" %>
+    <div class="col-lg-8">
+      <%= f.text_field :firstname, :class => "form-control" %>
+    </div>
   </div>
-</div>
+  
+  <div class="form-group">
+    <%= f.label :surname, "Surname", :class => "col-lg-2 control-label" %>
+    <div class="col-lg-8">
+      <%= f.text_field :surname, :class => "form-control" %>
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <%= f.label :email, "Email", :class => "col-lg-2 control-label" %>
+    <div class="col-lg-8">
+      <%= f.text_field :email, :class => "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :password, "Password", :class => "col-lg-2 control-label" %>
+    <div class="col-lg-8">
+      <%= f.password_field :password, :class => "form-control" %>
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <%= f.label :password_confirmation, "Confirmation", :class => "col-lg-2 control-label" %>
+    <div class="col-lg-8">
+      <%= f.password_field :password_confirmation, :class => "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-md-4 col-md-offset-4 topspace50 bottomspace">
+      <%= f.submit "Create my account", :class => "btn btn-large btn-primary" %>
+    </div>
+  </div>
+  
+<% end %>

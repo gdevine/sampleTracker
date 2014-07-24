@@ -92,8 +92,17 @@ describe "Static pages:" do
     it { should have_title(full_title('Dashboard')) }
   end
     
-  describe "Help page" do
+  describe "Help page when not logged in" do
     before { visit help_path }
+    it { should have_title('Sign in') }
+  end
+  
+  describe "Help page whilst logged in" do
+    let(:user) { FactoryGirl.create(:user) }
+    before do
+      sign_in user
+      visit help_path
+    end
 
     it { should have_content('Help') }
     it { should have_title(full_title('Help')) }

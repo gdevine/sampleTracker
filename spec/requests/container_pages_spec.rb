@@ -121,7 +121,7 @@ describe "Container pages:" do
       
       let!(:page_heading) {"Container " + container.id.to_s}
       
-      it { should have_selector('h1', :text => page_heading) }
+      it { should have_selector('h2', :text => page_heading) }
       it { should have_title(full_title('Container View')) }
       it { should_not have_title('| Home') }  
       it { should have_link('Options') }
