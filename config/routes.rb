@@ -18,9 +18,9 @@ SampleTracker::Application.routes.draw do
   end
   
   
-  root  'static_pages#dashboard'
+  root  'static_pages#home'
   match '/register',    to: 'users#new',    via: 'get'
-  match '/home',        to: 'static_pages#home',    via: 'get'
+  match '/dashboard',   to: 'static_pages#dashboard',    via: 'get'
   match '/help',        to: 'static_pages#help',    via: 'get'
   match '/about',       to: 'static_pages#about',   via: 'get'
   match '/contact',     to: 'static_pages#contact', via: 'get'

@@ -1,10 +1,18 @@
 <% provide(:title, 'Dashboard') %>
-<% provide(:pageheading, 'Dashboard') %>
-<p>
-  HIE Sample Tracker Dashboard
-</p>
-
-<p> 
-Welcome to the HIE Sample Tracker.	
-</p>
+<% provide(:pageheading, "Dashboard for"+" " + current_user.firstname + " " + current_user.surname) %>
+  
+  <div class="row">
+    <div class="col-xs-12">
+      <h3>My Samples</h3>
+      <%= render 'samples/samples' %>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col-xs-12 rowline">
+      <h3>My Sample Sets</h3>
+      <%= render 'sample_sets/sample_sets' %>
+    </div>
+  </div>
+    
 	

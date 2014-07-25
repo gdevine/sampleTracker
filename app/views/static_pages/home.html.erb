@@ -1,25 +1,18 @@
+<% provide(:title, 'Home') %>
+<% provide(:pageheading, "HIE Sample Tracker") %>
+  
 <% if signed_in? %>
+	<p>
+	  HIE Sample Tracker Dashboard
+	</p>
 
-  <% provide(:pageheading, "Home Page for"+" " + current_user.firstname + " " + current_user.surname) %>
-  
-  <div class="row">
-    <div class="col-xs-12">
-      <h3>My Samples</h3>
-      <%= render 'samples/samples' %>
-    </div>
-  </div>
-  
-  <div class="row">
-    <div class="col-xs-12 rowline">
-      <h3>My Sample Sets</h3>
-      <%= render 'sample_sets/sample_sets' %>
-    </div>
-  </div>
-    
+	<p> 
+	Welcome to the HIE Sample Tracker.	
+	</p>
+	    
 <% else %>
 
   <div class="center hero-unit">
-    <h1>HIE Sample Tracker</h1>
   
     <h2> This is the home page for the HIE Sample Tracker. </h2>
   

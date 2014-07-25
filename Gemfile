@@ -17,7 +17,7 @@ gem 'roo'
 group :development, :test do
   gem 'sqlite3', '1.3.8'
   gem 'rspec-rails', '2.13.1'
-  gem 'capistrano'
+  gem 'capistrano', '~> 2.15.0'
 end
 
 group :test do

@@ -133,7 +133,7 @@ class SamplesController < ApplicationController
   def destroy
     if @sample.subsamples.empty?
       @sample.destroy
-      redirect_to home_path
+      redirect_to dashboard_path
     else
       flash[:danger] = "Unable to delete a Sample with associated Subsamples. Remove any Subsamples first."
       redirect_to @sample
