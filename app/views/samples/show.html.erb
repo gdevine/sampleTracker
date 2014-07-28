@@ -76,8 +76,10 @@
 	<div class="row">
 	  <div class="col-md-offset-2 col-md-3">
 	    <p class="text-left">Owner</p>
-	  </div>   
-	  <div class="col-md-7">
+	  </div>    
+	  <div class="col-md-1 text-right">
+	  </div>
+	  <div class="col-md-offset-1 col-md-6">
 	    <p class="text-muted"><%= @sample.owner.firstname %> <%= @sample.owner.surname %></p>
 	  </div>
 	</div>
@@ -85,17 +87,19 @@
 	<div class="row">
 	  <div class="col-md-offset-2 col-md-3">
 	    <p class="text-left">Facility</p>
-	  </div>   
-	  <div class="col-md-7">
-	    <p class="text-muted"><%= @sample.facility.code %></p>
 	  </div>
+	  <div class="col-md-offset-1 col-md-6">
+	    <%= link_to facility_path(id:@sample.facility.id), remote: true, :"data-toggle" => 'modal', :"data-target" => '#Facility_Modal' do %>
+		  <p class="text-muted"><%= @sample.facility.code.to_s+" " %> <span class="glyphicon glyphicon-info-sign"></span></p> 
+		<% end %>  
+	 </div>
 	</div>
 	
 	<div class="row">
 	  <div class="col-md-offset-2 col-md-3">
 	    <p class="text-left">Project</p>
-	  </div>   
-	  <div class="col-md-7">
+	  </div>  
+	  <div class="col-md-offset-1 col-md-6">
 	    <p class="text-muted"><%= @sample.project_id %></p>
 	  </div>
 	</div>
@@ -103,17 +107,23 @@
 	<div class="row">
 	  <div class="col-md-offset-2 col-md-3">
 	    <p class="text-left">Member of Sample Set</p>
-	  </div>   
-	  <div class="col-md-7">
-	    <p class="text-muted"><%= @sample.sample_set_id %></p>
+	  </div> 
+	  <div class="col-md-offset-1 col-md-6">
+	  	<% if @sample.sample_set.present? %>
+	  	  <%= link_to sample_set_path(id:@sample.sample_set.id), remote: true, :"data-toggle" => 'modal', :"data-target" => '#SampleSet_Modal' do %>
+		    <p class="text-muted"><%= @sample.sample_set_id.to_s+" " %> <span class="glyphicon glyphicon-info-sign"></span></p>  
+		  <% end %> 
+		<% else %>
+		  <p class="text-muted">N/A</p>
+		<% end %>
 	  </div>
 	</div>
 	
 	<div class="row">
 	  <div class="col-md-offset-2 col-md-3">
 	    <p class="text-left">Date sample taken</p>
-	  </div>   
-	  <div class="col-md-7">
+	  </div> 
+	  <div class="col-md-offset-1 col-md-6">
 	    <p class="text-muted"><%= @sample.date_sampled %></p>
 	  </div>
 	</div>
@@ -121,8 +131,8 @@
 	<div class="row">     
 	  <div class="col-md-offset-2 col-md-3">
 	    <p class="text-left">Sample Type</h5>
-	  </div>
-	  <div class="col-md-7">
+	  </div> 
+	  <div class="col-md-offset-1 col-md-6">
 	    <% if @sample.material_type.present? %>
 	      <p class="text-muted"><%= @sample.material_type %></p>
 	    <% else %>
@@ -134,8 +144,8 @@
 	<div class="row">     
 	  <div class="col-md-offset-2 col-md-3">
 	    <p class="text-left">Plot</h5>
-	  </div>
-	  <div class="col-md-7">
+	  </div> 
+	  <div class="col-md-offset-1 col-md-6">
 	    <% if @sample.plot.present? %>
 	      <p class="text-muted"><%= @sample.plot %></p>
 	    <% else %>
@@ -147,8 +157,8 @@
 	<div class="row">     
 	  <div class="col-md-offset-2 col-md-3">
 	    <p class="text-left">Ring</h5>
-	  </div>
-	  <div class="col-md-7">
+	  </div> 
+	  <div class="col-md-offset-1 col-md-6">
 	    <% if @sample.ring.present? %>
 	      <p class="text-muted"><%= @sample.ring %></p>
 	    <% else %>
@@ -160,8 +170,8 @@
 	<div class="row">     
 	  <div class="col-md-offset-2 col-md-3">
 	    <p class="text-left">Tree</h5>
-	  </div>
-	  <div class="col-md-7">
+	  </div> 
+	  <div class="col-md-offset-1 col-md-6">
 	    <% if @sample.tree.present? %>
 	      <p class="text-muted"><%= @sample.tree %></p>
 	    <% else %>
@@ -173,8 +183,8 @@
 	<div class="row">     
 	  <div class="col-md-offset-2 col-md-3">
 	    <p class="text-left">Northing</h5>
-	  </div>
-	  <div class="col-md-7">
+	  </div> 
+	  <div class="col-md-offset-1 col-md-6">
 	    <% if @sample.northing.present? %>
 	      <p class="text-muted"><%= @sample.northing %></p>
 	    <% else %>
@@ -186,8 +196,8 @@
 	<div class="row">     
 	  <div class="col-md-offset-2 col-md-3">
 	    <p class="text-left">Easting</h5>
-	  </div>
-	  <div class="col-md-7">
+	  </div> 
+	  <div class="col-md-offset-1 col-md-6">
 	    <% if @sample.easting.present? %>
 	      <p class="text-muted"><%= @sample.easting %></p>
 	    <% else %>
@@ -199,8 +209,8 @@
 	<div class="row">     
 	  <div class="col-md-offset-2 col-md-3">
 	    <p class="text-left">Height</h5>
-	  </div>
-	  <div class="col-md-7">
+	  </div> 
+	  <div class="col-md-offset-1 col-md-6">
 	    <% if @sample.vertical.present? %>
 	      <p class="text-muted"><%= @sample.vertical %></p>
 	    <% else %>
@@ -212,8 +222,8 @@
 	<div class="row">     
 	  <div class="col-md-offset-2 col-md-3">
 	    <p class="text-left">Amount Collected</h5>
-	  </div>
-	  <div class="col-md-7">
+	  </div> 
+	  <div class="col-md-offset-1 col-md-6">
 	    <% if @sample.amount_collected.present? %>
 	      <p class="text-muted"><%= @sample.amount_collected %></p>
 	    <% else %>
@@ -225,8 +235,8 @@
 	<div class="row">     
 	  <div class="col-md-offset-2 col-md-3">
 	    <p class="text-left">Amount Stored</h5>
-	  </div>
-	  <div class="col-md-7">
+	  </div> 
+	  <div class="col-md-offset-1 col-md-6">
 	    <% if @sample.amount_stored.present? %>
 	      <p class="text-muted"><%= @sample.amount_stored %></p>
 	    <% else %>
@@ -238,10 +248,10 @@
 	<div class="row">     
 	  <div class="col-md-offset-2 col-md-3">
 	    <p class="text-left">Container</p>
-	  </div>
-	  <div class="col-md-7">
+	  </div> 
+	  <div class="col-md-offset-1 col-md-6">
 	    <% if @sample.container.present? %>
-	      <p class="text-muted"><%= @sample.container.id %></p>
+	      <p class="text-muted"><%= @sample.container.id %></p>   
 	    <% else %>
 	      <% if @sample.sampled? %>
 	        <p class="text-muted">N/A</p>
@@ -255,21 +265,23 @@
 	<div class="row">     
 	  <div class="col-md-offset-2 col-md-3">
 	    <p class="text-left">Storage Location</h5>
-	  </div>
-	  <div class="col-md-7">
+	  </div> 
 	    <% if @sample.storage_location.present? %>
-	      <p class="text-muted"><%= @sample.storage_location.code %></p>
+	      <div class="col-md-offset-1 col-md-6">
+		  	<%= link_to storage_location_path(id:@sample.storage_location.id), remote: true, :"data-toggle" => 'modal', :"data-target" => '#StorageLocation_Modal' do %>
+			  <p class="text-muted"><%= @sample.storage_location.code.to_s+" " %> <span class="glyphicon glyphicon-info-sign"></span></p>  
+			<% end %> 
+		  </div>
 	    <% else %>
 	      <p></p>
 	    <% end %>
-	  </div>
 	</div>
 	
 	<div class="row">
 	  <div class="col-md-offset-2 col-md-3">
 	    <p class="text-left">Comments</p>
-	  </div>   
-	  <div class="col-md-7">
+	  </div>  
+	  <div class="col-md-offset-1 col-md-6">
 	    <p class="text-muted"><%= @sample.comments %></p>
 	  </div>
 	</div>
@@ -307,3 +319,24 @@
 	<% end %>
   </div>
 </div>
+
+<% if @sample.facility.present? %>
+  <div class="modal fade" id="Facility_Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
+<% end %>
+<% if @sample.storage_location.present? %>
+  <div class="modal fade" id="StorageLocation_Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
+<% end %>
+<% if @sample.sample_set.present? %>
+  <div class="modal fade" id="SampleSet_Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
+<% end %>
+
+<script type="text/javascript">
+$(function() {
+  <% if @sample.sample_set.present? %>
+    $('#SampleSet_Modal').html("<%= escape_javascript(render 'shared/sample_set_modal') %>");	
+  <% end %>
+
+  $("#Facility_Modal").html("<%= escape_javascript(render 'shared/facility_modal') %>");
+  $("#StorageLocation_Modal").html("<%= escape_javascript(render 'shared/storage_location_modal') %>");
+});
+</script>

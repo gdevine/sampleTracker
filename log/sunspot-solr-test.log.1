@@ -1,71 +1,104 @@
-Jun 10, 2014 11:50:12 PM org.apache.solr.core.CachingDirectoryFactory close
-SEVERE: Timeout waiting for all directory ref counts to be released
-Jun 10, 2014 11:50:12 PM org.apache.solr.core.CoreContainer recordAndThrow
-SEVERE: Unable to create core: test
-org.apache.solr.common.SolrException: Error opening new searcher
+Jul 28, 2014 1:48:21 PM org.apache.solr.core.SolrCore initIndex
+WARNING: [test] WARNING: Solr index directory 'solr/./test/data/index/' is locked.  Unlocking...
+Jul 28, 2014 1:48:21 PM org.apache.solr.core.SolrCore initIndex
+WARNING: [development] WARNING: Solr index directory 'solr/./development/data/index/' is locked.  Unlocking...
+Jul 28, 2014 1:48:21 PM org.apache.solr.core.CoreContainer recordAndThrow
+SEVERE: Unable to create core: development
+org.apache.solr.common.SolrException: Cannot forcefully unlock a NativeFSLock which is held by another indexer component: solr/./development/data/index/write.lock
 	at org.apache.solr.core.SolrCore.<init>(SolrCore.java:806)
 	at org.apache.solr.core.SolrCore.<init>(SolrCore.java:619)
 	at org.apache.solr.core.CoreContainer.createFromLocal(CoreContainer.java:1021)
 	at org.apache.solr.core.CoreContainer.create(CoreContainer.java:1051)
 	at org.apache.solr.core.CoreContainer$3.call(CoreContainer.java:634)
 	at org.apache.solr.core.CoreContainer$3.call(CoreContainer.java:629)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:262)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:471)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:262)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
-	at java.lang.Thread.run(Thread.java:744)
-Caused by: org.apache.solr.common.SolrException: Error opening new searcher
-	at org.apache.solr.core.SolrCore.openNewSearcher(SolrCore.java:1415)
-	at org.apache.solr.core.SolrCore.getSearcher(SolrCore.java:1527)
-	at org.apache.solr.core.SolrCore.<init>(SolrCore.java:781)
-	... 11 more
-Caused by: java.lang.NumberFormatException: For input string: "gen~"
-	at java.lang.NumberFormatException.forInputString(NumberFormatException.java:65)
-	at java.lang.Long.parseLong(Long.java:441)
-	at org.apache.lucene.index.SegmentInfos.generationFromSegmentsFileName(SegmentInfos.java:242)
-	at org.apache.lucene.index.SegmentInfos.getLastCommitGeneration(SegmentInfos.java:177)
-	at org.apache.lucene.index.SegmentInfos$FindSegmentsFile.run(SegmentInfos.java:682)
-	at org.apache.lucene.index.StandardDirectoryReader.open(StandardDirectoryReader.java:52)
-	at org.apache.lucene.index.DirectoryReader.open(DirectoryReader.java:87)
-	at org.apache.solr.core.StandardIndexReaderFactory.newReader(StandardIndexReaderFactory.java:34)
-	at org.apache.solr.search.SolrIndexSearcher.<init>(SolrIndexSearcher.java:124)
-	at org.apache.solr.core.SolrCore.openNewSearcher(SolrCore.java:1391)
+	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:138)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:439)
+	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:138)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:895)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:918)
+	at java.lang.Thread.run(Thread.java:695)
+Caused by: org.apache.lucene.store.LockReleaseFailedException: Cannot forcefully unlock a NativeFSLock which is held by another indexer component: solr/./development/data/index/write.lock
+	at org.apache.lucene.store.NativeFSLock.release(NativeFSLockFactory.java:295)
+	at org.apache.lucene.index.IndexWriter.unlock(IndexWriter.java:4089)
+	at org.apache.solr.core.SolrCore.initIndex(SolrCore.java:479)
+	at org.apache.solr.core.SolrCore.<init>(SolrCore.java:730)
+	... 13 more
+Jul 28, 2014 1:48:21 PM org.apache.solr.core.CoreContainer recordAndThrow
+SEVERE: Unable to create core: test
+org.apache.solr.common.SolrException: Cannot forcefully unlock a NativeFSLock which is held by another indexer component: solr/./test/data/index/write.lock
+	at org.apache.solr.core.SolrCore.<init>(SolrCore.java:806)
+	at org.apache.solr.core.SolrCore.<init>(SolrCore.java:619)
+	at org.apache.solr.core.CoreContainer.createFromLocal(CoreContainer.java:1021)
+	at org.apache.solr.core.CoreContainer.create(CoreContainer.java:1051)
+	at org.apache.solr.core.CoreContainer$3.call(CoreContainer.java:634)
+	at org.apache.solr.core.CoreContainer$3.call(CoreContainer.java:629)
+	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:138)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:439)
+	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:138)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:895)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:918)
+	at java.lang.Thread.run(Thread.java:695)
+Caused by: org.apache.lucene.store.LockReleaseFailedException: Cannot forcefully unlock a NativeFSLock which is held by another indexer component: solr/./test/data/index/write.lock
+	at org.apache.lucene.store.NativeFSLock.release(NativeFSLockFactory.java:295)
+	at org.apache.lucene.index.IndexWriter.unlock(IndexWriter.java:4089)
+	at org.apache.solr.core.SolrCore.initIndex(SolrCore.java:479)
+	at org.apache.solr.core.SolrCore.<init>(SolrCore.java:730)
+	... 13 more
+Jul 28, 2014 1:48:21 PM org.apache.solr.common.SolrException log
+SEVERE: null:org.apache.solr.common.SolrException: Unable to create core: development
+	at org.apache.solr.core.CoreContainer.recordAndThrow(CoreContainer.java:1672)
+	at org.apache.solr.core.CoreContainer.create(CoreContainer.java:1057)
+	at org.apache.solr.core.CoreContainer$3.call(CoreContainer.java:634)
+	at org.apache.solr.core.CoreContainer$3.call(CoreContainer.java:629)
+	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:138)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:439)
+	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:138)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:895)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:918)
+	at java.lang.Thread.run(Thread.java:695)
+Caused by: org.apache.solr.common.SolrException: Cannot forcefully unlock a NativeFSLock which is held by another indexer component: solr/./development/data/index/write.lock
+	at org.apache.solr.core.SolrCore.<init>(SolrCore.java:806)
+	at org.apache.solr.core.SolrCore.<init>(SolrCore.java:619)
+	at org.apache.solr.core.CoreContainer.createFromLocal(CoreContainer.java:1021)
+	at org.apache.solr.core.CoreContainer.create(CoreContainer.java:1051)
+	... 10 more
+Caused by: org.apache.lucene.store.LockReleaseFailedException: Cannot forcefully unlock a NativeFSLock which is held by another indexer component: solr/./development/data/index/write.lock
+	at org.apache.lucene.store.NativeFSLock.release(NativeFSLockFactory.java:295)
+	at org.apache.lucene.index.IndexWriter.unlock(IndexWriter.java:4089)
+	at org.apache.solr.core.SolrCore.initIndex(SolrCore.java:479)
+	at org.apache.solr.core.SolrCore.<init>(SolrCore.java:730)
 	... 13 more
 
-Jun 10, 2014 11:50:12 PM org.apache.solr.common.SolrException log
+Jul 28, 2014 1:48:21 PM org.apache.solr.common.SolrException log
 SEVERE: null:org.apache.solr.common.SolrException: Unable to create core: test
 	at org.apache.solr.core.CoreContainer.recordAndThrow(CoreContainer.java:1672)
 	at org.apache.solr.core.CoreContainer.create(CoreContainer.java:1057)
 	at org.apache.solr.core.CoreContainer$3.call(CoreContainer.java:634)
 	at org.apache.solr.core.CoreContainer$3.call(CoreContainer.java:629)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:262)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:471)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:262)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
-	at java.lang.Thread.run(Thread.java:744)
-Caused by: org.apache.solr.common.SolrException: Error opening new searcher
+	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:138)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:439)
+	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:138)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:895)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:918)
+	at java.lang.Thread.run(Thread.java:695)
+Caused by: org.apache.solr.common.SolrException: Cannot forcefully unlock a NativeFSLock which is held by another indexer component: solr/./test/data/index/write.lock
 	at org.apache.solr.core.SolrCore.<init>(SolrCore.java:806)
 	at org.apache.solr.core.SolrCore.<init>(SolrCore.java:619)
 	at org.apache.solr.core.CoreContainer.createFromLocal(CoreContainer.java:1021)
 	at org.apache.solr.core.CoreContainer.create(CoreContainer.java:1051)
-	... 8 more
-Caused by: org.apache.solr.common.SolrException: Error opening new searcher
-	at org.apache.solr.core.SolrCore.openNewSearcher(SolrCore.java:1415)
-	at org.apache.solr.core.SolrCore.getSearcher(SolrCore.java:1527)
-	at org.apache.solr.core.SolrCore.<init>(SolrCore.java:781)
-	... 11 more
-Caused by: java.lang.NumberFormatException: For input string: "gen~"
-	at java.lang.NumberFormatException.forInputString(NumberFormatException.java:65)
-	at java.lang.Long.parseLong(Long.java:441)
-	at org.apache.lucene.index.SegmentInfos.generationFromSegmentsFileName(SegmentInfos.java:242)
-	at org.apache.lucene.index.SegmentInfos.getLastCommitGeneration(SegmentInfos.java:177)
-	at org.apache.lucene.index.SegmentInfos$FindSegmentsFile.run(SegmentInfos.java:682)
-	at org.apache.lucene.index.StandardDirectoryReader.open(StandardDirectoryReader.java:52)
-	at org.apache.lucene.index.DirectoryReader.open(DirectoryReader.java:87)
-	at org.apache.solr.core.StandardIndexReaderFactory.newReader(StandardIndexReaderFactory.java:34)
-	at org.apache.solr.search.SolrIndexSearcher.<init>(SolrIndexSearcher.java:124)
-	at org.apache.solr.core.SolrCore.openNewSearcher(SolrCore.java:1391)
+	... 10 more
+Caused by: org.apache.lucene.store.LockReleaseFailedException: Cannot forcefully unlock a NativeFSLock which is held by another indexer component: solr/./test/data/index/write.lock
+	at org.apache.lucene.store.NativeFSLock.release(NativeFSLockFactory.java:295)
+	at org.apache.lucene.index.IndexWriter.unlock(IndexWriter.java:4089)
+	at org.apache.solr.core.SolrCore.initIndex(SolrCore.java:479)
+	at org.apache.solr.core.SolrCore.<init>(SolrCore.java:730)
 	... 13 more
 

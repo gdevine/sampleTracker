@@ -41,6 +41,13 @@ p {
   line-height: 1.7em;
 }
 
+
+/* Text colours */
+.redtext {
+  color: #CC0000 !important;
+}
+
+
 /* footer */
 
 footer {
@@ -154,10 +161,3 @@ background-color: rgba(100,255,100,0.1); // I don't know the .well color, so I u
 .bottomspace {
   padding-bottom: 30px;
 }
-
-/* Text colours */
-.redtext {
-  color: #CC0000 !important;
-}
-
-

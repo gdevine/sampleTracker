@@ -3,7 +3,7 @@ class ContainersController < ApplicationController
   before_action :correct_user,  only: [:edit, :update, :destroy]
   
   def index   
-    @containers = Container.paginate(page: params[:page])
+    @containers = Container.paginate(page: params[:c_page])
   end
   
   def new

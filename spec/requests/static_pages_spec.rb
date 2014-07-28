@@ -55,7 +55,7 @@ describe "Static pages:" do
         
       end
       
-      describe "with sample sets" do
+      describe "with samples" do
       
         before do
           FactoryGirl.create(:sample, owner: user)
@@ -70,6 +70,39 @@ describe "Static pages:" do
                 
         it "should contain each in a table row" do
           user.my_samples.each do |item|
+            expect(page).to have_selector('table tr td', text: item.id)
+          end
+        end
+        
+      end
+      
+      describe "with no containers" do
+        before do
+          sign_in user
+          visit dashboard_path
+        end
+        
+        it "should have an information message" do
+          expect(page).to have_content('No Containers found')
+        end
+        
+      end
+      
+      describe "with containers" do
+      
+        before do
+          FactoryGirl.create(:container, owner: user)
+          FactoryGirl.create(:container, owner: user)
+          sign_in user
+          visit dashboard_path
+        end
+        
+        it "should have correct table heading" do
+          expect(page).to have_selector('th', text: 'ID')
+        end
+                
+        it "should contain each in a table row" do
+          user.containers.each do |item|
             expect(page).to have_selector('table tr td', text: item.id)
           end
         end

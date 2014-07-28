@@ -1,5 +1,6 @@
 <% if @containers.any? %>
-  <%= will_paginate @containers %>
+  <h5><%= @containers.count %> results</h5>
+  <%= will_paginate @containers, :param_name => "c_page" %>
   <table class="table table-bordered table-striped table-hover" width="647">
     <thead>
       <tr>
