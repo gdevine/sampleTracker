@@ -2,7 +2,7 @@
 <% provide(:pageheading, 'Sample Set '+ @sample_set.id.to_s) %>
 
 <!-- Add edit/delete links if current user -->
-<% if current_user?(@sample_set.owner) %> 
+<% if current_user == @sample_set.owner %> 
  <div class="row bottomspace">  
     <div class="col-xs-12 col-sm-2 col-sm-push-10">
 		<a class="btn btn-block btn-info" data-toggle="dropdown" href="#" id="options_button">
@@ -105,8 +105,8 @@
   </div>
 </div>
 
-
-<% if current_user?(@sample_set.owner) %> 
+ 
+<% if current_user == @sample_set.owner %> 
 	<h4 class= "heading-separator rowline center">Batch upload of sample information</h4>
 	<%= form_tag import_samples_path, multipart: true do %>
 	  <%= file_field_tag :file, :style => 'width: 350px; margin-top: 14px;' %>

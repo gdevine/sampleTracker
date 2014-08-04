@@ -1,5 +1,8 @@
 require 'spec_helper'
 
+include Warden::Test::Helpers
+Warden.test_mode!
+
 describe "Container pages:" do
 
   subject { page }
@@ -10,7 +13,7 @@ describe "Container pages:" do
     
     describe "for signed-in users" do
       
-      before { sign_in user }
+      before { login_as user }
       before { visit containers_path }
       
       it { should have_content('Containers List') }
@@ -63,7 +66,7 @@ describe "Container pages:" do
       
       let!(:mystoragelocation) { FactoryGirl.create(:storage_location, custodian: user, code:'blabla') } 
     
-      before { sign_in user }
+      before { login_as user }
       before { visit new_container_path }
       
       it { should have_content('New Container') }
@@ -116,7 +119,7 @@ describe "Container pages:" do
         
     describe "for signed-in users" do
       
-      before { sign_in user }
+      before { login_as user }
       before { visit container_path(container) }
       
       let!(:page_heading) {"Container " + container.id.to_s}
@@ -141,7 +144,7 @@ describe "Container pages:" do
       describe "who don't own the current container" do
          let(:non_owner) { FactoryGirl.create(:user) }
          before do 
-           sign_in non_owner
+           login_as non_owner
            visit container_path(container)
          end 
          
@@ -189,7 +192,7 @@ describe "Container pages:" do
                                                 ) }      
                                                 
     describe "as correct user" do
-      before { sign_in user }
+      before { login_as user }
       
       describe "of an empty container" do
         before { visit container_path(container_empty) }
@@ -225,7 +228,7 @@ describe "Container pages:" do
     
     describe "for signed-in users" do
     
-      before { sign_in user }
+      before { login_as user }
       before { visit edit_container_path(mycontainer) }
       
       it { should have_content('Edit Container ' + mycontainer.id.to_s) }

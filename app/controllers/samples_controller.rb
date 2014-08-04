@@ -1,7 +1,7 @@
 require 'prawn/qrcode'
 
 class SamplesController < ApplicationController
-  before_action :signed_in_user, only: [:index, :new, :show, :update, :edit, :create, :destroy]
+  before_action :authenticate_user!, only: [:index, :new, :show, :update, :edit, :create, :destroy]
   before_action :correct_user, only: [:edit, :update, :destroy]
   before_action :set_is_primary, :only => [:create, :update]
   before_action :check_completed, only: [:destroy]

@@ -23,7 +23,7 @@
 <% provide(:pageheading, 'Container '+ @container.id.to_s) %>
 
 <!-- Add edit/delete buttons if current user -->
-<% if current_user?(@container.owner) %> 
+<% if current_user == @container.owner %> 
  <div class="row bottomspace">  
     <div class="col-xs-12 col-sm-2 col-sm-push-10">
 		<a class="btn btn-block btn-info" data-toggle="dropdown" href="#" id="options_button">

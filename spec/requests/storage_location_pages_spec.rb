@@ -1,5 +1,8 @@
 require 'spec_helper'
 
+include Warden::Test::Helpers
+Warden.test_mode!
+
 describe "Storage Location pages:" do
 
   subject { page }
@@ -10,7 +13,7 @@ describe "Storage Location pages:" do
     
     describe "for signed-in users" do
       
-      before { sign_in user }
+      before { login_as user }
       before { visit storage_locations_path }
       
       it { should have_content('Storage Location List') }
@@ -61,7 +64,7 @@ describe "Storage Location pages:" do
     
     describe "for signed-in users" do
     
-      before { sign_in user }
+      before { login_as user }
       before { visit new_storage_location_path }
       
       it { should have_content('New Storage Location') }
@@ -118,7 +121,7 @@ describe "Storage Location pages:" do
         
     describe "for signed-in users" do
       
-      before { sign_in user }
+      before { login_as user }
       before { visit storage_location_path(storage_location) }
       
       let!(:page_heading) {"Storage Location " + storage_location.code}
@@ -141,7 +144,7 @@ describe "Storage Location pages:" do
       describe "who don't govern the current storage location" do
          let(:non_owner) { FactoryGirl.create(:user) }
          before do 
-           sign_in non_owner
+           login_as non_owner
            visit storage_location_path(storage_location)
          end 
          
@@ -212,7 +215,7 @@ describe "Storage Location pages:" do
                                                 ) }      
                                                 
     describe "as correct user" do
-      before { sign_in user }
+      before { login_as user }
       
       describe "of an empty storage location" do
         before { visit storage_location_path(storage_location_empty) }
@@ -246,7 +249,7 @@ describe "Storage Location pages:" do
     
     describe "for signed-in users" do
     
-      before { sign_in user }
+      before { login_as user }
       before { visit edit_storage_location_path(storage_location) }
       
       it { should have_content('Edit Storage Location ' + storage_location.code) }

@@ -1,5 +1,8 @@
 require 'spec_helper'
 
+include Warden::Test::Helpers
+Warden.test_mode!
+
 describe "Facility pages:" do
 
   subject { page }
@@ -10,7 +13,7 @@ describe "Facility pages:" do
     
     describe "for signed-in users" do
       
-      before { sign_in user }
+      before { login_as user }
       before { visit facilities_path }
       
       it { should have_content('Facility List') }
@@ -61,7 +64,7 @@ describe "Facility pages:" do
     
     describe "for signed-in users" do
     
-      before { sign_in user }
+      before { login_as user }
       before { visit new_facility_path }
       
       it { should have_content('New Facility') }
@@ -116,7 +119,7 @@ describe "Facility pages:" do
         
     describe "for signed-in users" do
       
-      before { sign_in user }
+      before { login_as user }
       before { visit facility_path(facility) }
       
       let!(:page_heading) {"Facility " + facility.code}
@@ -139,7 +142,7 @@ describe "Facility pages:" do
       describe "who don't own the current facility" do
          let(:non_owner) { FactoryGirl.create(:user) }
          before do 
-           sign_in non_owner
+           login_as non_owner
            visit facility_path(facility)
          end 
          
@@ -197,7 +200,7 @@ describe "Facility pages:" do
                                                 ) }      
 
     describe "as correct user" do
-      before { sign_in user }
+      before { login_as user }
       
       describe "of a facility with no content" do
         before { visit facility_path(facility_empty) }
@@ -231,7 +234,7 @@ describe "Facility pages:" do
     
     describe "for signed-in users" do
     
-      before { sign_in user }
+      before { login_as user }
       before { visit edit_facility_path(facility) }
       
       it { should have_content('Edit Facility ' + facility.code) }

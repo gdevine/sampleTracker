@@ -1,0 +1,18 @@
+<% if @users.any? %>
+  <%= will_paginate @users %>
+  <table class="table table-bordered table-striped table-hover" width="647">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>View?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render partial: 'users/users_table', collection: @users, as: :user %>
+    </tbody>
+  </table>
+  
+<% else %>
+  <p>No Users found</p>
+<% end %>

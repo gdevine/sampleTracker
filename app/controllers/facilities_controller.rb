@@ -1,5 +1,5 @@
 class FacilitiesController < ApplicationController
-  before_action :signed_in_user, only: [:index, :new, :show, :update, :edit, :create, :destroy]
+  before_action :authenticate_user!, only: [:index, :new, :show, :update, :edit, :create, :destroy]
   before_action :correct_user,   only: [:edit, :update, :destroy]
   
   def index   

@@ -2,7 +2,7 @@
 <% provide(:pageheading, 'Storage Location '+ @storage_location.code) %>
 
 <!-- Add edit/delete links if current user -->
-<% if current_user?(@storage_location.custodian) %> 
+<% if current_user == @storage_location.custodian %> 
  <div class="row bottomspace">  
     <div class="col-xs-12 col-sm-2 col-sm-push-10">
 		<a class="btn btn-block btn-info" data-toggle="dropdown" href="#" id="options_button">

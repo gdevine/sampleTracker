@@ -1,5 +1,8 @@
 require 'spec_helper'
 
+include Warden::Test::Helpers
+Warden.test_mode!
+
 describe "sample_set pages:" do
 
   subject { page }
@@ -195,7 +198,7 @@ describe "sample_set pages:" do
       describe "who don't own the current sample set" do
          let(:non_owner) { FactoryGirl.create(:user) }
          before do 
-           sign_in non_owner
+           login_as non_owner
            visit sample_set_path(sample_set)
          end 
          

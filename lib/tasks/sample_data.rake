@@ -6,15 +6,14 @@ namespace :db do
     admin = User.create!(firstname: "Gerard",
                          surname: "Devine",
                          email: "g.devine@uws.edu.au",
-                         password: "foobar",
-                         password_confirmation: "foobar",
-                         admin: true)
+                         password: "qwertyui",
+                         password_confirmation: "qwertyui")
     
     # Create dummy users
     99.times do |n|
       firstname  = Faker::Name.first_name
       surname = Faker::Name.last_name
-      email = "example-#{n+1}@railstutorial.org"
+      email = Faker::Internet.email
       password  = "password"
       User.create!(firstname: firstname,
                    surname: surname,
