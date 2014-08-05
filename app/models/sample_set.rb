@@ -24,4 +24,18 @@ class SampleSet < ActiveRecord::Base
     end
   end 
   
+  def status
+    
+    sampled_list = []
+    samples = self.samples.to_a.each do |sample| 
+      sampled_list << sample.sampled.to_s 
+    end
+    if sampled_list.include? 'false'
+      return 'Pending'
+    else
+      return 'Complete'
+    end
+    
+  end
+  
 end

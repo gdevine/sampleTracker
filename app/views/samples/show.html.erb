@@ -336,7 +336,12 @@ $(function() {
     $('#SampleSet_Modal').html("<%= escape_javascript(render 'shared/sample_set_modal') %>");	
   <% end %>
 
-  $("#Facility_Modal").html("<%= escape_javascript(render 'shared/facility_modal') %>");
-  $("#StorageLocation_Modal").html("<%= escape_javascript(render 'shared/storage_location_modal') %>");
+  <% if @sample.sample_set.present? %>
+    $("#Facility_Modal").html("<%= escape_javascript(render 'shared/facility_modal') %>");
+  <% end %>
+  
+  <% if @sample.storage_location.present? %>
+    $("#StorageLocation_Modal").html("<%= escape_javascript(render 'shared/storage_location_modal') %>");
+  <% end %>
 });
 </script>

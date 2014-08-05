@@ -18,7 +18,6 @@ class SampleSetsController < ApplicationController
 
   def create
     @sample_set = current_user.sample_sets.build(sample_set_params)
-    @sample_set.status = 'Pending'
     if @sample_set.save
       UserMailer.newss_email(@sample_set).deliver
       flash[:success] = "Sample Set created!"
@@ -53,7 +52,7 @@ class SampleSetsController < ApplicationController
   private
 
     def sample_set_params
-      params.require(:sample_set).permit(:owner_id, :facility_id, :project_id, :sampling_date, :num_samples, :status, :add_info, :ss_page)
+      params.require(:sample_set).permit(:owner_id, :facility_id, :project_id, :sampling_date, :num_samples, :add_info, :ss_page)
     end
     
     def correct_user

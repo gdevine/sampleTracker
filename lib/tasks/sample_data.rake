@@ -67,7 +67,6 @@ namespace :db do
       users.each { |user| user.sample_sets.create!(facility_id: 1 + rand(7), 
                                                    project_id: 1 + rand(7), 
                                                    num_samples: 1 + rand(30),
-                                                   status: 'Pending Sampling',
                                                    sampling_date: Date.today+(100*rand()),
                                                    add_info: "Some additional info about this sample set"
                                                    ) }

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140731083400) do
+ActiveRecord::Schema.define(version: 20140805052536) do
 
   create_table "containers", force: true do |t|
     t.string   "container_type"
@@ -37,13 +37,12 @@ ActiveRecord::Schema.define(version: 20140731083400) do
   create_table "sample_sets", force: true do |t|
     t.integer  "owner_id"
     t.date     "sampling_date"
-    t.integer  "num_samples"
     t.integer  "facility_id"
     t.integer  "project_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "status"
     t.text     "add_info"
+    t.integer  "num_samples"
   end
 
   add_index "sample_sets", ["owner_id", "created_at"], name: "index_sample_sets_on_owner_id_and_created_at"

@@ -37,7 +37,6 @@ FactoryGirl.define do
     facility_id  1 
     project_id   4
     num_samples  5
-    status 'Pending'
     add_info 'Some info about this sample set'
     sampling_date Date.new(2012, 12, 3)
     

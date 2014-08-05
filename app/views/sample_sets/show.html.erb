@@ -109,8 +109,9 @@
 <% if current_user == @sample_set.owner %> 
 	<h4 class= "heading-separator rowline center">Batch upload of sample information</h4>
 	<%= form_tag import_samples_path, multipart: true do %>
-	  <%= file_field_tag :file, :style => 'width: 350px; margin-top: 14px;' %>
+	  <%= file_field_tag :file, :class => 'col-md-3' %>
 	  <%= hidden_field_tag "sample_set_id", @sample_set.id %>
-	  <%= submit_tag "Import CSV", :class => 'btn btn-sm btn-info col-md-3' %>
+	  <%= submit_tag "Import CSV", :class => 'btn btn-default btn-file col-md-3' %>
 	<% end %>
+ 
 <% end %>

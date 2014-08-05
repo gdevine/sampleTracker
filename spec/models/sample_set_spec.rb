@@ -14,11 +14,11 @@ describe SampleSet do
   it { should respond_to(:owner_id) }
   it { should respond_to(:facility_id) }
   it { should respond_to(:project_id) }
-  it { should respond_to(:num_samples) }
   it { should respond_to(:sampling_date) }
   it { should respond_to(:owner) }
   it { should respond_to(:status) }
   it { should respond_to(:add_info) }
+  it { should respond_to(:num_samples) }
   it { should respond_to(:samples) }
   it { should respond_to(:facility) }
   
