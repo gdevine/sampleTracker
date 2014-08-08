@@ -68,6 +68,12 @@ class SamplesController < ApplicationController
   end
     
   def new
+    # If being appended to a sample set then create it and redirect back to the sample set page
+    if params[:sample_set_id]
+      @sample_set = SampleSet.find(params[:sample_set_id])
+      @sample_set.append_sample
+      redirect_to @sample_set
+    end
     # Include details of the parent if creating a new subsample
     if params[:sample_id]
       @parent = Sample.find(params[:sample_id])

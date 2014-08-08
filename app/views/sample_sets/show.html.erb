@@ -14,6 +14,7 @@
 		    <!-- # <li><%= link_to "Export Spreadsheet", sample_set_samples_path(sample_set_id:@sample_set.id, format: "xls")%></li> -->
 		    <li><%= link_to "Export CSV", sample_set_samples_path(sample_set_id:@sample_set.id, format: "csv")%></li>
 		    <li><%= link_to "Print QR codes", sample_set_samples_path(sample_set_id:@sample_set.id, format: "pdf"), :target => '_blank' %></li>
+		    <li><%= link_to "Append New Sample", new_sample_set_sample_path(sample_set_id:@sample_set.id) %></li>
 		    <li><%= link_to "Delete Sample Set", @sample_set, :method => :delete, data: { confirm: "Are you sure?" }, :class=>"redtext" %></li>
 		</ul>
 	</div>
@@ -107,11 +108,25 @@
 
  
 <% if current_user == @sample_set.owner %> 
+
 	<h4 class= "heading-separator rowline center">Batch upload of sample information</h4>
-	<%= form_tag import_samples_path, multipart: true do %>
-	  <%= file_field_tag :file, :class => 'col-md-3' %>
-	  <%= hidden_field_tag "sample_set_id", @sample_set.id %>
-	  <%= submit_tag "Import CSV", :class => 'btn btn-default btn-file col-md-3' %>
+	<%= form_tag({action: :import}, multipart: true) do %>
+		<div class="fileinput fileinput-new input-group col-md-6 col-md-offset-3" data-provides="fileinput">
+		  <div class="form-control" data-trigger="fileinput">
+		  	<i class="glyphicon glyphicon-file fileinput-exists"></i> 
+		  	<span class="fileinput-filename"></span>
+		  </div>
+		  <span class="input-group-addon btn btn-default btn-file">
+		  	<span class="fileinput-new">Select file</span>
+		    <span class="fileinput-exists">Change</span>
+		    <%= file_field_tag :file %>
+		    <!-- # <%# hidden_field_tag "sample_set_id", @sample_set.id %> -->
+		  </span>
+		  <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
+		</div>
+		<div class="row">
+		  <%= submit_tag "Import CSV", :class => 'btn btn-inverse col-md-4 col-md-offset-4' %>
+		</div>
 	<% end %>
  
 <% end %>

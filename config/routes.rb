@@ -7,11 +7,14 @@ SampleTracker::Application.routes.draw do
   resources :storage_locations
   resources :containers
   resources :samples do
-    collection { post :import }
+    # collection { post :import }
   end
   
   resources :sample_sets do
-    resources :samples, only: [:index]
+    member do
+      post 'import'
+    end
+    resources :samples, only: [:index, :new]
   end
   
   resources :samples do

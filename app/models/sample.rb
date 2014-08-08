@@ -29,6 +29,9 @@ class Sample < ActiveRecord::Base
   before_validation :update_sample_loc_on_cont_change, on: [:update, :create]
   # after_update :modify_subs, on: [:update]
   
+  before_destroy :subtract_from_sampleset
+  
+  
   searchable do
     text :comments
     integer :tree
@@ -53,7 +56,6 @@ class Sample < ActiveRecord::Base
  
   def self.to_csv(all_samples)
     CSV.generate do |csv|
-      # csv << column_names
       column_names = %w(id date_sampled tree plot ring container_id storage_location_id material_type northing easting vertical amount_collected amount_stored comments)
       csv << column_names
       all_samples.each do |row|
@@ -62,18 +64,15 @@ class Sample < ActiveRecord::Base
     end
   end
   
-  def self.import(file, sample_set_id)
-      CSV.foreach(file.path, headers: true) do |row|
-        sample_hash = row.to_hash
-        sample = Sample.find_by_id(row["id"])
-        if sample.sample_set_id == sample_set_id
-          sample.errors.add(:base, 'Sample found not part of Sample Set ' + sample_set_id)
-        end
-        sample_hash[:is_primary] = true
-        sample_hash[:sampled] = true
-        sample.update_attributes(sample_hash)
-        # sample.save
-      end
+  
+  def self.import(sample_hash, sample_set)
+    #
+    #Import sample fields into an existing sample
+    #
+    sample = Sample.find_by_id(sample_hash["id"])
+    sample_hash[:is_primary] = true
+    sample_hash[:sampled] = true
+    sample.update_attributes(sample_hash)
   end
   
   
@@ -124,6 +123,13 @@ class Sample < ActiveRecord::Base
            self.storage_location_id = self.container.storage_location_id
          end
        end
+    end
+       
+    def subtract_from_sampleset
+      if self.sample_set.present?
+        self.sample_set.num_samples -= 1
+        self.sample_set.save
+      end
     end
     
     # In the event of a parent sample edit, modify the subsamples attributes to match

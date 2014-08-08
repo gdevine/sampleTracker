@@ -124,7 +124,6 @@ describe "Sample pages:" do
         
           let!(:first_sample_id) { sampled_sample.subsamples.first.id }
           let!(:last_sample_id) { sampled_sample.subsamples.last.id }
-          # before { visit sample_set_path(sample_set) }
           it { should have_selector('table tr th', text: 'Sample ID') } 
           it { should have_selector('table tr td', text: first_sample_id) } 
           it { should have_selector('table tr td', text: last_sample_id) } 
@@ -262,6 +261,7 @@ describe "Sample pages:" do
                                                         is_primary: false
                                                          ) }                                                       
     
+    let!(:sample_set) { FactoryGirl.create(:sample_set, owner: user, num_samples: 60) }
     
 
     describe "as correct user" do
@@ -314,6 +314,20 @@ describe "Sample pages:" do
           let!(:error_message) {"Unable to delete a Sample with associated Subsamples. Remove any Subsamples first."}
           
           it { should have_content(error_message) }
+        end
+      end
+      
+      describe "of a sample set sample" do
+        let(:num_samples_old) { sample_set.num_samples }
+        before do 
+          visit sample_path(sample_set.samples.first)
+        end 
+        it "should delete" do
+          expect { click_link "Delete Sample" }.to change(Sample, :count).by(-1)
+        end
+        it "should subtract 1 from the total samples within a sample set" do
+          click_link "Delete Sample"
+          num_samples_old.should == sample_set.reload.num_samples+1
         end
       end
       

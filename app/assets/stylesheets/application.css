@@ -12,5 +12,6 @@
  *= require jquery.ui.all
  *= require bootstrap
  *= require readable
+ *= require jasny-bootstrap
  *= require custom
  */

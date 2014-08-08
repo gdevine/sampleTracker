@@ -12,8 +12,11 @@ class SampleSet < ActiveRecord::Base
   validates :num_samples, presence: true, length: { maximum: 3 }  # i.e. anything over 10000 would be unrealistic
   validates :sampling_date, presence: true
   
+  
   def create_samples
-    # create a new batch of samples based on the num_samples attribute of sample_set
+    #
+    # Create a new batch of samples based on the num_samples attribute of sample_set
+    #
     num_samples.times do |n| 
       cs = self.samples.build(facility_id: facility_id,
                               project_id: project_id,
@@ -24,8 +27,24 @@ class SampleSet < ActiveRecord::Base
     end
   end 
   
+  def append_sample
+    #
+    # Append a new sample to the current sample_set
+    #
+    appended_sample = self.samples.build(facility_id: self.facility_id,
+                              project_id: self.project_id,
+                              owner_id: owner_id,
+                              is_primary: true,
+                              sampled: false)
+    self.num_samples += 1                          
+    appended_sample.save
+    self.save
+  end
+  
   def status
-    
+    #
+    # Return the current status of a sample set based on its samples
+    #
     sampled_list = []
     samples = self.samples.to_a.each do |sample| 
       sampled_list << sample.sampled.to_s 
@@ -35,7 +54,7 @@ class SampleSet < ActiveRecord::Base
     else
       return 'Complete'
     end
-    
   end
+  
   
 end

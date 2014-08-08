@@ -1,6 +1,6 @@
 class SampleSetsController < ApplicationController
-  before_action :authenticate_user!, only: [:index, :new, :show, :update, :edit, :create, :destroy]
-  before_action :correct_user, only: [:edit, :update, :destroy]
+  before_action :authenticate_user!, only: [:index, :new, :show, :update, :edit, :create, :destroy, :import]
+  before_action :correct_user, only: [:edit, :update, :destroy, :import]
   before_action :check_for_completed_samples, only: [:destroy]
   
   def index   
@@ -48,6 +48,58 @@ class SampleSetsController < ApplicationController
     redirect_to dashboard_path
   end
   
+  def import
+    #
+    # Import sample information for a sample set from csv file
+    #
+    @sample_set = SampleSet.find(params[:id])
+    if valid_csv_upload(@sample_set, params['file'].path)
+      CSV.foreach(params['file'].path, headers: true) do |row|
+          sample_hash = row.to_hash
+          Sample.import(sample_hash, params[:sample_set_id])
+      end
+      flash[:success] = "Samples imported successfully"
+      redirect_to @sample_set
+    else 
+      flash[:danger] = "Sample ID not in Sample set"
+      redirect_to @sample_set
+    end
+      
+  end
+  
+  def valid_csv_upload(sample_set, file)
+    sample_ids = []
+    valid = true
+    sample_set.samples.each do |x| sample_ids << x.id.to_s end 
+    CSV.foreach(file, headers: true) do |row|
+      sample_hash = row.to_hash
+      if !sample_ids.include?(sample_hash['id'])
+        # @samples = sample_set.samples.paginate(page: params[:page])
+        # redirect_to sample_set
+        sample_set.errors.add :base, "Sample ID not in Sample set"
+        valid = false
+        break
+      end
+    end
+    return valid
+  end
+  
+  # def validate_csv(sample_set)
+    # #
+    # # Validate an uploaded CSV against the current Sample Set
+    # #
+    # sample_ids = []
+    # sample_set.samples.each do |x| sample_ids << x.id end 
+    # CSV.foreach(params['file'].path, headers: true) do |row|
+      # sample_hash = row.to_hash
+      # if !sample_ids.include?(sample_hash['id'])
+        # @samples = sample_set.samples.paginate(page: params[:page])
+        # # redirect_to sample_set
+        # return false
+      # end
+    # end
+    # return true
+  # end
   
   private
 

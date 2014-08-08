@@ -180,8 +180,8 @@ describe "sample_set pages:" do
       
       it { should have_link('Options') }
       it { should have_link('Edit Sample Set') }
-      it { should have_link('Delete Sample Set') }     
-      # it { should have_link('Export Spreadsheet') }
+      it { should have_link('Delete Sample Set') }    
+      it { should have_link('Append New Sample') }
       it { should have_link('Export CSV') }
       it { should have_link('Print QR codes') }
       
@@ -195,6 +195,31 @@ describe "sample_set pages:" do
         end
       end
       
+      describe "clicking the append new sample link" do
+        let!(:page_heading) {"Sample Set " + sample_set.id.to_s}
+        describe 'should return to the sample set index page (with newly added sample)' do
+          before {click_link "Append New Sample"}
+          it { should have_content(page_heading) }
+        end
+      end
+        
+      describe "appending a sample" do
+        before do
+          visit sample_set_path(sample_set)
+        end
+        it "should add 1 to the num_samples within a sample set" do
+          expect { click_link "Append New Sample" }.to change(Sample, :count).by(1)
+        end
+      end
+      
+      describe "appending a sample" do
+        let!(:num_samples_old) { sample_set.num_samples }
+        it "should add 1 to number of samples within a sample set" do
+          click_link "Append New Sample"
+          num_samples_old.should == sample_set.reload.num_samples-1
+        end
+      end
+      
       describe "who don't own the current sample set" do
          let(:non_owner) { FactoryGirl.create(:user) }
          before do 
@@ -205,6 +230,7 @@ describe "sample_set pages:" do
          describe "should not see the edit and delete links" do
            it { should_not have_link('Options') }
            it { should_not have_link('Edit Sample Set') }
+           it { should_not have_link('Append New Sample') }
            it { should_not have_link('Delete Sample Set') }
          end 
 
@@ -242,13 +268,13 @@ describe "sample_set pages:" do
     describe "for signed-in users" do
     
       before { sign_in user }
-      #let!(:myfacility) { FactoryGirl.create(:facility, contact: user) }
       let!(:myfacility) { sample_set.facility }
       before { visit edit_sample_set_path(sample_set) }
       
       it { should have_content('Edit Sample Set ' + sample_set.id.to_s) }
       it { should have_title(full_title('Edit Sample Set')) }
       it { should_not have_title('| Home') }
+      it { should_not have_selector('#sample_set_num_samples') }
       
       describe "with invalid information" do
         
@@ -268,7 +294,6 @@ describe "sample_set pages:" do
         before do
           find('#sample_set_facility_id').find(:xpath, 'option['+(myfacility.id + 1).to_s+']').select_option
           fill_in 'sample_set_project_id'  , with: 3
-          fill_in 'sample_set_num_samples'  , with: 20
           fill_in 'sample_set_sampling_date', with: Date.new(2012, 12, 6)
         end
         
