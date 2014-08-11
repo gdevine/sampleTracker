@@ -1,8 +1,5 @@
 require 'spec_helper'
 
-include Warden::Test::Helpers
-Warden.test_mode!
-
 describe "Storage Location pages:" do
 
   subject { page }
@@ -13,7 +10,7 @@ describe "Storage Location pages:" do
     
     describe "for signed-in users" do
       
-      before { login_as user }
+      before { sign_in(user) }
       before { visit storage_locations_path }
       
       it { should have_content('Storage Location List') }
@@ -64,7 +61,7 @@ describe "Storage Location pages:" do
     
     describe "for signed-in users" do
     
-      before { login_as user }
+      before { sign_in(user) }
       before { visit new_storage_location_path }
       
       it { should have_content('New Storage Location') }
@@ -121,7 +118,7 @@ describe "Storage Location pages:" do
         
     describe "for signed-in users" do
       
-      before { login_as user }
+      before { sign_in(user) }
       before { visit storage_location_path(storage_location) }
       
       let!(:page_heading) {"Storage Location " + storage_location.code}
@@ -139,20 +136,6 @@ describe "Storage Location pages:" do
         describe 'should have a page heading for editing the correct storage location' do
           it { should have_content(page_heading) }
         end
-      end
-      
-      describe "who don't govern the current storage location" do
-         let(:non_owner) { FactoryGirl.create(:user) }
-         before do 
-           login_as non_owner
-           visit storage_location_path(storage_location)
-         end 
-         
-         describe "should not see the edit and delete buttons" do
-           it { should_not have_link('Edit Location') }
-           it { should_not have_link('Delete Location') }
-         end 
-
       end
       
       describe "should show correct sample associations" do
@@ -191,6 +174,20 @@ describe "Storage Location pages:" do
       end
       
     end
+     
+    describe "who don't govern the current storage location" do
+       let(:non_owner) { FactoryGirl.create(:user) }
+       before do 
+         sign_in(non_owner)
+         visit storage_location_path(storage_location)
+       end 
+       
+       describe "should not see the edit and delete buttons" do
+         it { should_not have_link('Edit Location') }
+         it { should_not have_link('Delete Location') }
+       end 
+
+    end
     
     describe "for non signed-in users" do
       describe "should be redirected back to signin" do
@@ -215,7 +212,7 @@ describe "Storage Location pages:" do
                                                 ) }      
                                                 
     describe "as correct user" do
-      before { login_as user }
+      before { sign_in(user) }
       
       describe "of an empty storage location" do
         before { visit storage_location_path(storage_location_empty) }
@@ -249,7 +246,7 @@ describe "Storage Location pages:" do
     
     describe "for signed-in users" do
     
-      before { login_as user }
+      before { sign_in(user) }
       before { visit edit_storage_location_path(storage_location) }
       
       it { should have_content('Edit Storage Location ' + storage_location.code) }

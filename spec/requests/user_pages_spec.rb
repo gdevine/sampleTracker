@@ -1,7 +1,5 @@
 require 'spec_helper'
 
-include Warden::Test::Helpers
-Warden.test_mode!
 
 describe "User pages" do
 
@@ -11,7 +9,7 @@ describe "User pages" do
     let(:user) { FactoryGirl.create(:user) }
     
     before do
-      login_as(user)
+      sign_in(user)
       visit users_path
     end
 
@@ -38,7 +36,7 @@ describe "User pages" do
     let!(:m2) { FactoryGirl.create(:sample_set, owner: user, num_samples: 50) }
     
     before do
-      login_as(user)
+      sign_in(user)
       visit user_path(user)
     end
 

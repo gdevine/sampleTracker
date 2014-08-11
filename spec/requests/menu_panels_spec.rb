@@ -1,8 +1,5 @@
 require 'spec_helper'
 
-include Warden::Test::Helpers
-Warden.test_mode!
-
 describe "Menu Panel:" do
 
   subject { page }
@@ -13,7 +10,7 @@ describe "Menu Panel:" do
   describe "Home page" do
     describe "for signed-in users" do
       before do 
-        login_as user 
+        sign_in(user) 
         visit root_path
       end
         
@@ -33,7 +30,7 @@ describe "Menu Panel:" do
   # The menu bar should appear on the standard static pages: contact page, about page etc if logged in
   describe "Help page" do
     describe "for signed-in users" do
-      before { login_as user }
+      before { sign_in(user) }
       before { visit help_path }
       it 'should have a nav#minibar bar' do
         expect(page).to have_selector('nav#minibar')
@@ -50,7 +47,7 @@ describe "Menu Panel:" do
   
   describe "About page" do
     describe "for signed-in users" do
-      before { login_as user }
+      before { sign_in(user) }
       before { visit about_path }
       it 'should have a nav#minibar bar' do
         expect(page).to have_selector("nav#minibar")
@@ -67,7 +64,7 @@ describe "Menu Panel:" do
   
   describe "Contact page" do
     describe "for signed-in users" do
-      before { login_as user }
+      before { sign_in(user) }
       before { visit contact_path }
       it 'should have a nav#minibar bar' do
         expect(page).to have_selector('nav#minibar')
@@ -103,7 +100,7 @@ describe "Menu Panel:" do
   
   # Making sure that menu options navigate to the right location
   describe "opening the sample set dropdown" do
-    before { login_as user }
+    before { sign_in(user) }
     before { visit root_path }
     
     describe "and clicking the Create New link" do
@@ -128,7 +125,7 @@ describe "Menu Panel:" do
   end 
   
   describe "opening the sample dropdown" do
-    before { login_as user }
+    before { sign_in(user) }
     before { visit root_path }
     
     describe "and clicking the Create New link" do
@@ -153,22 +150,12 @@ describe "Menu Panel:" do
   end
   
   describe "opening the facility dropdown" do
-    before { login_as user }
+    before { sign_in(user) }
     before { visit root_path }
     
-    describe "and clicking the Create New link" do
+    describe "and clicking the View link" do
       before do
-        click_link('facilities_new')
-      end
-  
-      it "should open up the create facility page" do
-        expect(page).to have_title('New Facility')
-      end
-    end
-    
-    describe "and clicking the View All link" do
-      before do
-        click_link('facilities_index')
+        click_link('Facilities')
       end
   
       it "should open up the facility index page" do
@@ -178,7 +165,7 @@ describe "Menu Panel:" do
   end
   
   describe "opening the storage location dropdown" do
-    before { login_as user }
+    before { sign_in(user) }
     before { visit root_path }
     
     describe "and clicking the Create New link" do
@@ -203,7 +190,7 @@ describe "Menu Panel:" do
   end
   
   describe "opening the container dropdown" do
-    before { login_as user }
+    before { sign_in(user) }
     before { visit root_path }
     
     describe "and clicking the Create New link" do

@@ -1,9 +1,11 @@
 SampleTracker::Application.routes.draw do
 
+  devise_for :admin_users, ActiveAdmin::Devise.config
+  ActiveAdmin.routes(self)
   devise_for :users
   # NOTE: put this after the 'devise_for :users' line (adding a user index view to devise)
   resources :users, only: [:index, :show]
-  resources :facilities
+  resources :facilities, only: [:index, :show]
   resources :storage_locations
   resources :containers
   resources :samples do

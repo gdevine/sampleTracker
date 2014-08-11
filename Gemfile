@@ -28,13 +28,17 @@ group :test do
   gem 'database_cleaner', github: 'bmabey/database_cleaner'
 end
 
-gem "sass-rails", "~> 4.0.3"
+gem 'activeadmin', github: 'gregbell/active_admin'
+gem 'active_skin'
+gem "sass-rails", "4.0.3"
 gem 'uglifier', '2.1.1'
 gem 'coffee-rails', '4.0.1'
 gem 'turbolinks', '1.1.1'
 gem 'jquery-rails', '3.0.0'
 gem 'jbuilder', '1.0.2'
-gem 'jquery-ui-rails', '~>4.2.1'
+# gem 'jquery-ui-rails', '~>4.2.1'
+gem 'jquery-ui-rails', '~>5.0'
+
 gem 'bootswatch-rails'
 gem 'devise'
 

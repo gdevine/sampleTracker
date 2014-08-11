@@ -1,8 +1,5 @@
 require 'spec_helper'
 
-include Warden::Test::Helpers
-Warden.test_mode!
-
 describe "sample_set pages:" do
 
   subject { page }
@@ -220,22 +217,6 @@ describe "sample_set pages:" do
         end
       end
       
-      describe "who don't own the current sample set" do
-         let(:non_owner) { FactoryGirl.create(:user) }
-         before do 
-           login_as non_owner
-           visit sample_set_path(sample_set)
-         end 
-         
-         describe "should not see the edit and delete links" do
-           it { should_not have_link('Options') }
-           it { should_not have_link('Edit Sample Set') }
-           it { should_not have_link('Append New Sample') }
-           it { should_not have_link('Delete Sample Set') }
-         end 
-
-      end
-      
       describe "should show the samples belonging to this sample set" do
         
         let!(:first_sample_id) { sample_set.samples.first.id }
@@ -247,6 +228,21 @@ describe "sample_set pages:" do
         it { should have_selector('table tr td', text: last_sample_id) } 
       end
       
+    end
+    
+    describe "who don't own the current sample set" do
+       let(:non_owner) { FactoryGirl.create(:user) }
+       before do 
+         sign_in(non_owner)
+         visit sample_set_path(sample_set)
+       end 
+       
+       describe "should not see the edit and delete links" do
+         it { should_not have_link('Options') }
+         it { should_not have_link('Edit Sample Set') }
+         it { should_not have_link('Append New Sample') }
+         it { should_not have_link('Delete Sample Set') }
+       end 
     end
     
     describe "for non signed-in users" do

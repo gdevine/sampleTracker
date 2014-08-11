@@ -1,24 +1,6 @@
 <% provide(:title, 'Facility View') %>
 <% provide(:pageheading, 'Facility '+ @facility.code) %>
 
-<!-- Add edit/delete links if current user -->
-<% if current_user == @facility.contact %> 
- <div class="row bottomspace">  
-    <div class="col-xs-12 col-sm-2 col-sm-push-10">
-		<a class="btn btn-block btn-info" data-toggle="dropdown" href="#" id="options_button">
-		  Options
-		  <span class="caret"></span>
-		</a>
-		<ul class="dropdown-menu">
-		    <li><%= link_to "Edit Facility", :action => 'edit' %></li>
-		    <li><%= link_to "Delete Facility", @facility, :method => :delete, data: { confirm: "Are you sure?" }, :class=>"redtext" %></li>
-		</ul>
-	</div>
-  </div>
-<% end %>
-
-<div class="topspace50">
-	
 	<div class="row">
 	  <div class="col-md-offset-4 col-md-2">
 	    <p class="text-left">Facility ID</p>
@@ -51,27 +33,33 @@
 	    <p class="text-left">Contact</p>
 	  </div>   
 	  <div class="col-md-4">
-	    <p class="text-muted"><%= @facility.contact.firstname %> <%= @facility.contact.surname %></p>
+	    <p class="text-muted"><%= @facility.contact.firstname %> <%= @facility.contact.surname %> (<%= @facility.contact.email %>)</p>
 	  </div>
 	</div>
 	
-</div>
 
-
-<h4 class= "heading-separator rowline center">Sample Sets associated with this facility</h4>
-
-<div class="row">
-  <div class="col-xs-12">
-    <%= render 'sample_sets/sample_sets' %>
+  <div class="row">
+    <div class="col-xs-12 rowline">
+      <h4>Sample Sets associated with this facility</h4>
+    </div>
   </div>
-</div>
 
-<h4 class= "heading-separator rowline center">Samples associated with this facility</h4>
+	<div class="row">
+	  <div class="col-xs-12">
+	    <%= render 'sample_sets/sample_sets' %>
+	  </div>
+	</div>
 
-<div class="row">
-  <div class="col-xs-12">
-    <%= render 'samples/samples' %>
+  <div class="row">
+    <div class="col-xs-12 rowline">
+      <h4>Samples associated with this facility</h4>
+    </div>
   </div>
-</div>
+
+	<div class="row">
+	  <div class="col-xs-12">
+	    <%= render 'samples/samples' %>
+	  </div>
+	</div>
 
 

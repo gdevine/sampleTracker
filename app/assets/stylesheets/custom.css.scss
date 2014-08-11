@@ -191,3 +191,10 @@ background-color: rgba(100,255,100,0.1); // I don't know the .well color, so I u
     cursor: inherit;
     display: block;
 }
+
+/* dashboard button border */
+
+#dashboard_button {
+  border: 1px solid;
+  border-color: #67a4fe;
+}

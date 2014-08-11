@@ -51,7 +51,8 @@ class SamplesController < ApplicationController
         end
       end
     else
-      @search = Sample.search do
+      @search = Sunspot.search(Sample) do
+      # @search = Sample.search do
         fulltext params[:search]
         facet :ring, :facility_code, :month_sampled, :material_type, :project_id, :is_primary, :sampled
         with(:ring, params[:my_ring]) if params[:my_ring].present?

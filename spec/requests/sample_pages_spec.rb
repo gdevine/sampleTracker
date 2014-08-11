@@ -1,8 +1,5 @@
 require 'spec_helper'
 
-include Warden::Test::Helpers
-Warden.test_mode!
-
 describe "Sample pages:" do
 
   Sunspot.remove_all!
@@ -16,7 +13,7 @@ describe "Sample pages:" do
     
     describe "for signed-in users" do
       
-      before { login_as user }
+      before { sign_in(user) }
       before { visit samples_path }
       
       it { should have_content('Sample List') }
@@ -31,7 +28,7 @@ describe "Sample pages:" do
       
       describe "with samples in the system", :search => true do  
         before do
-          login_as user
+          # sign_in(user)
           FactoryGirl.create(:sample, owner: user)
           FactoryGirl.create(:sample, owner: user)
           Sunspot.commit
@@ -73,7 +70,7 @@ describe "Sample pages:" do
     
     describe "for signed-in users" do
       
-      before { login_as user }  
+      before { sign_in(user) }  
       
       describe "on a 'pending' sample" do
         
@@ -177,21 +174,21 @@ describe "Sample pages:" do
         end
         
       end
-      
-      describe "who don't own the current sample" do
-        let(:non_owner) { FactoryGirl.create(:user) }
-        before do 
-          login_as non_owner
-          visit sample_path(pending_sample)
-        end 
-       
-        describe "should not see the edit and delete buttons" do
-          it { should_not have_link('Edit Sample') }
-          it { should_not have_link('Delete Sample') }
-          it { should_not have_link('Add Subsample') }
-        end 
-      end
     
+    end
+    
+    describe "who don't own the current sample" do
+      let(:non_owner) { FactoryGirl.create(:user) }
+      before do 
+        sign_in(non_owner)
+        visit sample_path(pending_sample)
+      end 
+     
+      describe "should not see the edit and delete buttons" do
+        it { should_not have_link('Edit Sample') }
+        it { should_not have_link('Delete Sample') }
+        it { should_not have_link('Add Subsample') }
+      end 
     end
     
     describe "for non signed-in users" do
@@ -265,7 +262,7 @@ describe "Sample pages:" do
     
 
     describe "as correct user" do
-      before { login_as user }
+      before { sign_in(user) }
       
       describe "of a non-complete sample" do
         before { visit sample_path(pending_sample) }
@@ -342,7 +339,7 @@ describe "Sample pages:" do
       
       let!(:myfacility) { FactoryGirl.create(:facility, contact: user) } 
       let!(:mystoragelocation) { FactoryGirl.create(:storage_location, custodian: user, code:'blabla') } 
-      before { login_as user }
+      before { sign_in(user) }
       before { visit new_sample_path }            
       
       it { should have_content('New Sample') }
@@ -395,7 +392,7 @@ describe "Sample pages:" do
       describe "for a subsample" do
         let!(:sample) { FactoryGirl.create(:sample, owner: user, facility_id: myfacility.id) }
         
-        before { login_as user }
+        # before { sign_in(user) }
         before { visit sample_path(sample) }
         
         before { click_link "Add Subsample" }
@@ -429,7 +426,7 @@ describe "Sample pages:" do
     
     describe "for signed-in users on a primary sample" do
     
-      before { login_as user }
+      before { sign_in(user) }
       before { visit edit_sample_path(sample) }
       
       it { should have_content('Edit Sample ' + sample.id.to_s) }
@@ -505,13 +502,13 @@ describe "Sample pages:" do
     end
     
     describe "for signed-in users on a primary sample that does not have subsamples" do
-      before { login_as user }
+      before { sign_in(user) }
       before { visit edit_sample_path(nonsubs_sample) }
       it { should_not have_content("Note - Editing a Parent Sample will automatically update all associated subsample details") }
     end
     
     describe "for signed-in users on a subsample" do
-      before { login_as user }
+      before { sign_in(user) }
       before { visit edit_sample_path(subsample) }
       
       it { should have_content('Edit Sample ' + subsample.id.to_s + ' (subsample of '+subsample.parent_id.to_s+')' )}

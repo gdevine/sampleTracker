@@ -1,8 +1,5 @@
 require 'spec_helper'
 
-include Warden::Test::Helpers
-Warden.test_mode!
-
 describe "Container pages:" do
 
   subject { page }
@@ -13,7 +10,7 @@ describe "Container pages:" do
     
     describe "for signed-in users" do
       
-      before { login_as user }
+      before { sign_in(user) }
       before { visit containers_path }
       
       it { should have_content('Containers List') }
@@ -66,7 +63,7 @@ describe "Container pages:" do
       
       let!(:mystoragelocation) { FactoryGirl.create(:storage_location, custodian: user, code:'blabla') } 
     
-      before { login_as user }
+      before { sign_in(user) }
       before { visit new_container_path }
       
       it { should have_content('New Container') }
@@ -119,7 +116,7 @@ describe "Container pages:" do
         
     describe "for signed-in users" do
       
-      before { login_as user }
+      before { sign_in(user) }
       before { visit container_path(container) }
       
       let!(:page_heading) {"Container " + container.id.to_s}
@@ -141,19 +138,7 @@ describe "Container pages:" do
         end
       end
       
-      describe "who don't own the current container" do
-         let(:non_owner) { FactoryGirl.create(:user) }
-         before do 
-           login_as non_owner
-           visit container_path(container)
-         end 
-         
-         describe "should not see the edit and delete buttons" do
-           it { should_not have_link('Edit Container') }
-           it { should_not have_link('Delete Container') }
-         end 
-
-      end
+      
       
       describe "should show correct sample associations" do
         let!(:first_sample) { FactoryGirl.create(:sample, owner: user, container_id: container.id, storage_location_id:container.storage_location_id ) }
@@ -170,6 +155,19 @@ describe "Container pages:" do
               
       end
       
+    end
+    
+    describe "who don't own the current container" do
+       let(:non_owner) { FactoryGirl.create(:user) }
+       before do 
+         sign_in(non_owner)
+         visit container_path(container)
+       end 
+       
+       describe "should not see the edit and delete buttons" do
+         it { should_not have_link('Edit Container') }
+         it { should_not have_link('Delete Container') }
+       end 
     end
     
     describe "for non signed-in users" do
@@ -192,7 +190,7 @@ describe "Container pages:" do
                                                 ) }      
                                                 
     describe "as correct user" do
-      before { login_as user }
+      before { sign_in(user) }
       
       describe "of an empty container" do
         before { visit container_path(container_empty) }
@@ -228,7 +226,7 @@ describe "Container pages:" do
     
     describe "for signed-in users" do
     
-      before { login_as user }
+      before { sign_in(user) }
       before { visit edit_container_path(mycontainer) }
       
       it { should have_content('Edit Container ' + mycontainer.id.to_s) }
