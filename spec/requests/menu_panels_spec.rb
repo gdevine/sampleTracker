@@ -247,4 +247,19 @@ describe "Menu Panel:" do
     end
   end
   
+  describe "opening the analysis dropdown" do
+    before { sign_in(user) }
+    before { visit root_path }
+    
+    describe "and clicking the View link" do
+      before do
+        click_link('Analysis Types')
+      end
+  
+      it "should open up the analysis type index page" do
+        expect(page).to have_title('Analysis Type List')
+      end
+    end
+  end
+  
 end

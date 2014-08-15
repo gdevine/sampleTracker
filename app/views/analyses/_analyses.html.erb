@@ -1,0 +1,18 @@
+<% if @analyses.any? %>
+  <%= will_paginate @analyses %>
+  <table class="table table-bordered table-striped table-hover" width="647">
+    <thead>
+      <tr>
+        <th>Code</th>
+        <th>Title</th>
+        <th>View?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render partial: 'analyses/analyses_table', collection: @analyses, as: :analysis %>
+    </tbody>
+  </table>
+  
+<% else %>
+  <p>No Analysis types found</p>
+<% end %>

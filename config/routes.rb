@@ -8,6 +8,7 @@ SampleTracker::Application.routes.draw do
   resources :users, only: [:index, :show]
   resources :facilities, only: [:index, :show]
   resources :projects, only: [:index, :show]
+  resources :analyses, only: [:index, :show]
   resources :storage_locations
   resources :containers
   resources :samples do

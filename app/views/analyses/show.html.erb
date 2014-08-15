@@ -1,0 +1,40 @@
+<% provide(:title, 'Analysis Type View') %>
+<% provide(:pageheading, 'Analysis Type '+ @analysis.code) %>
+
+	<div class="row">
+	  <div class="col-md-offset-4 col-md-2">
+	    <p class="text-left">Analysis Type ID</p>
+	  </div>   
+	  <div class="col-md-4">
+	    <p class="text-muted"><%= @analysis.id %></p>
+	  </div>
+	</div>
+	
+    <div class="row">
+	  <div class="col-md-offset-4 col-md-2">
+	    <p class="text-left">Title</p>
+	  </div>   
+	  <div class="col-md-4">
+	    <p class="text-muted"><%= @analysis.title %></p>
+	  </div>
+	</div>
+	
+	<div class="row">
+	  <div class="col-md-offset-4 col-md-2">
+	    <p class="text-left">Code</p>
+	  </div>   
+	  <div class="col-md-4">
+	    <p class="text-muted"><%= @analysis.code %></p>
+	  </div>
+	</div>
+	
+    <div class="row">
+	  <div class="col-md-offset-4 col-md-2">
+	    <p class="text-left">Description</p>
+	  </div>   
+	  <div class="col-md-4">
+	    <p class="text-muted"><%= @analysis.description %></p>
+	  </div>
+	</div>
+
+

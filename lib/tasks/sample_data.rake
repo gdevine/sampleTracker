@@ -45,6 +45,15 @@ namespace :db do
                        description: description)
     end    
     
+    # Create dummy analysis types  
+    25.times do |n|
+      title = "The title of analysis type An00#{n+1}"
+      code = "An00#{n+1}"
+      description = "Some info about this analysis type"
+      Analysis.create!(title: title, code: code,
+                       description: description)
+    end  
+    
     # Create dummy storage locations    
     10.times do |n|
       code = "L-#{n+1}R-#{n+3}"
