@@ -64,12 +64,12 @@
             <div class="col-md-2">
               <h5 class="center">Project</h5>  
               <ul>
-                <% for row in @search.facet(:project_id).rows %>
+                <% for row in @search.facet(:project_code).rows %>
                   <li>
-                    <% if params[:myprojectid].blank? %>
-                      <%= link_to row.value, params.merge({:myprojectid => row.value}).except(:page) %> (<%= row.count %>)
+                    <% if params[:myproject].blank? %>
+                      <%= link_to row.value, params.merge({:myproject => row.value}).except(:page) %> (<%= row.count %>)
                     <% else %>
-                      <strong><%= row.value %></strong> (<%= link_to "remove", params.except(:myprojectid, :page) %>)
+                      <strong><%= row.value %></strong> (<%= link_to "remove", params.except(:myproject, :page) %>)
                     <% end %>
                   </li>
                 <% end %>

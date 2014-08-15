@@ -8,7 +8,7 @@ describe Sample do
                                          date_sampled: Date.new(2013, 11, 7),
                                          container: container,  
                                          storage_location: container.storage_location,
-                                         project_id: 1, 
+                                         project: FactoryGirl.create(:project), 
                                          ring: 3,           
                                          tree: 4,           
                                          plot: 6,    
@@ -42,6 +42,7 @@ describe Sample do
   it { should respond_to( :amount_collected ) }
   it { should respond_to( :amount_stored ) }
   it { should respond_to( :facility ) }
+  it { should respond_to( :project ) }
   it { should respond_to( :owner ) }
   it { should respond_to( :subsamples ) }
   

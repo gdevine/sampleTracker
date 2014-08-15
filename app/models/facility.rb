@@ -1,5 +1,4 @@
 class Facility < ActiveRecord::Base
-  # has_many :contacts, :class_name => 'User', :foreign_key => 'facility_id'
   belongs_to :contact, :class_name => 'User', :foreign_key => 'contact_id'
   has_many :sample_sets, :class_name => 'SampleSet', :foreign_key => 'facility_id'
   has_many :samples, :class_name => 'Sample', :foreign_key => 'facility_id'

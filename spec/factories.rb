@@ -17,6 +17,13 @@ FactoryGirl.define do
     association :contact, :factory  => :user
   end
   
+  factory :project do
+    
+    sequence(:title)  { |n| "Title of project P00#{n}" }
+    sequence(:code)  { |n| "P00#{n}" }
+    description 'A description of this project'
+  end
+  
   factory :storage_location do
     sequence(:code)  { |n| "MYSL_#{n}" }
     description 'A description of this storage location'
@@ -42,6 +49,7 @@ FactoryGirl.define do
     
     association :owner, :factory  => :user
     association :facility, :factory  => :facility
+    association :project, :factory  => :project
   end
 
   factory :sample do        
@@ -63,6 +71,7 @@ FactoryGirl.define do
     
     association :owner, :factory  => :user
     association :facility, :factory  => :facility
+    association :project, :factory  => :project
     association :storage_location, :factory  => :storage_location
   end
 

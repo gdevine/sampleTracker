@@ -54,12 +54,12 @@ class SamplesController < ApplicationController
       @search = Sunspot.search(Sample) do
       # @search = Sample.search do
         fulltext params[:search]
-        facet :ring, :facility_code, :month_sampled, :material_type, :project_id, :is_primary, :sampled
+        facet :ring, :facility_code, :month_sampled, :material_type, :project_code, :is_primary, :sampled
         with(:ring, params[:my_ring]) if params[:my_ring].present?
         with(:facility_code, params[:myfacility]) if params[:myfacility].present?
         with(:month_sampled, params[:mymonthsampled]) if params[:mymonthsampled].present?
         with(:material_type, params[:mymaterialtype]) if params[:mymaterialtype].present?
-        with(:project_id, params[:myprojectid]) if params[:myprojectid].present?
+        with(:project_code, params[:myproject]) if params[:myproject].present?
         with(:is_primary, params[:my_is_primary]) if params[:my_is_primary].present?
         with(:sampled, params[:my_sampled]) if params[:my_sampled].present?
         paginate(:page => params[:s_page], :per_page => 20)

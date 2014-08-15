@@ -214,4 +214,37 @@ describe "Menu Panel:" do
     end
   end
   
+  
+# Resources menu
+  
+  describe "opening the facility dropdown" do
+    before { sign_in(user) }
+    before { visit root_path }
+    
+    describe "and clicking the View link" do
+      before do
+        click_link('Facilities')
+      end
+  
+      it "should open up the facility index page" do
+        expect(page).to have_title('Facility List')
+      end
+    end
+  end
+  
+  describe "opening the project dropdown" do
+    before { sign_in(user) }
+    before { visit root_path }
+    
+    describe "and clicking the View link" do
+      before do
+        click_link('Projects')
+      end
+  
+      it "should open up the project index page" do
+        expect(page).to have_title('Project List')
+      end
+    end
+  end
+  
 end

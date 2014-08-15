@@ -59,6 +59,7 @@ describe "sample_set pages:" do
     describe "for signed-in users" do
       
       let!(:myfacility) { FactoryGirl.create(:facility, contact: user, description: 'a new description') } 
+      let!(:myproject) { FactoryGirl.create(:project) } 
       before { sign_in user }
       before { visit new_sample_set_path }            
       
@@ -88,7 +89,7 @@ describe "sample_set pages:" do
         let(:numsamples) { 50 }
         before do
           find('#sample_set_facility_id').find(:xpath, 'option['+(myfacility.id + 1).to_s+']').select_option
-          fill_in 'sample_set_project_id'   , with: 1
+          find('#sample_set_project_id').find(:xpath, 'option['+(myproject.id + 1).to_s+']').select_option
           fill_in 'sample_set_num_samples'  , with: numsamples
           fill_in 'sample_set_sampling_date', with: Date.new(2012, 12, 3)
         end
@@ -265,6 +266,7 @@ describe "sample_set pages:" do
     
       before { sign_in user }
       let!(:myfacility) { sample_set.facility }
+      let!(:myproject) { sample_set.project }
       before { visit edit_sample_set_path(sample_set) }
       
       it { should have_content('Edit Sample Set ' + sample_set.id.to_s) }
@@ -275,7 +277,7 @@ describe "sample_set pages:" do
       describe "with invalid information" do
         
           before do
-            fill_in 'sample_set_project_id', with: ''
+            find('#sample_set_facility_id').find(:xpath, "option[1]").select_option
             click_button "Update"
           end
           
@@ -289,7 +291,7 @@ describe "sample_set pages:" do
   
         before do
           find('#sample_set_facility_id').find(:xpath, 'option['+(myfacility.id + 1).to_s+']').select_option
-          fill_in 'sample_set_project_id'  , with: 3
+          find('#sample_set_project_id').find(:xpath, 'option['+(myproject.id + 1).to_s+']').select_option
           fill_in 'sample_set_sampling_date', with: Date.new(2012, 12, 6)
         end
         

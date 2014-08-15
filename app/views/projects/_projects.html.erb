@@ -1,0 +1,18 @@
+<% if @projects.any? %>
+  <%= will_paginate @projects %>
+  <table class="table table-bordered table-striped table-hover" width="647">
+    <thead>
+      <tr>
+        <th>Project Code</th>
+        <th>Project Title</th>
+        <th>View?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render partial: 'projects/projects_table', collection: @projects, as: :project %>
+    </tbody>
+  </table>
+  
+<% else %>
+  <p>No Projects found</p>
+<% end %>

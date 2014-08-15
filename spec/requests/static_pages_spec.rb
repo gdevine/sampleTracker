@@ -25,8 +25,8 @@ describe "Static pages:" do
       describe "with sample sets" do
       
         before do
-          FactoryGirl.create(:sample_set, owner: user, project_id: 3)
-          FactoryGirl.create(:sample_set, owner: user, project_id: 4)
+          FactoryGirl.create(:sample_set, owner: user)
+          FactoryGirl.create(:sample_set, owner: user)
           sign_in user
           visit dashboard_path
         end

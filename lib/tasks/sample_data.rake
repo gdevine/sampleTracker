@@ -36,6 +36,15 @@ namespace :db do
                        contact_id: contact.id)
     end    
     
+    # Create dummy projects  
+    25.times do |n|
+      title = "The title of project P00#{n+1}"
+      code = "P00#{n+1}"
+      description = "Some info about this project"
+      Project.create!(title: title, code: code,
+                       description: description)
+    end    
+    
     # Create dummy storage locations    
     10.times do |n|
       code = "L-#{n+1}R-#{n+3}"
@@ -65,7 +74,7 @@ namespace :db do
     users = User.all(limit: 5)
     40.times do
       users.each { |user| user.sample_sets.create!(facility_id: 1 + rand(7), 
-                                                   project_id: 1 + rand(7), 
+                                                   project_id: 1 + rand(10), 
                                                    num_samples: 1 + rand(30),
                                                    sampling_date: Date.today+(100*rand()),
                                                    add_info: "Some additional info about this sample set"

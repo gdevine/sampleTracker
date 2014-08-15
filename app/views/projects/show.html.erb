@@ -1,0 +1,64 @@
+<% provide(:title, 'Project View') %>
+<% provide(:pageheading, 'Project '+ @project.code) %>
+
+	<div class="row">
+	  <div class="col-md-offset-4 col-md-2">
+	    <p class="text-left">Project ID</p>
+	  </div>   
+	  <div class="col-md-4">
+	    <p class="text-muted"><%= @project.id %></p>
+	  </div>
+	</div>
+	
+    <div class="row">
+	  <div class="col-md-offset-4 col-md-2">
+	    <p class="text-left">Project Title</p>
+	  </div>   
+	  <div class="col-md-4">
+	    <p class="text-muted"><%= @project.title %></p>
+	  </div>
+	</div>
+	
+	<div class="row">
+	  <div class="col-md-offset-4 col-md-2">
+	    <p class="text-left">Project Code</p>
+	  </div>   
+	  <div class="col-md-4">
+	    <p class="text-muted"><%= @project.code %></p>
+	  </div>
+	</div>
+	
+    <div class="row">
+	  <div class="col-md-offset-4 col-md-2">
+	    <p class="text-left">Description</p>
+	  </div>   
+	  <div class="col-md-4">
+	    <p class="text-muted"><%= @project.description %></p>
+	  </div>
+	</div>
+
+  <div class="row">
+    <div class="col-xs-12 rowline">
+      <h4>Sample Sets associated with this Project</h4>
+    </div>
+  </div>
+
+	<div class="row">
+	  <div class="col-xs-12">
+	    <%= render 'sample_sets/sample_sets' %>
+	  </div>
+	</div>
+
+  <div class="row">
+    <div class="col-xs-12 rowline">
+      <h4>Samples associated with this Project</h4>
+    </div>
+  </div>
+
+	<div class="row">
+	  <div class="col-xs-12">
+	    <%= render 'samples/samples' %>
+	  </div>
+	</div>
+
+

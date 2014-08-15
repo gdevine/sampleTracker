@@ -1,6 +1,7 @@
 class Sample < ActiveRecord::Base
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_id'
   belongs_to :facility, :class_name => 'Facility', :foreign_key => 'facility_id'
+  belongs_to :project, :class_name => 'Project', :foreign_key => 'project_id'
   belongs_to :sample_set, :class_name => 'SampleSet', :foreign_key => 'sample_set_id'
   belongs_to :container, :class_name => 'Container', :foreign_key => 'container_id'
   belongs_to :storage_location, :class_name => 'StorageLocation', :foreign_key => 'storage_location_id'
@@ -39,13 +40,17 @@ class Sample < ActiveRecord::Base
     string :facility_code
     string :month_sampled
     string :material_type
-    integer :project_id
+    string :project_code
     string :is_primary
     string :sampled
   end
   
   def facility_code
     facility.code.to_s
+  end
+  
+  def project_code
+    project.code.to_s
   end
   
   def month_sampled

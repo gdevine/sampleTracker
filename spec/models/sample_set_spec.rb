@@ -4,8 +4,9 @@ describe SampleSet do
 
   let(:owner) { FactoryGirl.create(:user) }
   let(:facility) { FactoryGirl.create(:facility) }
+  let(:project) { FactoryGirl.create(:project) }
   before do
-    @sample_set = owner.sample_sets.build(sampling_date: Date.new(2012, 12, 3), facility: facility, project_id: 1, num_samples: 50)
+    @sample_set = owner.sample_sets.build(sampling_date: Date.new(2012, 12, 3), facility: facility, project: project, num_samples: 50)
   end
   
   subject { @sample_set }

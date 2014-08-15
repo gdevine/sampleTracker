@@ -338,6 +338,7 @@ describe "Sample pages:" do
     describe "for signed-in users" do
       
       let!(:myfacility) { FactoryGirl.create(:facility, contact: user) } 
+      let!(:myproject) { FactoryGirl.create(:project) } 
       let!(:mystoragelocation) { FactoryGirl.create(:storage_location, custodian: user, code:'blabla') } 
       before { sign_in(user) }
       before { visit new_sample_path }            
@@ -370,7 +371,7 @@ describe "Sample pages:" do
         
         before do
           find('#sample_facility_id').find(:xpath, 'option['+(myfacility.id + 1).to_s+']').select_option
-          fill_in 'sample_project_id', with: 1
+          find('#sample_project_id').find(:xpath, 'option['+(myproject.id + 1).to_s+']').select_option
           fill_in 'sample_tree', with: 4
           fill_in 'sample_plot', with: 4
           fill_in 'sample_ring', with: 1
@@ -399,7 +400,7 @@ describe "Sample pages:" do
           
         describe 'should have edit option for project but not facility' do
           it { should have_selector('input[id="sample_facility_id"][type="hidden"]') }
-          it { should have_selector('input[id="sample_project_id"]') }
+          it { should have_selector('select[id="sample_project_id"]') }
           it { should_not have_selector('input[id="sample_project_id"][type="hidden"]') }
         end
         
@@ -423,7 +424,8 @@ describe "Sample pages:" do
     let!(:nonsubs_sample) { FactoryGirl.create(:sample, owner: user, facility_id: facility.id) }
     let!(:subsample) { FactoryGirl.create(:sample, owner: user, facility_id: facility.id, is_primary: false, parent_id: sample.id) }
     let!(:myfacility) { sample.facility }
-    
+    let!(:myproject) { sample.project }
+        
     describe "for signed-in users on a primary sample" do
     
       before { sign_in(user) }
@@ -444,7 +446,7 @@ describe "Sample pages:" do
       describe "with invalid information" do
         
           before do
-            fill_in 'sample_project_id', with: ''
+            fill_in 'sample_ring', with: ''
             click_button "Update"
           end
           
@@ -458,7 +460,7 @@ describe "Sample pages:" do
   
         before do
           find('#sample_facility_id').find(:xpath, 'option['+(myfacility.id+1).to_s+']').select_option
-          fill_in 'sample_project_id'   , with: 4
+          find('#sample_project_id').find(:xpath, 'option['+(myproject.id+1).to_s+']').select_option
           fill_in 'sample_date_sampled', with: Date.new(2012, 12, 6)
         end
         
@@ -514,7 +516,7 @@ describe "Sample pages:" do
       it { should have_content('Edit Sample ' + subsample.id.to_s + ' (subsample of '+subsample.parent_id.to_s+')' )}
       it { should have_content('Adopted details from parent sample')}
       it { should have_selector('input[id="sample_facility_id"][type="hidden"]') }
-      it { should have_selector('input[id="sample_project_id"]') }
+      it { should have_selector('select[id="sample_project_id"]') }
       it { should_not have_selector('input[id="sample_project_id"][type="hidden"]') }
       
       describe "with invalid information" do

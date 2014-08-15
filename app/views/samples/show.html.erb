@@ -100,7 +100,9 @@
 	    <p class="text-left">Project</p>
 	  </div>  
 	  <div class="col-md-offset-1 col-md-6">
-	    <p class="text-muted"><%= @sample.project_id %></p>
+	    <%= link_to project_path(id:@sample.project.id), remote: true, :"data-toggle" => 'modal', :"data-target" => '#Project_Modal' do %>
+		  <p class="text-muted"><%= @sample.project.code.to_s+" " %> <span class="glyphicon glyphicon-info-sign"></span></p> 
+		<% end %>  
 	  </div>
 	</div>
 	
@@ -323,6 +325,9 @@
 <% if @sample.facility.present? %>
   <div class="modal fade" id="Facility_Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
 <% end %>
+<% if @sample.project.present? %>
+  <div class="modal fade" id="Project_Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
+<% end %>
 <% if @sample.storage_location.present? %>
   <div class="modal fade" id="StorageLocation_Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
 <% end %>
@@ -335,8 +340,12 @@ $(function() {
   <% if @sample.sample_set.present? %>
     $('#SampleSet_Modal').html("<%= escape_javascript(render 'shared/sample_set_modal') %>");	
   <% end %>
-
-  <% if @sample.sample_set.present? %>
+  
+  <% if @sample.project.present? %>
+    $('#Project_Modal').html("<%= escape_javascript(render 'shared/project_modal') %>");	
+  <% end %>
+  
+  <% if @sample.facility.present? %>
     $("#Facility_Modal").html("<%= escape_javascript(render 'shared/facility_modal') %>");
   <% end %>
   
@@ -345,3 +354,4 @@ $(function() {
   <% end %>
 });
 </script>
+
