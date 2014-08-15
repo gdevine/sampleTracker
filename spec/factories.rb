@@ -24,6 +24,13 @@ FactoryGirl.define do
     description 'A description of this project'
   end
   
+  factory :analysis do
+    
+    sequence(:title)  { |n| "Title of analysis A00#{n}" }
+    sequence(:code)  { |n| "AN00#{n}" }
+    description 'A description of this analysis'
+  end  
+  
   factory :storage_location do
     sequence(:code)  { |n| "MYSL_#{n}" }
     description 'A description of this storage location'

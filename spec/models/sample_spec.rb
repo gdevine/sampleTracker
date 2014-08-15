@@ -156,5 +156,25 @@ describe Sample do
     
   end
   
+  describe "associated analyses" do
+    let(:analysis1) { FactoryGirl.create(:analysis) }
+    let(:analysis2) { FactoryGirl.create(:analysis) }
+    
+    before do 
+      @sample.analyses << analysis1
+      @sample.analyses << analysis2
+      @sample.save
+    end
+    
+    it "should have the right number of analyses" do
+      expect(@sample.analyses.count).to eql 2
+    end
+    
+    it "associated analysis should have the right number of samples" do
+      expect(analysis1.samples.count).to eql 1
+      expect(analysis2.samples.count).to eql 1
+    end
+  end
+  
   
 end
