@@ -21,7 +21,7 @@
   <div class="form-group">
     <%= f.label :storage_location_id, 'Storage Location', :class => "col-lg-2 control-label" %>
     <div class="col-lg-8">
-      <%= collection_select(:container, :storage_location_id, StorageLocation.all, :id, :code, {include_blank:true}, {:class=>"form-control"} ) %>
+      <%= collection_select(:container, :storage_location_id, StorageLocation.all, :id, :code, {}, {:class=>"form-control", :id=>'storage_locations'} ) %>
     </div>
   </div>
   
@@ -32,3 +32,12 @@
   </div>
   
 <% end %>
+
+<script type="text/javascript">
+$('#storage_locations').multiselect({
+    buttonClass : "form-control",
+    buttonWidth: "50%",
+    maxHeight: 400,
+    enableFiltering: true
+});
+</script>

@@ -67,7 +67,7 @@ describe "sample_set pages:" do
       it { should have_content('MYFAC_') }
       it { should have_title(full_title('New Sample Set')) }
       it { should_not have_title('| Home') }
-      it { should have_selector('#sample_set_facility_id') }
+      it { should have_selector('#facilities') }
       
       describe "with invalid information" do
         
@@ -88,8 +88,8 @@ describe "sample_set pages:" do
         
         let(:numsamples) { 50 }
         before do
-          find('#sample_set_facility_id').find(:xpath, 'option['+(myfacility.id + 1).to_s+']').select_option
-          find('#sample_set_project_id').find(:xpath, 'option['+(myproject.id + 1).to_s+']').select_option
+          find('#facilities').find(:xpath, 'option['+(myfacility.id + 1).to_s+']', visible: false).select_option
+          find('#projects').find(:xpath, 'option['+(myproject.id + 1).to_s+']', visible: false).select_option
           fill_in 'sample_set_num_samples'  , with: numsamples
           fill_in 'sample_set_sampling_date', with: Date.new(2012, 12, 3)
         end
@@ -277,7 +277,7 @@ describe "sample_set pages:" do
       describe "with invalid information" do
         
           before do
-            find('#sample_set_facility_id').find(:xpath, "option[1]").select_option
+            find('#facilities').find(:xpath, "option[1]").select_option
             click_button "Update"
           end
           
@@ -290,8 +290,8 @@ describe "sample_set pages:" do
       describe "with valid information" do
   
         before do
-          find('#sample_set_facility_id').find(:xpath, 'option['+(myfacility.id + 1).to_s+']').select_option
-          find('#sample_set_project_id').find(:xpath, 'option['+(myproject.id + 1).to_s+']').select_option
+          find('#facilities').find(:xpath, 'option['+(myfacility.id + 1).to_s+']', visible: false).select_option
+          find('#projects').find(:xpath, 'option['+(myproject.id + 1).to_s+']', visible: false).select_option
           fill_in 'sample_set_sampling_date', with: Date.new(2012, 12, 6)
         end
         

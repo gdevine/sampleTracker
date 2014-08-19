@@ -98,7 +98,11 @@
 </div>
 
 
-<h4 class= "heading-separator rowline center">Samples included in this sample set</h4>
+<div class="row">
+  <div class="col-xs-12 rowline">
+    <h4>Samples included in this sample set</h4>
+  </div>
+</div>
 
 <div class="row">
   <div class="col-xs-12">
@@ -109,7 +113,11 @@
  
 <% if current_user == @sample_set.owner %> 
 
-	<h4 class= "heading-separator rowline center">Batch upload of sample information</h4>
+	<div class="row">
+      <div class="col-xs-12 rowline">
+        <h4>Batch upload of sample information</h4>
+      </div>
+    </div>
 	<%= form_tag({action: :import}, multipart: true) do %>
 		<div class="fileinput fileinput-new input-group col-md-6 col-md-offset-3" data-provides="fileinput">
 		  <div class="form-control" data-trigger="fileinput">
@@ -120,7 +128,6 @@
 		  	<span class="fileinput-new">Select file</span>
 		    <span class="fileinput-exists">Change</span>
 		    <%= file_field_tag :file %>
-		    <!-- # <%# hidden_field_tag "sample_set_id", @sample_set.id %> -->
 		  </span>
 		  <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
 		</div>

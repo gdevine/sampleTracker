@@ -13,5 +13,6 @@
  *= require bootstrap
  *= require readable
  *= require jasny-bootstrap
+ *= require bootstrap-multiselect
  *= require custom
  */

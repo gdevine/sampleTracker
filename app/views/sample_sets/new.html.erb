@@ -7,14 +7,14 @@
   <div class="form-group">
     <%= f.label :facility_id, 'Facility', :class => "col-lg-2 control-label" %>
     <div class="col-lg-8">
-      <%= collection_select(:sample_set, :facility_id, Facility.all, :id, :code, {include_blank:'Select Facility'}, {:class=>"form-control"} ) %>
+      <%= collection_select(:sample_set, :facility_id, Facility.all, :id, :code, {include_blank: 'None selected'}, {:class=>"form-control", :id=>'facilities'} ) %>
     </div>
   </div>
   
   <div class="form-group">
 	  <%= f.label :project_id, 'Project', :class => "col-lg-2 control-label"  %>
 	  <div class="col-lg-8">
-	  	<%= collection_select(:sample_set, :project_id, Project.all, :id, :code, {include_blank:'Select Project'}, {:class=>"form-control"} ) %>
+	  	<%= collection_select(:sample_set, :project_id, Project.all, :id, :code, {include_blank: 'None selected'}, {:class=>"form-control", :id=>'projects'} ) %>
 	  </div> 
   </div> 
   
@@ -46,3 +46,12 @@
   </div>
   
 <% end %>
+
+<script type="text/javascript">
+$('#projects, #facilities').multiselect({
+    buttonClass : "form-control",
+    buttonWidth: "50%",
+    maxHeight: 400,
+    enableFiltering: true
+});
+</script>

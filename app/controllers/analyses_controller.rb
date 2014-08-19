@@ -8,4 +8,11 @@ class AnalysesController < ApplicationController
   def show
     @analysis = Analysis.find(params[:id])
   end
+  
+  
+  private
+  
+    def analysis_params
+      params.require(:sample).permit(:sample_ids => [])
+    end
 end

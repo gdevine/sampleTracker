@@ -66,7 +66,9 @@ describe "Sample pages:" do
     let!(:sampled_sample)          { FactoryGirl.create(:sample, owner: user, facility_id: facility.id, sampled: true) }  
     let!(:non_subs_sampled_sample) { FactoryGirl.create(:sample, owner: user, sampled: true) }                                                  
     let!(:sub_sample)              { FactoryGirl.create(:sample, owner: user, facility_id: facility.id, sampled: true, parent: sampled_sample, is_primary: false ) }  
-    let!(:sub_sample2)             { FactoryGirl.create(:sample, owner: user, facility_id: facility.id, sampled: true, parent: sampled_sample, is_primary: false ) }                                                                                                                                                      
+    let!(:sub_sample2)             { FactoryGirl.create(:sample, owner: user, facility_id: facility.id, sampled: true, parent: sampled_sample, is_primary: false ) }       
+    let!(:analysis1)               { FactoryGirl.create(:analysis)}     
+    let!(:analysis2)               { FactoryGirl.create(:analysis)}                                                                                                                                             
     
     describe "for signed-in users" do
       
@@ -101,7 +103,11 @@ describe "Sample pages:" do
       
       describe "on a 'sampled' sample" do
         
-        before { visit sample_path(sampled_sample) }
+        before do 
+          sampled_sample.analyses << analysis1
+          sampled_sample.analyses << analysis2
+          visit sample_path(sampled_sample) 
+        end
         
         it { should have_link('Add Subsample') }
         it { should_not have_button('View Parent') } 
@@ -117,13 +123,20 @@ describe "Sample pages:" do
           end
         end
         
-        describe "should show the samples belonging to this sample set" do
+        describe "should show the samples belonging to this sample" do
         
           let!(:first_sample_id) { sampled_sample.subsamples.first.id }
           let!(:last_sample_id) { sampled_sample.subsamples.last.id }
           it { should have_selector('table tr th', text: 'Sample ID') } 
           it { should have_selector('table tr td', text: first_sample_id) } 
           it { should have_selector('table tr td', text: last_sample_id) } 
+        end
+        
+        describe "should show any analyses associated with this sample" do
+        
+          it { should have_selector('table tr th', text: 'Code') } 
+          it { should have_selector('table tr td', text: analysis1.code) } 
+          it { should have_selector('table tr td', text: analysis2.code) } 
         end
         
       end
@@ -347,7 +360,7 @@ describe "Sample pages:" do
       it { should have_content('MYFAC_') }
       it { should have_title(full_title('New Sample')) }
       it { should_not have_title('| Home') }
-      it { should have_selector('#sample_facility_id') }
+      it { should have_select('sample[facility_id]') }
       it { should_not have_selector('#sample_sample_set_id') }
       
       it { should_not have_content("Mark as 'Complete'?") }
@@ -370,12 +383,12 @@ describe "Sample pages:" do
       describe "with valid information" do
         
         before do
-          find('#sample_facility_id').find(:xpath, 'option['+(myfacility.id + 1).to_s+']').select_option
-          find('#sample_project_id').find(:xpath, 'option['+(myproject.id + 1).to_s+']').select_option
+          find('#facilities').find(:xpath, 'option['+(myfacility.id + 1).to_s+']').select_option
+          find('#projects').find(:xpath, 'option['+(myproject.id + 1).to_s+']').select_option
           fill_in 'sample_tree', with: 4
           fill_in 'sample_plot', with: 4
           fill_in 'sample_ring', with: 1
-          find('#sample_storage_location_id').find(:xpath, 'option['+(mystoragelocation.id + 1).to_s+']').select_option
+          find('#storage_locations').find(:xpath, 'option['+(mystoragelocation.id + 1).to_s+']').select_option
           fill_in 'sample_date_sampled', with: Date.new(2012, 12, 3)
         end
         
@@ -400,7 +413,7 @@ describe "Sample pages:" do
           
         describe 'should have edit option for project but not facility' do
           it { should have_selector('input[id="sample_facility_id"][type="hidden"]') }
-          it { should have_selector('select[id="sample_project_id"]') }
+          it { should have_selector('select[id="projects"]') }
           it { should_not have_selector('input[id="sample_project_id"][type="hidden"]') }
         end
         
@@ -459,8 +472,8 @@ describe "Sample pages:" do
       describe "with valid information" do
   
         before do
-          find('#sample_facility_id').find(:xpath, 'option['+(myfacility.id+1).to_s+']').select_option
-          find('#sample_project_id').find(:xpath, 'option['+(myproject.id+1).to_s+']').select_option
+          find('#facilities').find(:xpath, 'option['+(myfacility.id+1).to_s+']').select_option
+          find('#projects').find(:xpath, 'option['+(myproject.id+1).to_s+']').select_option
           fill_in 'sample_date_sampled', with: Date.new(2012, 12, 6)
         end
         
@@ -484,7 +497,7 @@ describe "Sample pages:" do
   
         before do
           visit edit_sample_path(container_sample)
-          find('#sample_storage_location_id').find(:xpath, 'option['+(newstoragelocation.id+1).to_s+']').select_option
+          find('#storage_locations').find(:xpath, 'option['+(newstoragelocation.id+1).to_s+']').select_option
         end
         
         it "should not change the sample count" do
@@ -516,17 +529,19 @@ describe "Sample pages:" do
       it { should have_content('Edit Sample ' + subsample.id.to_s + ' (subsample of '+subsample.parent_id.to_s+')' )}
       it { should have_content('Adopted details from parent sample')}
       it { should have_selector('input[id="sample_facility_id"][type="hidden"]') }
-      it { should have_selector('select[id="sample_project_id"]') }
+      it { should have_select('sample[project_id]') }
       it { should_not have_selector('input[id="sample_project_id"][type="hidden"]') }
       
       describe "with invalid information" do
         before do
-          find('#sample_storage_location_id').find(:xpath, 'option[normalize-space(text())=""]').select_option
+          find('#storage_locations').find(:xpath, "option[1]", visible: false).select_option
+          find('#containers').find(:xpath, "option[1]", visible: false).select_option
           click_button "Update"
         end
         
         describe "should return an error" do
           it { should have_content('error') }
+          it { should have_selector('div.alert.alert-danger') }
         end
         
         describe "should be returned to edit subsample page" do

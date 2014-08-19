@@ -305,22 +305,42 @@
   </div>
 </div>
     
-
-<h4 class= "heading-separator rowline center">Subsamples associated with Sample <%= @sample.id %></h4>
+<div class="row">
+    <div class="col-xs-12 rowline">
+      <h4>Subsamples associated with Sample <%= @sample.id %></h4>
+    </div>
+</div>
 
 <div class="row">
   <div class="col-xs-12">
 	<% if @sample.is_primary? %>
 	  <% if @sample.subsamples.empty? %>
-	    <p class="center">This Sample is not currently associated with any Subsamples</p>
+	    <p>This Sample is not currently associated with any Subsamples</p>
 	  <% else %>
 	    <%= render 'samples/samples' %>
 	  <% end %>
 	<% else %>
-      <p class="center">Subsamples can not be derived from existing Subsamples</p>
+      <p>Subsamples can not be derived from existing Subsamples</p>
 	<% end %>
   </div>
 </div>
+
+<div class="row">
+    <div class="col-xs-12 rowline">
+      <h4>Analyses associated with Sample <%= @sample.id %></h4>
+    </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+	  <% if @sample.analyses.empty? %>
+	    <p>This Sample is not currently associated with any Analyses</p>
+	  <% else %>
+	    <%= render 'analyses/analyses' %>  
+	  <% end %>
+  </div>
+</div>
+
 
 <% if @sample.facility.present? %>
   <div class="modal fade" id="Facility_Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>

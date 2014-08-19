@@ -38,7 +38,7 @@
 		  <div class="form-group">
 	        <%= f.label :facility_id, 'Facility', :class => "col-lg-2 control-label" %>
 	        <div class="col-lg-8">
-	          <%= collection_select(:sample, :facility_id, Facility.all, :id, :code, {include_blank:true}, {:class=>"form-control"} ) %>
+	          <%= collection_select(:sample, :facility_id, Facility.all, :id, :code, {include_blank: 'None selected'}, {:class=>"form-control", :id=>'facilities'} ) %>
 	        </div>
 	      </div>
 	     
@@ -110,7 +110,7 @@
       <div class="form-group">
 	  <%= f.label :project_id, 'Project', :class => "col-lg-2 control-label"  %>
 	  <div class="col-lg-8">
-	    <%= collection_select(:sample, :project_id, Project.all, :id, :code, {include_blank:true}, {:class=>"form-control"}) %>
+	    <%= collection_select(:sample, :project_id, Project.all, :id, :code, {include_blank: 'None selected'}, {:class=>"form-control", :id=>'projects'}) %>
 	  </div> 
   </div>   
   
@@ -124,15 +124,22 @@
   <div class="form-group">
 	  <%= f.label :storage_location_id, "Storage Location", :class => "col-lg-2 control-label"  %>
 	  <div class="col-lg-8">
-	    <%= collection_select(:sample, :storage_location_id, StorageLocation.all, :id, :code, {include_blank:true}, {:class=>"form-control"}) %>
+	    <%= collection_select(:sample, :storage_location_id, StorageLocation.all, :id, :code, {include_blank: 'None selected'}, {:class=>"form-control", :id=>'storage_locations'}) %>
 	  </div>
   </div>
   
   <div class="form-group">
 	  <%= f.label :container_id, "Container", :class => "col-lg-2 control-label"  %>
 	  <div class="col-lg-8">
-	    <%= collection_select(:sample, :container_id, Container.all, :id, :id, {include_blank:true}, {:class=>"form-control"}) %>
+	    <%= collection_select(:sample, :container_id, Container.all, :id, :id, {include_blank: 'None selected'}, {:class=>"form-control", :id=>'containers'}) %>
 	  </div>
+  </div>
+  
+  <div class="form-group">
+  	<%= f.label :analyses, "Analyses", :class => "col-lg-2 control-label"  %>
+    <div class="col-lg-8">
+      <%= collection_select(:sample, :analysis_ids, Analysis.all, :id, :code, {include_blank: 'None selected'}, {:class=>"form-control", :id=>"analyses", :multiple => true }) %>
+    </div>
   </div>
   
   <div class="form-group">
@@ -306,3 +313,20 @@
 	
 	
 <% end %>
+
+<script type="text/javascript">
+$('#analyses').multiselect({
+    includeSelectAllOption: true,
+    buttonClass : "form-control",
+    buttonWidth: "50%",
+    maxHeight: 400,
+    enableFiltering: true
+});
+
+$('#projects, #containers, #facilities, #storage_locations').multiselect({
+    buttonClass : "form-control",
+    buttonWidth: "50%",
+    maxHeight: 400,
+    enableFiltering: true
+});
+</script>

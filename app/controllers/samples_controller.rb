@@ -88,6 +88,7 @@ class SamplesController < ApplicationController
       @parent = Sample.find(@sample.parent_id)
     end
     @samples = @sample.subsamples.paginate(page: params[:page])
+    @analyses = @sample.analyses.paginate(page: params[:page])
     
     respond_to do |format|
       format.html
@@ -112,6 +113,9 @@ class SamplesController < ApplicationController
       redirect_to @sample
     else
       @samples = []
+      if sample_params[:parent_id]
+        @parent = Sample.find(sample_params[:parent_id])
+      end
       render 'samples/new'
     end
   end
@@ -192,7 +196,8 @@ class SamplesController < ApplicationController
                                      :comments,
                                      :container_id,
                                      :is_primary,
-                                     :parent_id)
+                                     :parent_id,
+                                     :analysis_ids => [])
     end
      
     def correct_user
