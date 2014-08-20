@@ -74,8 +74,6 @@ class SampleSetsController < ApplicationController
     CSV.foreach(file, headers: true) do |row|
       sample_hash = row.to_hash
       if !sample_ids.include?(sample_hash['id'])
-        # @samples = sample_set.samples.paginate(page: params[:page])
-        # redirect_to sample_set
         sample_set.errors.add :base, "Sample ID not in Sample set"
         valid = false
         break

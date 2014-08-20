@@ -236,7 +236,7 @@ describe "Container pages:" do
       describe "with invalid information" do
         
           before do
-            find('#storage_locations').find(:xpath, 'option[normalize-space(text())=""]').select_option
+            find('#storage_locations').find(:xpath, 'option[1]').select_option
             click_button "Update"
           end
           
