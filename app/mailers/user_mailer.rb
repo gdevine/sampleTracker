@@ -7,6 +7,10 @@ class UserMailer < ActionMailer::Base
     mail(to: @user.email, subject: 'Welcome to the HIE Sample Tracker')
   end
   
+  def new_user_waiting_for_approval(user)
+    mail(to: 'g.devine@uws.edu.au', subject: 'Sample Tracker Registration Request')
+  end
+  
   def newss_email(sample_set)
     @sample_set = sample_set
     @owner = sample_set.owner

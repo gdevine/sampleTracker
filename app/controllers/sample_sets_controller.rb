@@ -53,7 +53,8 @@ class SampleSetsController < ApplicationController
     # Import sample information for a sample set from csv file
     #
     @sample_set = SampleSet.find(params[:id])
-    if valid_csv_upload(@sample_set, params['file'].path)
+    # Only proceed to upload if embedded sample IDs belong to the current Sample Set
+    if valid_csv_ids(@sample_set, params['file'].path)
       CSV.foreach(params['file'].path, headers: true) do |row|
           sample_hash = row.to_hash
           Sample.import(sample_hash, params[:sample_set_id])
@@ -63,14 +64,19 @@ class SampleSetsController < ApplicationController
     else 
       flash[:danger] = "Sample ID not in Sample set"
       redirect_to @sample_set
-    end
-      
+    end      
   end
   
-  def valid_csv_upload(sample_set, file)
+  
+  def valid_csv_ids(sample_set, file)
+    #
+    # Check that ids embedded in an uploaded Sample CSV file belong to the parent Sample Set
+    #
     sample_ids = []
     valid = true
-    sample_set.samples.each do |x| sample_ids << x.id.to_s end 
+    # Add all Sample Set Sample IDs to a master array
+    sample_set.samples.each do |x| sample_ids << x.id.to_s end
+    # Loop through each row of the CSV and check ID against master array, throwing an error if it does not match   
     CSV.foreach(file, headers: true) do |row|
       sample_hash = row.to_hash
       if !sample_ids.include?(sample_hash['id'])

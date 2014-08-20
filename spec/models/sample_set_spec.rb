@@ -52,8 +52,18 @@ describe SampleSet do
     it { should_not be_valid }
   end
   
-  describe "when num_samples is an unrealistically large number" do
-    before { @sample_set.num_samples = 1000 }
+  describe "when num_samples is an too large" do
+    before { @sample_set.num_samples = 251 }
+    it { should_not be_valid }
+  end
+  
+  describe "when num_samples is 0" do
+    before { @sample_set.num_samples = 0 }
+    it { should_not be_valid }
+  end
+  
+  describe "when num_samples is set to a negative number" do
+    before { @sample_set.num_samples = -5 }
     it { should_not be_valid }
   end
   

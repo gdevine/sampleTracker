@@ -21,3 +21,10 @@
 
 en:
   hello: "Hello world"
+
+  activerecord:
+    models:
+      sample_set:            "Sample Set"
+    attributes:
+      sample_set:
+        num_samples:         "Requested number of samples"

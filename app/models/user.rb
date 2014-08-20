@@ -12,6 +12,8 @@ class User < ActiveRecord::Base
   before_save { self.email = email.downcase }
   # before_create :create_remember_token
   
+  after_create :send_admin_mail
+  
   validates :firstname, presence: true , length: { maximum: 50 }
   validates :surname, presence: true, length: { maximum: 50 }
   
@@ -36,6 +38,22 @@ class User < ActiveRecord::Base
   
   def my_samples
     Sample.where("owner_id = ?", id)
+  end
+  
+  def active_for_authentication? 
+    super && approved? 
+  end 
+
+  def inactive_message 
+    if !approved? 
+      :not_approved 
+    else 
+      super # Use whatever other message 
+    end 
+  end
+  
+  def send_admin_mail
+    UserMailer.new_user_waiting_for_approval(self).deliver
   end
 
   # private

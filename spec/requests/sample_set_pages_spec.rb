@@ -83,6 +83,23 @@ describe "sample_set pages:" do
         end
         
       end
+      
+      
+      describe "with 0 requested samples" do
+        
+        let(:numsamples) { 0 }
+        before do
+          find('#facilities').find(:xpath, 'option['+(myfacility.id + 1).to_s+']', visible: false).select_option
+          find('#projects').find(:xpath, 'option['+(myproject.id + 1).to_s+']', visible: false).select_option
+          fill_in 'sample_set_num_samples'  , with: numsamples
+          fill_in 'sample_set_sampling_date', with: Date.new(2012, 12, 3)
+        end
+        
+        it "should not create a sample_set" do
+          expect { click_button "Submit" }.not_to change(SampleSet, :count)
+        end
+      end
+  
   
       describe "with valid information" do
         
