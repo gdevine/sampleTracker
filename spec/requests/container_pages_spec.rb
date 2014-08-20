@@ -82,7 +82,7 @@ describe "Container pages:" do
   
         before do
           fill_in 'container_container_type', with: 'box' 
-          find('#container_storage_location_id').find(:xpath, 'option['+ (mystoragelocation.id + 1).to_s+']').select_option
+          find('#storage_locations').find(:xpath, 'option['+ (mystoragelocation.id + 1).to_s+']').select_option
           fill_in 'container_description', with: 'A description of this container'
         end
         
@@ -236,7 +236,7 @@ describe "Container pages:" do
       describe "with invalid information" do
         
           before do
-            find('#container_storage_location_id').find(:xpath, 'option[normalize-space(text())=""]').select_option
+            find('#storage_locations').find(:xpath, 'option[normalize-space(text())=""]').select_option
             click_button "Update"
           end
           
@@ -251,7 +251,7 @@ describe "Container pages:" do
         before do
           fill_in 'container_container_type'  , with: 'box'
           fill_in 'container_description'   , with: 'A new description'
-          find('#container_storage_location_id').find(:xpath, 'option['+ (mystoragelocation.id + 1).to_s+']').select_option
+          find('#storage_locations').find(:xpath, 'option['+ (mystoragelocation.id + 1).to_s+']').select_option
         end
         
         it "should update, not add a storage location" do
@@ -274,7 +274,7 @@ describe "Container pages:" do
           before do 
             fill_in 'container_container_type'  , with: 'box'
             fill_in 'container_description'   , with: 'A new description'
-            find('#container_storage_location_id').find(:xpath, 'option['+ (newstoragelocation.id).to_s+']').select_option     
+            find('#storage_locations').find(:xpath, 'option['+ (newstoragelocation.id).to_s+']').select_option     
             click_button "Update"
           end
           

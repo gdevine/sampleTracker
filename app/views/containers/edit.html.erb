@@ -21,7 +21,7 @@
   <div class="form-group">
     <%= f.label :storage_location_id, 'Storage Location', :class => "col-lg-2 control-label" %>
     <div class="col-lg-8">
-      <%= collection_select(:container, :storage_location_id, StorageLocation.all, :id, :code, {}, {:class=>"form-control", :id=>'storage_locations'} ) %>
+      <%= collection_select(:container, :storage_location_id, StorageLocation.all, :id, :code, {include_blank: 'None selected'}, {:class=>"form-control", :id=>'storage_locations'} ) %>
     </div>
   </div>
   
