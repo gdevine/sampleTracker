@@ -81,9 +81,9 @@ describe "User pages" do
         before { click_button submit }
         let(:user) { User.find_by(email: 'user@example.com') }
                
-        it { should have_link('Sign out') }
+        it { should have_link('Sign in') }  # As the account has not been approved yet therefore unable to log in
         it { should have_content('HIE Sample Tracker') }
-        it { should have_selector('div.alert.alert-notice', text: 'Welcome') }
+        it { should have_selector('div.alert.alert-notice', text: 'You have signed up successfully but your account has not been approved by your administrator yet') }
       end      
     end        
                
