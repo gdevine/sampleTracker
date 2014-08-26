@@ -133,15 +133,6 @@ describe User do
       expect(@user.sample_sets.to_a).to eq [newer_sample_set, older_sample_set]
     end
     
-    it "should destroy associated sample_sets" do
-      sample_sets = @user.sample_sets.to_a
-      @user.destroy
-      expect(sample_sets).not_to be_empty
-      sample_sets.each do |sample_set|
-        expect(SampleSet.where(id: sample_set.id)).to be_empty
-      end
-    end
-    
     describe "status" do
       let(:unowned_sample_set) do
         FactoryGirl.create(:sample_set, owner: FactoryGirl.create(:user))
@@ -168,14 +159,6 @@ describe User do
       expect(@user.samples.to_a).to eq [newer_sample, older_sample]
     end
     
-    it "should destroy associated samples" do
-      samples = @user.samples.to_a
-      @user.destroy
-      expect(samples).not_to be_empty
-      samples.each do |sample|
-        expect(Sample.where(id: sample.id)).to be_empty
-      end
-    end
   end
   
   describe "facility associations" do

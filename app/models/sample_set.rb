@@ -1,10 +1,12 @@
 class SampleSet < ActiveRecord::Base
+  
+  after_create :create_samples, on: [:create]
+  before_destroy :deletable?
+  
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_id'
   belongs_to :facility, :class_name => 'Facility', :foreign_key => 'facility_id'
   belongs_to :project, :class_name => 'Project', :foreign_key => 'project_id'
-  has_many :samples, :class_name => 'Sample', :foreign_key => 'sample_set_id', dependent: :destroy
-  
-  after_create :create_samples, on: [:create]
+  has_many :samples, :class_name => 'Sample', :foreign_key => 'sample_set_id', :dependent => :destroy
   
   default_scope -> { order('created_at DESC') }
   validates :owner_id, presence: true
@@ -56,6 +58,25 @@ class SampleSet < ActiveRecord::Base
       return 'Complete'
     end
   end
+  
+  def deletable?
+    # First check to see if I contain any completed samples, otherwise go ahead and delete me
+    errors.add(:base, "Can not delete a Sample Set that contains Samples marked as complete") if has_completed_samples?
+    errors.blank? #return false, to not destroy the element, otherwise, it will delete.
+  end
+  
+  
+  private
+  
+    def has_completed_samples?
+      # Returns true if current sample set containes samples that are marked as sampled=true
+      if self.samples.exists?
+        @samples = self.samples.to_a
+        csa = @samples.select {|cs| cs["sampled"] == true}
+        return true if !csa.empty? 
+      end
+      false
+    end
   
   
 end

@@ -3,11 +3,11 @@ class User < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
-  has_many :sample_sets, :class_name => 'SampleSet', :foreign_key => 'owner_id', dependent: :destroy
-  has_many :samples, :class_name => 'Sample', :foreign_key => 'owner_id', dependent: :destroy
-  has_many :facilities, :class_name => 'Facility', :foreign_key => 'contact_id'
-  has_many :storage_locations, :class_name => 'StorageLocation', :foreign_key => 'custodian_id'
-  has_many :containers, :class_name => 'Container', :foreign_key => 'owner_id'
+  has_many :sample_sets, :class_name => 'SampleSet', :foreign_key => 'owner_id', :dependent => :restrict_with_exception
+  has_many :samples, :class_name => 'Sample', :foreign_key => 'owner_id', :dependent => :restrict_with_exception
+  has_many :facilities, :class_name => 'Facility', :foreign_key => 'contact_id', :dependent => :restrict_with_exception
+  has_many :storage_locations, :class_name => 'StorageLocation', :foreign_key => 'custodian_id', :dependent => :restrict_with_exception
+  has_many :containers, :class_name => 'Container', :foreign_key => 'owner_id', :dependent => :restrict_with_exception
   
   before_save { self.email = email.downcase }
   # before_create :create_remember_token

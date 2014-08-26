@@ -6,7 +6,7 @@ class Sample < ActiveRecord::Base
   belongs_to :container, :class_name => 'Container', :foreign_key => 'container_id'
   belongs_to :storage_location, :class_name => 'StorageLocation', :foreign_key => 'storage_location_id'
   belongs_to :parent, :class_name => 'Sample', :foreign_key => 'parent_id'
-  has_many :subsamples, :class_name => 'Sample', :foreign_key => 'parent_id'
+  has_many :subsamples, :class_name => 'Sample', :foreign_key => 'parent_id', :dependent => :restrict_with_exception
   has_and_belongs_to_many :analyses
   default_scope -> { order('created_at DESC') }
   

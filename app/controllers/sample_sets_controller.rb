@@ -1,7 +1,7 @@
 class SampleSetsController < ApplicationController
   before_action :authenticate_user!, only: [:index, :new, :show, :update, :edit, :create, :destroy, :import]
   before_action :correct_user, only: [:edit, :update, :destroy, :import]
-  before_action :check_for_completed_samples, only: [:destroy]
+  # before_action :check_for_completed_samples, only: [:destroy]
   
   def index   
     @sample_sets = SampleSet.paginate(page: params[:ss_page])
@@ -44,8 +44,12 @@ class SampleSetsController < ApplicationController
   end
 
   def destroy
-    @sample_set.destroy
-    redirect_to dashboard_path
+    if @sample_set.destroy
+      redirect_to dashboard_path
+    else 
+      flash[:danger] = @sample_set.errors.full_messages.to_sentence
+      redirect_to @sample_set
+    end
   end
   
   def import
@@ -116,16 +120,16 @@ class SampleSetsController < ApplicationController
       redirect_to root_url if @sample_set.nil?
     end
     
-    def check_for_completed_samples
-      @sample_set = SampleSet.find(params[:id])
-      if @sample_set.samples.exists?
-        @samples = @sample_set.samples.to_a
-        csa = @samples.select {|cs| cs["sampled"] == true}
-        if !csa.empty?  
-          flash[:danger] = "Can not delete a Sample Set that contains Samples marked as complete"
-          redirect_to @sample_set
-        end
-      end
-    end
+    # def check_for_completed_samples
+      # @sample_set = SampleSet.find(params[:id])
+      # if @sample_set.samples.exists?
+        # @samples = @sample_set.samples.to_a
+        # csa = @samples.select {|cs| cs["sampled"] == true}
+        # if !csa.empty?  
+          # flash[:danger] = "Can not delete a Sample Set that contains Samples marked as complete"
+          # redirect_to @sample_set
+        # end
+      # end
+    # end
     
 end

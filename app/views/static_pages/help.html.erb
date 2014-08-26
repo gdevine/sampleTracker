@@ -1,5 +1,38 @@
 <% provide(:title, 'Help') %>
-<% provide(:pageheading, 'Help') %>
+<% provide(:pageheading, 'Help page') %>
 <p>
-  Sample Tracker Help Page
+  Contents
 </p>
+
+<ul>
+<li><a href="#intro">Introduction</a></li>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#sets">Sample Sets</a></li>
+</ul>
+
+<h4 class="topspace20 rowline"><a name="introduction">Introduction</a></h4>
+<p>
+	The HIE Sample Tracker enables researchers and facility staff at the Hawkesbury Institute for the Environment to manage, 
+	document, and search for environmental samples collected at various sampling field sites. In particular, it:
+	<ol>
+		<li>
+			allows research scientists to request collection of a batch of samples from a particular facility
+		</li>
+		<li>
+			allows facility staff to monitor what samples are being collected at a particular facility, on what dates, and 
+			under which scientific project
+		</li>
+		<li>
+			automatically creates sample information templates as well as sample barcodes for easy sample identification
+		</li>
+		<li>
+			enables researchers to enter details of single samples using web forms, or multiple samples through batch 
+			spreadsheet upload
+		</li>
+	</ol>
+</p>
+
+<h4 class="topspace20"><a name="overview">Overview</a></h4>
+<%= image_tag("sampletrackeroverview.png", :alt => "HIE Sample Tracker") %>
+
+<h4 class="topspace20"><a name="sets">Sample Sets</a></h4>
