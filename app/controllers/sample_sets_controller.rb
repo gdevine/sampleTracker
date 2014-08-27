@@ -1,7 +1,9 @@
 class SampleSetsController < ApplicationController
-  before_action :authenticate_user!, only: [:index, :new, :show, :update, :edit, :create, :destroy, :import]
-  before_action :correct_user, only: [:edit, :update, :destroy, :import]
-  # before_action :check_for_completed_samples, only: [:destroy]
+  before_action :authenticate_user!, only: [:index, :new, :show, :update, :edit, :create, 
+                                            :destroy, :import_sample_fields, :import_subsamples, :export_samples_csv, 
+                                            :export_subsamples_csv]
+  before_action :correct_user, only: [:edit, :update, :destroy, :import_sample_fields, :import_subsamples, 
+                                      :export_samples_csv, :export_subsamples_csv]
   
   def index   
     @sample_sets = SampleSet.paginate(page: params[:ss_page])
@@ -52,7 +54,29 @@ class SampleSetsController < ApplicationController
     end
   end
   
-  def import
+  def export_samples_csv
+    #
+    # Export my samples in a blank csv template 
+    #
+    @sample_set = SampleSet.find(params[:id])
+    myid = @sample_set.id.to_s
+    mysurname = @sample_set.owner.surname.delete(' ')
+    myfac = @sample_set.facility.code.to_s
+    send_data @sample_set.export_samples_csv, filename: 'Samples'+'_'+mysurname+'_'+myfac+'_'+myid+'.csv'  
+  end
+  
+  def export_subsamples_csv
+    #
+    # Export a blank csv template for uploading subsamples of my samples 
+    #
+    @sample_set = SampleSet.find(params[:id])
+    myid = @sample_set.id.to_s
+    mysurname = @sample_set.owner.surname.delete(' ')
+    myfac = @sample_set.facility.code.to_s
+    send_data @sample_set.export_subsamples_csv, filename: 'Subsamples'+'_'+mysurname+'_'+myfac+'_'+myid+'.csv'  
+  end
+  
+  def import_sample_fields
     #
     # Import sample information for a sample set from csv file
     #
@@ -60,8 +84,8 @@ class SampleSetsController < ApplicationController
     # Only proceed to upload if embedded sample IDs belong to the current Sample Set
     if valid_csv_ids(@sample_set, params['file'].path)
       CSV.foreach(params['file'].path, headers: true) do |row|
-          sample_hash = row.to_hash
-          Sample.import(sample_hash, params[:sample_set_id])
+          sample_fields = row.to_hash
+          Sample.import_fields(sample_fields)
       end
       flash[:success] = "Samples imported successfully"
       redirect_to @sample_set
@@ -71,10 +95,30 @@ class SampleSetsController < ApplicationController
     end      
   end
   
+  def import_subsamples
+    #
+    # Import Subsamples from an uploaded csv file
+    #
+    @sample_set = SampleSet.find(params[:id])
+    # Only proceed to upload if embedded sample IDs belong to the current Sample Set
+    if valid_csv_ids(@sample_set, params['file'].path)
+      CSV.foreach(params['file'].path, headers: true) do |row|
+          subsample_fields = row.to_hash
+          Sample.import_subsample(subsample_fields, @sample_set)
+      end
+      flash[:success] = "Samples imported successfully"
+      redirect_to @sample_set
+    else 
+      flash[:danger] = "Sample ID not in Sample set"
+      redirect_to @sample_set
+    end      
+    
+  end
+  
   
   def valid_csv_ids(sample_set, file)
     #
-    # Check that ids embedded in an uploaded Sample CSV file belong to the parent Sample Set
+    # Check that Sample IDs embedded in an uploaded Sample OR Subsample CSV file belong to the parent Sample Set
     #
     sample_ids = []
     valid = true
@@ -83,7 +127,7 @@ class SampleSetsController < ApplicationController
     # Loop through each row of the CSV and check ID against master array, throwing an error if it does not match   
     CSV.foreach(file, headers: true) do |row|
       sample_hash = row.to_hash
-      if !sample_ids.include?(sample_hash['id'])
+      if !sample_ids.include?(sample_hash['Sample_ID'])
         sample_set.errors.add :base, "Sample ID not in Sample set"
         valid = false
         break
@@ -92,22 +136,6 @@ class SampleSetsController < ApplicationController
     return valid
   end
   
-  # def validate_csv(sample_set)
-    # #
-    # # Validate an uploaded CSV against the current Sample Set
-    # #
-    # sample_ids = []
-    # sample_set.samples.each do |x| sample_ids << x.id end 
-    # CSV.foreach(params['file'].path, headers: true) do |row|
-      # sample_hash = row.to_hash
-      # if !sample_ids.include?(sample_hash['id'])
-        # @samples = sample_set.samples.paginate(page: params[:page])
-        # # redirect_to sample_set
-        # return false
-      # end
-    # end
-    # return true
-  # end
   
   private
 
@@ -119,17 +147,5 @@ class SampleSetsController < ApplicationController
       @sample_set = current_user.sample_sets.find_by(id: params[:id])
       redirect_to root_url if @sample_set.nil?
     end
-    
-    # def check_for_completed_samples
-      # @sample_set = SampleSet.find(params[:id])
-      # if @sample_set.samples.exists?
-        # @samples = @sample_set.samples.to_a
-        # csa = @samples.select {|cs| cs["sampled"] == true}
-        # if !csa.empty?  
-          # flash[:danger] = "Can not delete a Sample Set that contains Samples marked as complete"
-          # redirect_to @sample_set
-        # end
-      # end
-    # end
     
 end

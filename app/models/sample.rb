@@ -59,26 +59,46 @@ class Sample < ActiveRecord::Base
       date_sampled.strftime("%B %Y")
     end
   end
- 
-  def self.to_csv(all_samples)
-    CSV.generate do |csv|
-      column_names = %w(id date_sampled tree plot ring container_id storage_location_id material_type northing easting vertical amount_collected amount_stored comments)
-      csv << column_names
-      all_samples.each do |row|
-        csv << row.attributes.values_at(*column_names)
-      end
-    end
+  
+  def import_fields(sample_fields)
+    #
+    # Import sample fields into an existing sample
+    #
+    sample = Sample.find_by_id(sample_fields["Sample_ID"])
+    sample_fields[:is_primary] = true
+    sample_fields[:sampled] = true
+    sample.update_attributes(sample_fields)
   end
   
-  
-  def self.import(sample_hash, sample_set)
+  def self.import_subsample(subsample_fields, sample_set)
     #
-    #Import sample fields into an existing sample
+    # Import a new subsample of this sample
     #
-    sample = Sample.find_by_id(sample_hash["id"])
-    sample_hash[:is_primary] = true
-    sample_hash[:sampled] = true
-    sample.update_attributes(sample_hash)
+    parent = Sample.find_by_id(subsample_fields["Sample_ID"])
+    subsample= Sample.new(parent_id: parent.id,
+                sample_set_id: '',     
+                owner_id: parent.owner.id,           
+                sampled: true,            
+                date_sampled: parent.date_sampled,       
+                facility_id: parent.facility.id,        
+                project_id: Project.find_by_code(subsample_fields['Project_Code']).id.to_s,         
+                comments: subsample_fields['Comments'],           
+                is_primary: false,         
+                ring: parent.ring,               
+                tree: parent.tree,               
+                plot: parent.plot,              
+                northing: parent.northing,           
+                easting: parent.easting,            
+                vertical: parent.vertical,           
+                material_type: parent.material_type,      
+                amount_collected: parent.amount_collected,   
+                amount_stored: subsample_fields['Amount_Stored'],        
+                storage_location_id: subsample_fields['Storage_Location_ID'],        
+                container_id: subsample_fields['Container_ID']      
+                )
+                
+    subsample.save
+    
   end
   
   

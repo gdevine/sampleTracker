@@ -12,12 +12,14 @@ SampleTracker::Application.routes.draw do
   resources :storage_locations
   resources :containers
   resources :samples do
-    # collection { post :import }
   end
   
   resources :sample_sets do
     member do
-      post 'import'
+      post 'import_sample_fields'
+      post 'import_subsamples'
+      get 'export_samples_csv'
+      get 'export_subsamples_csv'
     end
     resources :samples, only: [:index, :new]
   end

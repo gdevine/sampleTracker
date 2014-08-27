@@ -178,7 +178,7 @@ describe "sample_set pages:" do
   end
   
   
-  describe "Show page" do
+  describe "Show page (pending sample set)" do
     
     let!(:sample_set) { FactoryGirl.create(:sample_set, owner: user, num_samples: 60) }
         
@@ -197,8 +197,11 @@ describe "sample_set pages:" do
       it { should have_link('Edit Sample Set') }
       it { should have_link('Delete Sample Set') }    
       it { should have_link('Append New Sample') }
-      it { should have_link('Export CSV') }
+      it { should have_link('Samples Template') }
+      it { should_not have_link('Subsamples Template') }  # As the sample set is not complete at this point
       it { should have_link('Print QR codes') }
+      it { should have_content('Batch upload of Sample information')}
+      it { should_not have_content('Upload Subsamples')}
       
       
       describe "when clicking the edit link" do
@@ -260,6 +263,8 @@ describe "sample_set pages:" do
          it { should_not have_link('Edit Sample Set') }
          it { should_not have_link('Append New Sample') }
          it { should_not have_link('Delete Sample Set') }
+         it { should_not have_link('Samples Template') }
+         it { should_not have_link('Subsamples Template') }
        end 
     end
     
@@ -273,8 +278,49 @@ describe "sample_set pages:" do
     end
     
   end
-
-
+  
+  
+  describe "Show page (completed sample set)" do
+    
+    let!(:completed_sample_set) { FactoryGirl.create(:sample_set, owner: user, num_samples: 2) }
+    let!(:first_sample) {completed_sample_set.samples.first}
+    let!(:last_sample) {completed_sample_set.samples.last}
+    
+    let(:container) { FactoryGirl.create(:container) }
+    before do
+       last_sample.date_sampled     = first_sample.date_sampled     = Date.new(2013, 11, 7)
+       last_sample.container        = first_sample.container        = container
+       last_sample.storage_location = first_sample.storage_location = container.storage_location
+       last_sample.ring             = first_sample.ring             = 3           
+       last_sample.tree             = first_sample.tree             = 4           
+       last_sample.plot             = first_sample.plot             = 6    
+       last_sample.amount_collected = first_sample.amount_collected = '40g'
+       last_sample.sampled          = first_sample.sampled          = true
+       first_sample.save
+       last_sample.save
+    end
+                           
+    describe "for signed-in users" do
+      
+      before do
+        sign_in user
+        visit sample_set_path(completed_sample_set)
+      end
+      
+      let!(:page_heading) {"Sample Set " + completed_sample_set.id.to_s}
+      
+      it { should have_selector('h2', :text => page_heading) }
+      it { should have_title(full_title('Sample Set View')) }
+      it { should have_selector('p', :text => 'Complete') }
+      
+      it { should have_link('Options') }
+      it { should have_link('Subsamples Template') }
+      it { should have_content('Upload Subsamples')}
+      
+    end
+  end
+  
+  
   describe "edit page" do
     
     let!(:sample_set) { FactoryGirl.create(:sample_set, owner: user, num_samples: 60) }

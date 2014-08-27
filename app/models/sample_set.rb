@@ -60,16 +60,45 @@ class SampleSet < ActiveRecord::Base
   end
   
   def deletable?
-    # First check to see if I contain any completed samples, otherwise go ahead and delete me
+    #
+    # Check if I contain any completed samples, otherwise go ahead and delete me
+    #
     errors.add(:base, "Can not delete a Sample Set that contains Samples marked as complete") if has_completed_samples?
     errors.blank? #return false, to not destroy the element, otherwise, it will delete.
   end
+  
+  def export_samples_csv
+    #
+    # export my samples into a CSV template (typically for filling out in pen in the field for later import)
+    #
+    @samples = self.samples.to_a.sort
+    CSV.generate do |csv|
+      column_names = %w(Sample_ID date_sampled tree plot ring container_id storage_location_id material_type northing easting vertical amount_collected amount_stored comments)
+      csv << column_names
+      @samples.each do |row|
+        csv << row.attributes.values_at(*column_names)
+      end
+    end
+  end
+  
+  def export_subsamples_csv
+    #
+    # export a blank subsamples CSV template
+    #
+    CSV.generate do |csv|
+      column_names = %w(Sample_ID Project_Code Amount_Stored Storage_Location_ID Container_ID Comments)
+      csv << column_names
+    end
+  end
+
   
   
   private
   
     def has_completed_samples?
+      #
       # Returns true if current sample set containes samples that are marked as sampled=true
+      #
       if self.samples.exists?
         @samples = self.samples.to_a
         csa = @samples.select {|cs| cs["sampled"] == true}

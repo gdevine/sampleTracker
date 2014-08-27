@@ -13,22 +13,15 @@ class SamplesController < ApplicationController
       count = @samples.count
       respond_to do |format|
         format.html
-        format.csv do 
-          myss = @samples.first.sample_set
-          myid = myss.id.to_s
-          mysurname = myss.owner.surname.delete(' ')
-          myfac = myss.facility.code.to_s
-          send_data Sample.to_csv(@samples), filename: 'Samples'+'_'+mysurname+'_'+myfac+'_'+myid+'.csv'
-        end
-        format.xls do
-          myss = @samples.first.sample_set
-          myid = myss.id.to_s
-          mysurname = myss.owner.surname.delete(' ')
-          myfac = myss.facility.code.to_s
-          filename = 'Samples'+'_'+mysurname+'_'+myfac+'_'+myid
-          response.headers['Content-Disposition'] = 'attachment; filename="' + filename + '.xls"'
-          render "samples/index.xls.erb"
-        end
+        # format.xls do
+          # myss = @samples.first.sample_set
+          # myid = myss.id.to_s
+          # mysurname = myss.owner.surname.delete(' ')
+          # myfac = myss.facility.code.to_s
+          # filename = 'Samples'+'_'+mysurname+'_'+myfac+'_'+myid
+          # response.headers['Content-Disposition'] = 'attachment; filename="' + filename + '.xls"'
+          # render "samples/index.xls.erb"
+        # end
         format.pdf do
           pdf = Prawn::Document.new
           s = 0
