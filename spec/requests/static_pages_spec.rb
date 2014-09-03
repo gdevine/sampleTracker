@@ -20,6 +20,10 @@ describe "Static pages:" do
           expect(page).to have_content('No Sample Sets found')
         end
         
+        it "should have a guide button" do
+          expect(page).to have_button('Guide')
+        end
+        
       end
       
       describe "with sample sets" do
@@ -40,6 +44,10 @@ describe "Static pages:" do
           user.my_sample_sets.each do |item|
             expect(page).to have_selector('table tr td', text: item.id)
           end
+        end
+        
+        it "should have a guide button" do
+          expect(page).to have_button('Guide')
         end
       end
     

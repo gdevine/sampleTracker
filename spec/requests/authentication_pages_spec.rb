@@ -26,7 +26,6 @@ describe "Authentication" do
       end
 
       it { should have_content('HIE Sample Tracker') }
-      it { should have_link('Users',    href: users_path) }
       it { should have_link('Sign out',    href: destroy_user_session_path) }
       it { should_not have_link('Sign in', href: new_user_session_path) }
       

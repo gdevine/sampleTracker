@@ -201,7 +201,11 @@ describe "sample_set pages:" do
       it { should_not have_link('Subsamples Template') }  # As the sample set is not complete at this point
       it { should have_link('Print QR codes') }
       it { should have_content('Batch upload of Sample information')}
-      it { should_not have_content('Upload Subsamples')}
+      it { should_not have_button('Import Subsamples')}
+      
+      it "should have a guide button" do
+        expect(page).to have_button('Guide')
+      end
       
       
       describe "when clicking the edit link" do
@@ -243,7 +247,7 @@ describe "sample_set pages:" do
         let!(:first_sample_id) { sample_set.samples.first.id }
         let!(:last_sample_id) { sample_set.samples.last.id }
         before { visit sample_set_path(sample_set) }
-        it { should have_content('Samples included in this sample set') }
+        it { should have_content('Samples') }
         it { should have_selector('table tr th', text: 'Sample ID') } 
         it { should have_selector('table tr td', text: first_sample_id) } 
         it { should have_selector('table tr td', text: last_sample_id) } 
@@ -266,6 +270,10 @@ describe "sample_set pages:" do
          it { should_not have_link('Samples Template') }
          it { should_not have_link('Subsamples Template') }
        end 
+       
+       describe "should have a guide button" do 
+         it { should have_button('Guide') }
+       end
     end
     
     describe "for non signed-in users" do
@@ -315,7 +323,8 @@ describe "sample_set pages:" do
       
       it { should have_link('Options') }
       it { should have_link('Subsamples Template') }
-      it { should have_content('Upload Subsamples')}
+      it { should have_button('Import Subsamples')}
+      it { should have_button('Guide') }
       
     end
   end

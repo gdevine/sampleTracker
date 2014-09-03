@@ -16,6 +16,13 @@ class SampleSetsController < ApplicationController
   def show
     @sample_set = SampleSet.find(params[:id])
     @samples = @sample_set.samples.paginate(page: params[:page])
+    subsamples = []
+    @sample_set.samples.each do |s| 
+      s.subsamples.each do |ss|
+        subsamples << ss
+      end
+    end
+    @subsamples = subsamples.paginate(page: params[:page])
   end
 
   def create
@@ -97,14 +104,14 @@ class SampleSetsController < ApplicationController
   
   def import_subsamples
     #
-    # Import Subsamples from an uploaded csv file
+    # Import Subsamples of my samples from an uploaded csv file
     #
     @sample_set = SampleSet.find(params[:id])
     # Only proceed to upload if embedded sample IDs belong to the current Sample Set
     if valid_csv_ids(@sample_set, params['file'].path)
       CSV.foreach(params['file'].path, headers: true) do |row|
           subsample_fields = row.to_hash
-          Sample.import_subsample(subsample_fields, @sample_set)
+          Sample.import_subsample(subsample_fields)
       end
       flash[:success] = "Samples imported successfully"
       redirect_to @sample_set

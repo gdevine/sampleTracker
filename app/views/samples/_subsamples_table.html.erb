@@ -1,0 +1,12 @@
+<tr>	
+  <td><%= subsample.id %></td>
+  <td><%= subsample.parent.id %></td>
+  <td><%= subsample.project.code %></td>
+  <% if subsample.storage_location %>
+    <td><%= subsample.storage_location.code %></td>
+  <% else %>
+    <td></td>
+  <% end %>
+  <td><%= subsample.sampled %></td>
+  <td><%= link_to "View", subsample %></td>
+</tr>

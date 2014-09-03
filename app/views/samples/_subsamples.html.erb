@@ -1,0 +1,27 @@
+<% if @subsamples.any? %>
+  <% if defined? @search %>
+    <h5><%= @search.total %> results</h5> 
+  <% else %>
+    <h5><%= @subsamples.count %> results</h5>
+  <% end %>
+  
+  <%= will_paginate @subsamples, :param_name => "ss_page" %>
+  <table class="table table-bordered table-striped table-hover">
+    <thead>
+      <tr>
+        <th>Sample ID</th>
+        <th>Parent Sample</th>
+        <th>Project</th>
+        <th>Storage Location</th>
+        <th>Complete?</th>
+        <th>View?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render partial: 'samples/subsamples_table', collection: @subsamples, as: :subsample %>
+    </tbody>
+  </table>
+  
+<% else %>
+  <p>No SubSamples found</p>
+<% end %>

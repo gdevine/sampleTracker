@@ -70,13 +70,12 @@ class Sample < ActiveRecord::Base
     sample.update_attributes(sample_fields)
   end
   
-  def self.import_subsample(subsample_fields, sample_set)
+  def self.import_subsample(subsample_fields)
     #
     # Import a new subsample of this sample
-    #
+    # 
     parent = Sample.find_by_id(subsample_fields["Sample_ID"])
-    subsample= Sample.new(parent_id: parent.id,
-                sample_set_id: '',     
+    subsample= Sample.new(parent_id: parent.id, 
                 owner_id: parent.owner.id,           
                 sampled: true,            
                 date_sampled: parent.date_sampled,       
@@ -97,7 +96,12 @@ class Sample < ActiveRecord::Base
                 container_id: subsample_fields['Container_ID']      
                 )
                 
-    subsample.save
+    subsample.save            
+    # if subsample.valid?
+      # return [subsample, true]
+    # else
+      # return false
+    # end
     
   end
   
