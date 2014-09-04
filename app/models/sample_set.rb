@@ -73,7 +73,7 @@ class SampleSet < ActiveRecord::Base
     #
     @samples = self.samples.to_a.sort
     CSV.generate do |csv|
-      column_names = %w(Sample_ID date_sampled tree plot ring container_id storage_location_id material_type northing easting vertical amount_collected amount_stored comments)
+      column_names = %w(id date_sampled tree plot ring container_id storage_location_id material_type northing easting vertical amount_collected amount_stored comments)
       csv << column_names
       @samples.each do |row|
         csv << row.attributes.values_at(*column_names)
