@@ -1,5 +1,5 @@
 class SampleSetsController < ApplicationController
-  before_action :authenticate_user!, only: [:index, :new, :show, :update, :edit, :create, 
+  before_action :authenticate_user!, only: [:index, :new, :update, :edit, :create, 
                                             :destroy, :import_sample_fields, :import_subsamples, :export_samples_csv, 
                                             :export_subsamples_csv]
   before_action :correct_user, only: [:edit, :update, :destroy, :import_sample_fields, :import_subsamples, 

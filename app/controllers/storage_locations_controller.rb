@@ -1,5 +1,5 @@
 class StorageLocationsController < ApplicationController
-  before_action :authenticate_user!, only: [:index, :show, :new, :create, :edit, :update, :destroy]
+  before_action :authenticate_user!, only: [:index, :new, :create, :edit, :update, :destroy]
   before_action :correct_user, only: [:edit, :update, :destroy]
   
   def index   

@@ -1,5 +1,5 @@
 class ProjectsController < ApplicationController
-  before_action :authenticate_user!, only: [:index, :show]
+  before_action :authenticate_user!, only: [:index]
   
   def index
     @projects = Project.paginate(page: params[:page])
