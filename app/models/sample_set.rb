@@ -92,6 +92,28 @@ class SampleSet < ActiveRecord::Base
   end
 
   
+  def import_csv_samples(filepath)
+    #
+    # Import sample fields from a csv file into existing samples of this sample 
+    # set - only writing to disk once all imported fields are verified as valid
+    #
+    begin 
+      ActiveRecord::Base.transaction do
+        CSV.foreach(filepath, headers: true) do |row|
+          sample_fields = row.to_hash
+        
+          sample = Sample.find_by_id(sample_fields["id"])
+          sample_fields[:is_primary] = true
+          sample_fields[:sampled] = true
+          sample.update_attributes!(sample_fields)
+        end
+      end
+      return
+    rescue => e 
+      return "Error found in Sample #{e.record.id} - #{e.message}  "
+    end
+  end
+
   
   private
   

@@ -180,11 +180,11 @@ describe "Facility pages:" do
     end
     
     describe "for non signed-in users" do
-      describe "should be redirected back to signin" do
+      describe "should be shown a signin link and have no owner options" do
         before { visit facility_path(facility) }
-        it { should have_title('Sign in') }
-        # it { should_not have_link('Edit Facility') }
-        # it { should_not have_link('Delete Facility') }
+        it { should have_content('Sign in') }
+        it { should_not have_link('Edit Facility') }
+        it { should_not have_link('Delete Facility') }
       end
     end
     

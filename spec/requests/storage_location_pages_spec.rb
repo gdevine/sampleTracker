@@ -190,9 +190,9 @@ describe "Storage Location pages:" do
     end
     
     describe "for non signed-in users" do
-      describe "should be redirected back to signin" do
+      describe "should be shown a signin link and not have owner options" do
         before { visit storage_location_path(storage_location) }
-        it { should have_title('Sign in') }
+        it { should have_content('Sign in') }
         it { should_not have_link('Edit Location') }
         it { should_not have_link('Delete Location') }
       end

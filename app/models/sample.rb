@@ -60,21 +60,33 @@ class Sample < ActiveRecord::Base
     end
   end
   
-  def import_fields(sample_fields)
-    #
-    # Import sample fields into an existing sample
-    #
-    sample = Sample.find_by_id(sample_fields["Sample_ID"])
-    sample_fields[:is_primary] = true
-    sample_fields[:sampled] = true
-    sample.update_attributes(sample_fields)
-  end
+  # def self.import_fields(filepath, sample_set)
+    # #
+    # # Import sample fields into an existing sample - only writing to disk once all imported fields are 
+    # # verified as valid
+    # #
+    # begin 
+      # ActiveRecord::Base.transaction do
+        # CSV.foreach(filepath, headers: true) do |row|
+          # sample_fields = row.to_hash
+#         
+          # sample = Sample.find_by_id(sample_fields["id"])
+          # sample_fields[:is_primary] = true
+          # sample_fields[:sampled] = true
+          # sample.update_attributes!(sample_fields)
+        # end
+      # end
+    # rescue => e 
+      # sample.errors.add_to_base("There was a problem with one of the entries")
+      # redirect_to sample_set
+    # end
+  # end
   
   def self.import_subsample(subsample_fields)
     #
     # Import a new subsample of this sample
     # 
-    parent = Sample.find_by_id(subsample_fields["Sample_ID"])
+    parent = Sample.find_by_id(subsample_fields["id"])
     subsample= Sample.new(parent_id: parent.id, 
                 owner_id: parent.owner.id,           
                 sampled: true,            

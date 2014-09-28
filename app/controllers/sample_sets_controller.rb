@@ -83,24 +83,32 @@ class SampleSetsController < ApplicationController
     send_data @sample_set.export_subsamples_csv, filename: 'Subsamples'+'_'+mysurname+'_'+myfac+'_'+myid+'.csv'  
   end
   
+  
   def import_sample_fields
     #
     # Import sample information for a sample set from csv file
     #
     @sample_set = SampleSet.find(params[:id])
+    # Check that uploaded file is a CSV file
+    if params['file'].content_type != 'text/csv'
+      return redirect_to @sample_set, :flash => {:danger => "The uploaded file is not a CSV file" }
+    end
     # Only proceed to upload if embedded sample IDs belong to the current Sample Set
-    if valid_csv_ids(@sample_set, params['file'].path)
-      CSV.foreach(params['file'].path, headers: true) do |row|
-          sample_fields = row.to_hash
-          Sample.import_fields(sample_fields)
+    invalid_ids = get_invalid_ids(@sample_set, params['file'].path)
+    if invalid_ids.empty?
+      @message = @sample_set.import_csv_samples(params['file'].path)
+      if @message.present?
+        # If message is present something went wrong with the upload - expose this to the user
+        redirect_to @sample_set, :flash => { :danger => @message }
+      else 
+        # Upload succeeded
+        redirect_to @sample_set, :flash => { :success => "Samples imported successfully" }
       end
-      flash[:success] = "Samples imported successfully"
-      redirect_to @sample_set
     else 
-      flash[:danger] = "Sample ID not in Sample set"
-      redirect_to @sample_set
+      redirect_to @sample_set, :flash => {:danger => "The following Sample ID(s) do not belong to this Sample set: " + invalid_ids.uniq.join(", ") }
     end      
   end
+  
   
   def import_subsamples
     #
@@ -108,7 +116,8 @@ class SampleSetsController < ApplicationController
     #
     @sample_set = SampleSet.find(params[:id])
     # Only proceed to upload if embedded sample IDs belong to the current Sample Set
-    if valid_csv_ids(@sample_set, params['file'].path)
+    invalid_ids = get_invalid_ids(@sample_set, params['file'].path)
+    if invalid_ids.empty?
       CSV.foreach(params['file'].path, headers: true) do |row|
           subsample_fields = row.to_hash
           Sample.import_subsample(subsample_fields)
@@ -116,31 +125,30 @@ class SampleSetsController < ApplicationController
       flash[:success] = "Samples imported successfully"
       redirect_to @sample_set
     else 
-      flash[:danger] = "Sample ID not in Sample set"
+      flash[:danger] = "The following Sample ID(s) do not belong to this Sample set: " + invalid_ids.uniq.join(", ")
       redirect_to @sample_set
     end      
     
   end
   
-  
-  def valid_csv_ids(sample_set, file)
+  def get_invalid_ids(sample_set, file)
     #
     # Check that Sample IDs embedded in an uploaded Sample OR Subsample CSV file belong to the parent Sample Set
     #
     sample_ids = []
-    valid = true
+    # valid = true
+    invalid_ids = []
     # Add all Sample Set Sample IDs to a master array
     sample_set.samples.each do |x| sample_ids << x.id.to_s end
     # Loop through each row of the CSV and check ID against master array, throwing an error if it does not match   
     CSV.foreach(file, headers: true) do |row|
       sample_hash = row.to_hash
-      if !sample_ids.include?(sample_hash['Sample_ID'])
-        sample_set.errors.add :base, "Sample ID not in Sample set"
-        valid = false
-        break
+      if !sample_ids.include?(sample_hash['id'])
+        # valid = false
+        invalid_ids << sample_hash['id']
       end
     end
-    return valid
+    return invalid_ids
   end
   
   
