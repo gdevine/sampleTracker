@@ -1,8 +1,8 @@
 class SampleSetsController < ApplicationController
   before_action :authenticate_user!, only: [:index, :new, :update, :edit, :create, 
-                                            :destroy, :import_sample_fields, :import_subsamples, :export_samples_csv, 
+                                            :destroy, :import_csv_samples, :import_csv_subsamples, :export_samples_csv, 
                                             :export_subsamples_csv]
-  before_action :correct_user, only: [:edit, :update, :destroy, :import_sample_fields, :import_subsamples, 
+  before_action :correct_user, only: [:edit, :update, :destroy, :import_csv_samples, :import_csv_subsamples, 
                                       :export_samples_csv, :export_subsamples_csv]
   
   def index   
@@ -22,7 +22,7 @@ class SampleSetsController < ApplicationController
         subsamples << ss
       end
     end
-    @subsamples = subsamples.paginate(page: params[:page])
+    @subsamples = subsamples.sort_by{|sample| -sample.id}.paginate(page: params[:page])
   end
 
   def create
@@ -84,7 +84,7 @@ class SampleSetsController < ApplicationController
   end
   
   
-  def import_sample_fields
+  def import_csv_samples
     #
     # Import sample information for a sample set from csv file
     #
@@ -96,7 +96,7 @@ class SampleSetsController < ApplicationController
     # Only proceed to upload if embedded sample IDs belong to the current Sample Set
     invalid_ids = get_invalid_ids(@sample_set, params['file'].path)
     if invalid_ids.empty?
-      @message = @sample_set.import_csv_samples(params['file'].path)
+      @message = @sample_set.import_samples(params['file'].path)
       if @message.present?
         # If message is present something went wrong with the upload - expose this to the user
         redirect_to @sample_set, :flash => { :danger => @message }
@@ -110,24 +110,40 @@ class SampleSetsController < ApplicationController
   end
   
   
-  def import_subsamples
+  def import_csv_subsamples
     #
-    # Import Subsamples of my samples from an uploaded csv file
+    # Import subsamples of my samples from an uploaded csv file
     #
     @sample_set = SampleSet.find(params[:id])
+    # Check that uploaded file is a CSV file
+    if params['file'].content_type != 'text/csv'
+      return redirect_to @sample_set, :flash => {:danger => "The uploaded file is not a CSV file" }
+    end
+    # Check that the CSV header line is correct
+    if CSV.read(params['file'].path)[0].join(",") != "id,project_code,amount_stored,storage_location_id,container_id,comments"
+      return redirect_to @sample_set, :flash => {:danger => "The header line in the CSV file is not correct" }
+    end      
     # Only proceed to upload if embedded sample IDs belong to the current Sample Set
     invalid_ids = get_invalid_ids(@sample_set, params['file'].path)
     if invalid_ids.empty?
-      CSV.foreach(params['file'].path, headers: true) do |row|
-          subsample_fields = row.to_hash
-          Sample.import_subsample(subsample_fields)
+      @message = @sample_set.import_subsamples(params['file'].path)
+      if @message.present?
+        # If message is present something went wrong with the upload - expose this to the user
+        redirect_to @sample_set, :flash => { :danger => @message }
+      else 
+        # Upload succeeded
+        redirect_to @sample_set, :flash => { :success => "Subsamples imported successfully" }
       end
-      flash[:success] = "Samples imported successfully"
-      redirect_to @sample_set
     else 
-      flash[:danger] = "The following Sample ID(s) do not belong to this Sample set: " + invalid_ids.uniq.join(", ")
-      redirect_to @sample_set
-    end      
+      redirect_to @sample_set, :flash => {:danger => "The following Sample ID(s) do not belong to this Sample set: " + invalid_ids.uniq.join(", ") }
+    end   
+      
+      
+      # CSV.foreach(params['file'].path, headers: true) do |row|
+          # subsample_fields = row.to_hash
+          # Sample.import_subsample(subsample_fields)
+      # end
+   
     
   end
   

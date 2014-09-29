@@ -16,8 +16,8 @@ SampleTracker::Application.routes.draw do
   
   resources :sample_sets do
     member do
-      post 'import_sample_fields'
-      post 'import_subsamples'
+      post 'import_csv_samples'
+      post 'import_csv_subsamples'
       get 'export_samples_csv'
       get 'export_subsamples_csv'
     end

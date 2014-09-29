@@ -149,9 +149,9 @@
 	  </div>
   </div>
     
-	<%= form_tag({action: :import_sample_fields}, multipart: true) do %>
+	<%= form_tag({action: :import_csv_samples}, multipart: true) do %>
 	
-	  <div class="fileinput fileinput-new input-group col-md-6 col-md-offset-3" data-provides="fileinput">
+	  <div class="fileinput fileinput-new input-group col-xs-8 col-xs-offset-2" data-provides="fileinput">
 	  	<div class="input-group">
 			  <div class="form-control" data-trigger="fileinput">
 			  	<i class="glyphicon glyphicon-file fileinput-exists"></i> 
@@ -165,7 +165,7 @@
 			  <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
 			</div>
 			<div class="row topspace20">
-			  <%= submit_tag "Import Samples", :class => 'fileinput-exists btn btn-inverse col-md-8 col-md-offset-2' %>
+			  <%= submit_tag "Import Samples", :class => 'fileinput-exists btn btn-inverse col-xs-8 col-xs-offset-2' %>
 			</div>
 	  </div>
 
@@ -217,9 +217,9 @@
       </div>
     </div>
 	    
-	<%= form_tag({action: :import_subsamples}, multipart: true) do %>
+	<%= form_tag({action: :import_csv_subsamples}, multipart: true) do %>
 	
-		<div class="fileinput fileinput-new input-group col-md-6 col-md-offset-3" data-provides="fileinput">
+		<div class="fileinput fileinput-new input-group col-xs-8 col-xs-offset-2" data-provides="fileinput">
 		  <div class="input-group">
 			  <div class="form-control" data-trigger="fileinput">
 			  	<i class="glyphicon glyphicon-file fileinput-exists"></i> 
@@ -234,9 +234,10 @@
 			</div>
 			
 			<div class="row topspace20">
-			  <%= submit_tag "Import Subsamples", :class => 'fileinput-exists btn btn-inverse col-md-8 col-md-offset-2' %>
+			  <%= submit_tag "Import Subsamples", :class => 'fileinput-exists btn btn-inverse col-xs-8 col-xs-offset-2' %>
 			</div>
 	  </div>
 	  
 	<% end %>		
+	
 <% end %>

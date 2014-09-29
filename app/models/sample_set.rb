@@ -86,13 +86,13 @@ class SampleSet < ActiveRecord::Base
     # export a blank subsamples CSV template
     #
     CSV.generate do |csv|
-      column_names = %w(Sample_ID Project_Code Amount_Stored Storage_Location_ID Container_ID Comments)
+      column_names = %w(id project_id amount_stored storage_location_id container_id comments)
       csv << column_names
     end
   end
 
   
-  def import_csv_samples(filepath)
+  def import_samples(filepath)
     #
     # Import sample fields from a csv file into existing samples of this sample 
     # set - only writing to disk once all imported fields are verified as valid
@@ -111,6 +111,65 @@ class SampleSet < ActiveRecord::Base
       return
     rescue => e 
       return "Error found in Sample #{e.record.id} - #{e.message}  "
+    end
+  end
+  
+  
+  def import_subsamples(filepath)
+    #
+    # Import subsample fields from a csv file - only writing to disk once all imported fields are verified as valid
+    #
+    begin 
+      ActiveRecord::Base.transaction do
+        CSV.foreach(filepath, headers: true) do |row|
+          subsample_fields = row.to_hash
+          
+          # check that the project exists
+          if !Project.find_by_code(subsample_fields['project_code'])
+            raise "The Project code #{subsample_fields['project_code']} can not be found"
+          end
+          
+          # Check that an entry exists for either the storage location or container
+          if subsample_fields['storage_location_id'].blank? && subsample_fields['container_id'].blank?
+              raise "A valid storage location id or container id is needed under sample #{subsample_fields['id']}"
+          end
+          
+          # Check that if the storage location is empty a valid container is given  
+          if subsample_fields['storage_location_id'].blank? && !Container.find_by(id:subsample_fields['container_id'])
+              raise "A valid container id is needed under sample #{subsample_fields['id']} (given no storage location has been given)"
+          end   
+          
+          # Check that if only a storage location is provided that it is a valid one
+          if subsample_fields['container_id'].blank? && !StorageLocation.find_by(id:subsample_fields['storage_location_id'])
+              raise "A valid storage location id is needed under sample #{subsample_fields['id']} (given no container has been given)"
+          end  
+               
+          parent = Sample.find_by_id(subsample_fields["id"])
+          subsample= Sample.create!(parent_id: parent.id, 
+                owner_id: parent.owner.id,           
+                sampled: true,            
+                date_sampled: parent.date_sampled,       
+                facility_id: parent.facility.id,        
+                project_id: Project.find_by_code(subsample_fields['project_code'].to_s).id.to_s,         
+                comments: subsample_fields['comments'].to_s,           
+                is_primary: false,         
+                ring: parent.ring,               
+                tree: parent.tree,               
+                plot: parent.plot,              
+                northing: parent.northing,           
+                easting: parent.easting,            
+                vertical: parent.vertical,           
+                material_type: parent.material_type,      
+                amount_collected: parent.amount_collected,   
+                amount_stored: subsample_fields['amount_stored'].to_s,        
+                storage_location_id: subsample_fields['storage_location_id'].to_s,        
+                container_id: subsample_fields['container_id'].to_s      
+                )
+        end
+      end
+      return
+    rescue => e 
+      return e.to_s
     end
   end
 
