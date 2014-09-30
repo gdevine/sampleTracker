@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140930035943) do
+ActiveRecord::Schema.define(version: 20140930095721) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -115,9 +115,6 @@ ActiveRecord::Schema.define(version: 20140930035943) do
     t.boolean  "is_primary"
     t.integer  "ring"
     t.integer  "tree"
-    t.float    "northing"
-    t.float    "easting"
-    t.float    "vertical"
     t.string   "material_type"
     t.string   "amount_collected"
     t.string   "amount_stored"
@@ -126,6 +123,9 @@ ActiveRecord::Schema.define(version: 20140930035943) do
     t.integer  "storage_location_id"
     t.integer  "parent_id"
     t.integer  "container_id"
+    t.string   "northing"
+    t.string   "easting"
+    t.string   "vertical"
   end
 
   add_index "samples", ["owner_id", "created_at"], name: "index_samples_on_owner_id_and_created_at"
