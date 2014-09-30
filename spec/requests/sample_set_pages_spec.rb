@@ -300,8 +300,7 @@ describe "sample_set pages:" do
        last_sample.container        = first_sample.container        = container
        last_sample.storage_location = first_sample.storage_location = container.storage_location
        last_sample.ring             = first_sample.ring             = 3           
-       last_sample.tree             = first_sample.tree             = 4           
-       last_sample.plot             = first_sample.plot             = 6    
+       last_sample.tree             = first_sample.tree             = 4     
        last_sample.amount_collected = first_sample.amount_collected = '40g'
        last_sample.sampled          = first_sample.sampled          = true
        first_sample.save

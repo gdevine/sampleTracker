@@ -73,7 +73,7 @@ class SampleSet < ActiveRecord::Base
     #
     @samples = self.samples.to_a.sort
     CSV.generate do |csv|
-      column_names = %w(id date_sampled tree plot ring container_id storage_location_id material_type northing easting vertical amount_collected amount_stored comments)
+      column_names = %w(id date_sampled tree ring container_id storage_location_id material_type northing easting vertical amount_collected amount_stored comments)
       csv << column_names
       @samples.each do |row|
         csv << row.attributes.values_at(*column_names)
@@ -101,16 +101,45 @@ class SampleSet < ActiveRecord::Base
       ActiveRecord::Base.transaction do
         CSV.foreach(filepath, headers: true) do |row|
           sample_fields = row.to_hash
+          
+          # Check that an entry exists for either the storage location or container
+          if sample_fields['storage_location_id'].blank? && sample_fields['container_id'].blank?
+              raise "A valid storage location id or container id is needed under sample #{sample_fields['id']}"
+          end
+          
+          # Check that if the storage location is empty a valid container is given  
+          if sample_fields['storage_location_id'].blank? && !Container.find_by(id:sample_fields['container_id'])
+              raise "A valid container id is needed under sample #{sample_fields['id']} (given no storage location has been given)"
+          end   
+          
+          # Check that if only a storage location is provided that it is a valid one
+          if sample_fields['container_id'].blank? && !StorageLocation.find_by(id:sample_fields['storage_location_id'])
+              raise "A valid storage location id is needed under sample #{sample_fields['id']} (given no container has been given)"
+          end  
         
           sample = Sample.find_by_id(sample_fields["id"])
-          sample_fields[:is_primary] = true
-          sample_fields[:sampled] = true
-          sample.update_attributes!(sample_fields)
+          
+          sample.update_attributes!(
+                                    date_sampled: sample_fields['date_sampled'].to_s,
+                                    tree: sample_fields['tree'].to_s,
+                                    ring: sample_fields['ring'].to_s,
+                                    container_id: sample_fields['container_id'].to_s,
+                                    storage_location_id: sample_fields['storage_location_id'].to_s,
+                                    material_type: sample_fields['material_type'].to_s,
+                                    northing: sample_fields['northing'].to_s,
+                                    easting: sample_fields['easting'].to_s,
+                                    vertical: sample_fields['vertical'].to_s,
+                                    amount_collected: sample_fields['amount_collected'].to_s,
+                                    amount_stored: sample_fields['amount_stored'].to_s,
+                                    comments: sample_fields['comments'].to_s,
+                                    sampled:true,
+                                    is_primary:true
+                                    )
         end
       end
       return
     rescue => e 
-      return "Error found in Sample #{e.record.id} - #{e.message}  "
+      return e.to_s
     end
   end
   
@@ -154,8 +183,7 @@ class SampleSet < ActiveRecord::Base
                 comments: subsample_fields['comments'].to_s,           
                 is_primary: false,         
                 ring: parent.ring,               
-                tree: parent.tree,               
-                plot: parent.plot,              
+                tree: parent.tree,              
                 northing: parent.northing,           
                 easting: parent.easting,            
                 vertical: parent.vertical,           

@@ -93,6 +93,10 @@ class SampleSetsController < ApplicationController
     if params['file'].content_type != 'text/csv'
       return redirect_to @sample_set, :flash => {:danger => "The uploaded file is not a CSV file" }
     end
+    # Check that the CSV header line is correct
+    if CSV.read(params['file'].path)[0].join(",") != "id,date_sampled,tree,ring,container_id,storage_location_id,material_type,northing,easting,vertical,amount_collected,amount_stored,comments"
+      return redirect_to @sample_set, :flash => {:danger => "The header line in the CSV file is not correct" }
+    end
     # Only proceed to upload if embedded sample IDs belong to the current Sample Set
     invalid_ids = get_invalid_ids(@sample_set, params['file'].path)
     if invalid_ids.empty?
@@ -136,15 +140,8 @@ class SampleSetsController < ApplicationController
       end
     else 
       redirect_to @sample_set, :flash => {:danger => "The following Sample ID(s) do not belong to this Sample set: " + invalid_ids.uniq.join(", ") }
-    end   
-      
-      
-      # CSV.foreach(params['file'].path, headers: true) do |row|
-          # subsample_fields = row.to_hash
-          # Sample.import_subsample(subsample_fields)
-      # end
+    end  
    
-    
   end
   
   def get_invalid_ids(sample_set, file)

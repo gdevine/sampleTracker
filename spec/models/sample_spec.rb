@@ -10,8 +10,7 @@ describe Sample do
                                          storage_location: container.storage_location,
                                          project: FactoryGirl.create(:project), 
                                          ring: 3,           
-                                         tree: 4,           
-                                         plot: 6,    
+                                         tree: 4,    
                                          sample_set_id: 1,
                                          amount_collected: '40g',
                                          is_primary: true, 
@@ -34,7 +33,6 @@ describe Sample do
   it { should respond_to( :is_primary ) }
   it { should respond_to( :ring ) }
   it { should respond_to( :tree ) }
-  it { should respond_to( :plot ) }
   it { should respond_to( :northing ) }
   it { should respond_to( :easting  ) }
   it { should respond_to( :vertical ) }
@@ -88,22 +86,9 @@ describe Sample do
   describe "when a 'sampled' sample does not have a date_sampled" do
     before do 
       @sample.storage_location_id = 1
-      @sample.plot = 3
       @sample.tree = 4
       @sample.ring = 4
       @sample.date_sampled = ""
-      @sample.sampled = true
-    end
-    
-    it { should_not be_valid }
-  end
-  
-  describe "when a 'sampled' sample does not correct facility-based fields completed" do
-    before do 
-      @sample.storage_location_id = 1
-      @sample.plot = ''
-      @sample.tree = 4
-      @sample.ring = 4
       @sample.sampled = true
     end
     

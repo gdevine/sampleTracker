@@ -20,7 +20,7 @@ class Sample < ActiveRecord::Base
   
   #Custom validations
   validate :is_primary_only_with_no_parent
-  validate :sampled_only_with_valid_fields
+  # validate :sampled_only_with_valid_fields
   validate :has_parent_when_isprimary_is_false
   validate :same_storage_location_and_container_location
   validate :same_facility_between_parent_and_subsample
@@ -97,7 +97,6 @@ class Sample < ActiveRecord::Base
                 is_primary: false,         
                 ring: parent.ring,               
                 tree: parent.tree,               
-                plot: parent.plot,              
                 northing: parent.northing,           
                 easting: parent.easting,            
                 vertical: parent.vertical,           
@@ -119,11 +118,6 @@ class Sample < ActiveRecord::Base
   
   
   ## Custom validations
-  
-  def sampled_only_with_valid_fields
-    errors.add(:sampled, "can only be marked as complete if valid facility fields are supplied") if
-      self.sampled && !(self.plot && self.ring && self.tree) 
-  end
   
   def is_primary_only_with_no_parent
     errors.add(:base, "A sample can not be marked as is_primary if it has a parent sample") if
@@ -182,7 +176,6 @@ class Sample < ActiveRecord::Base
           # x.update_attribute(:project_id, self.project_id )
           # x.update_attribute(:tree, self.tree)
           # x.update_attribute(:ring, self.ring)
-          # x.update_attribute(:plot, self.plot)
           # x.update_attribute(:northing, self.northing)
           # x.update_attribute(:easting, self.easting)
           # x.update_attribute(:vertical, self.vertical)

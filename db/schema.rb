@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140820070540) do
+ActiveRecord::Schema.define(version: 20140930035943) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -115,7 +115,6 @@ ActiveRecord::Schema.define(version: 20140820070540) do
     t.boolean  "is_primary"
     t.integer  "ring"
     t.integer  "tree"
-    t.integer  "plot"
     t.float    "northing"
     t.float    "easting"
     t.float    "vertical"

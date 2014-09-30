@@ -225,7 +225,6 @@ describe "Sample pages:" do
     
     let!(:sampled_sample) { FactoryGirl.create(:sample, owner: user, 
                                                         tree: 3,
-                                                        plot: 1,
                                                         ring:2,
                                                         facility_id: facility.id,
                                                         date_sampled: Date.new(2012, 12, 3),
@@ -234,7 +233,6 @@ describe "Sample pages:" do
                                                          
     let!(:noncomplete_sampled_sample) { FactoryGirl.create(:sample, owner: user, 
                                                         tree: 3,
-                                                        plot: 1,
                                                         ring:2,
                                                         facility_id: facility.id,
                                                         date_sampled: Date.new(2012, 12, 3),
@@ -243,7 +241,6 @@ describe "Sample pages:" do
                                                              
     let!(:non_subs_sampled_sample) { FactoryGirl.create(:sample, owner: user, 
                                                         tree: 3,
-                                                        plot: 1,
                                                         ring:2,
                                                         date_sampled: Date.new(2012, 12, 3),
                                                         sampled: true
@@ -252,7 +249,6 @@ describe "Sample pages:" do
     let!(:sub_sample) { FactoryGirl.create(:sample, owner: user, 
                                                         facility_id: facility.id,
                                                         tree: 4,
-                                                        plot: 1,
                                                         ring:2,
                                                         date_sampled: Date.new(2012, 12, 3),
                                                         sampled: true,
@@ -263,7 +259,6 @@ describe "Sample pages:" do
      let!(:sub_sample2) { FactoryGirl.create(:sample, owner: user, 
                                                         facility_id: facility.id,
                                                         tree: 4,
-                                                        plot: 1,
                                                         ring:2,
                                                         date_sampled: Date.new(2012, 12, 3),
                                                         sampled: true,
@@ -386,7 +381,6 @@ describe "Sample pages:" do
           find('#facilities').find(:xpath, 'option['+(myfacility.id + 1).to_s+']').select_option
           find('#projects').find(:xpath, 'option['+(myproject.id + 1).to_s+']').select_option
           fill_in 'sample_tree', with: 4
-          fill_in 'sample_plot', with: 4
           fill_in 'sample_ring', with: 1
           find('#storage_locations').find(:xpath, 'option['+(mystoragelocation.id + 1).to_s+']').select_option
           fill_in 'sample_date_sampled', with: Date.new(2012, 12, 3)
@@ -455,19 +449,7 @@ describe "Sample pages:" do
       describe "that has subsamples" do
         it { should have_content("Note - Editing a Parent Sample will automatically update all associated subsample details") }
       end
-       
-      describe "with invalid information" do
-        
-          before do
-            fill_in 'sample_ring', with: ''
-            click_button "Update"
-          end
-          
-          describe "should return an error" do
-            it { should have_content('error') }
-          end
-  
-      end
+
   
       describe "with valid information" do
   

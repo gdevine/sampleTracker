@@ -66,8 +66,7 @@ FactoryGirl.define do
     project_id 4     
     comments "Some comments I've added"   
     ring 3           
-    tree 4           
-    plot 6           
+    tree 4            
     northing 65.3       
     easting 160.0        
     vertical 12.4       
