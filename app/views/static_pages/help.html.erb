@@ -7,7 +7,12 @@
 <ul>
 <li><a href="#intro">Introduction</a></li>
 <li><a href="#overview">Overview</a></li>
-<li><a href="#sets">Sample Sets</a></li>
+<li><a href="#register">Registering a New Account</a></li>
+<li><a href="#samplesets">Sample Sets</a></li>
+<li><a href="#samples">Samples</a></li>
+<li><a href="#containers">Containers</a></li>
+<li><a href="#storagelocs">Storage Locations</a></li>
+<li><a href="#resourcess">Resources</a></li>
 </ul>
 
 <h4 class="topspace20 rowline"><a name="introduction">Introduction</a></h4>
@@ -16,7 +21,7 @@
 	document, and search for environmental samples collected at various sampling field sites. In particular, it:
 	<ol>
 		<li>
-			allows research scientists to request collection of a batch of samples from a particular facility
+			allows research scientists to set up a batch of samples to be sampled at a particular facility
 		</li>
 		<li>
 			allows facility staff to monitor what samples are being collected at a particular facility, on what dates, and 
@@ -32,7 +37,59 @@
 	</ol>
 </p>
 
-<h4 class="topspace20"><a name="overview">Overview</a></h4>
-<%= image_tag("sampletrackeroverview.png", :alt => "HIE Sample Tracker") %>
+<h4 class="topspace50"><a name="overview">Overview</a></h4>
 
-<h4 class="topspace20"><a name="sets">Sample Sets</a></h4>
+<p>
+	The diagram below outlines the typical steps involved in using the Sample Tracker to request collection of a set of samples, documentation of those samples, as well as 
+	searching the database of completed samples for samples of interest. A more detailed walkthrough of the steps involved are discussed in the following sections.    
+</p>
+
+<%= image_tag("help_pages/sampletrackeroverview.png", :alt => "HIE Sample Tracker", :class=>"center_border_img") %>
+
+
+<h1><a name="register"></a></h1></br>
+<h4 class="topspace50">Registering a New Account</h4>
+
+<h1><a name="samplesets"></a></h1></br>
+<h4 class="topspace50">Sample Sets</h4>
+
+<p>
+A 'Sample Set' refers to a batch of samples that are being collected on a particular sampling day/period, under a single project at one facility. For example, a sample set may refer to 50 samples 
+that are collected for project P003 at the EucFACE facility. In advance of any targeted sample collection, a researcher should initiate a new sample set in the Sample Tracker and provide upfront details of 
+that set (facility, project, etc).      
+</p> 
+<h5 class="topspace20">Creating a new Sample Set</h5>
+<p>
+	<ul>
+		<li>
+			Using the menu bar at the top of the page, click on 'Sample Sets', then 'Create New' on the resulting dropdown menu.
+			<%= image_tag("help_pages/ss_create.jpeg", :alt => "sample set create new", :class=>"center_border_img") %>
+		</li>
+		<li>
+			This will open the 'New Sample Set' page. The following fields are to be completed:
+			  <ul>
+			  	<li>
+			  		Facility - Choose the Facility at which you will be sampling from the dropdown menu (Tip: You can begin typing the name of the facility to narrow down the list of available options). A full list of 
+			  		available Facilities as well as their details can be found by clicking on the 'View Resources' menu on the top right menu bar and then selecting 'Facilities'. If the Facility that you require is not 
+			  		in the list use the 'Contact' link (on the bottom of the page) to get in touch. 
+			  		<%= image_tag("help_pages/resources_dropdown.jpeg", :alt => "sample set new page", :class=>"center_border_img") %>
+			  	</li>
+			  	<li>
+			  		Project - State which Project the samples will be collected for. Again, a full list of projects available can be found under the Resources menu.
+			  	</li>
+			  	<li>
+			  		Sampling Date - Choose which date you would like to carry out the actual sampling on. 
+			  	</li>
+			  	<li>
+			  		Sampling Date - Choose which date you would like to carry out the actual sampling on. 
+			  	</li>
+			  </ul>
+			<%= image_tag("help_pages/ss_new.jpeg", :alt => "sample set new page", :class=>"center_border_img") %>
+		</li>
+	</ul>
+</p>
+
+<h4 class="topspace50"><a name="samples">Samples</a></h4>
+<h4 class="topspace50"><a name="containers">Containers</a></h4>
+<h4 class="topspace50"><a name="storagelocs">Storage Locations</a></h4>
+<h4 class="topspace50"><a name="resources">Resources</a></h4>

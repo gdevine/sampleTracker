@@ -201,7 +201,17 @@ background-color: rgba(100,255,100,0.1); // I don't know the .well color, so I u
   border-color: #67a4fe;
 }
 
-/* Front page image */
+
+/* Images */
+
+.center_border_img {
+  border: 3px solid #777;
+  margin: 30px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .frontpage_image {
   border: 1px solid #444;
 } 
