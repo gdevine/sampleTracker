@@ -20,9 +20,9 @@
   <% if devise_mapping.rememberable? %>
     <div class="form-group checkbox">
       <div class="col-xs-1 col-xs-offset-2">
-    	<%= f.check_box :remember_me, :type => "checkbox", :class => "form-control pull-right" %> 
+    	<%= f.check_box :remember_me, :type => "checkbox", :class => "form-control pull-right", :checked=>true, :unchecked_value=>"0", :checked_value=>"1" %> 
       </div>
-      <%= f.label :remember_me, :class => "col-lg-4" %>
+      <%= f.label :remember_me, :class => "col-lg-2" %>
     </div>
   <% end %>
   

@@ -3,8 +3,13 @@
   
 <% if user_signed_in? %>
 	<p>
-	  Welcome to the HIE Sample Tracker. Use the menu bar above to navigate the site. Click on the 'Dashboard' button to 
-	  navigate to your own individual page.
+	  Welcome to the HIE Sample Tracker. Use the menu bar above to navigate the site. 
+	  
+    <div class="row topspace50">
+		  <div class="col-md-6 col-md-offset-3 topspace20">
+				<%= link_to "Continue to My Dashboard >>>", dashboard_path, class: "btn btn-large btn-block btn-primary" %>
+			</div>
+		</div>
 	</p>
 	    
 <% else %>

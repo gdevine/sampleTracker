@@ -129,7 +129,7 @@ describe "Static pages:" do
     
   describe "Help page when not logged in" do
     before { visit help_path }
-    it { should have_title('Sign in') }
+    it { should have_title('Help') }
   end
   
   describe "Help page whilst logged in" do
@@ -147,7 +147,7 @@ describe "Static pages:" do
   describe "About page" do
     before { visit about_path }
 
-    it { should have_content('About the HIE Sample Tracker') }
+    it { should have_content('The HIE Sample Tracker enables researchers') }
     it { should have_title(full_title('About')) }
   end
   
