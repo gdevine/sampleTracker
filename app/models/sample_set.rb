@@ -86,7 +86,7 @@ class SampleSet < ActiveRecord::Base
     # export a blank subsamples CSV template
     #
     CSV.generate do |csv|
-      column_names = %w(id project_id amount_stored storage_location_id container_id comments)
+      column_names = %w(id project_code amount_stored storage_location_id container_id comments)
       csv << column_names
     end
   end

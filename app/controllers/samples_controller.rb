@@ -144,19 +144,6 @@ class SamplesController < ApplicationController
     end
   end
   
-  # def import
-    # # Import sample information from file
-    # @sample_set = SampleSet.find(params[:sample_set_id])
-    # begin
-      # Sample.import(params[:file], params[:sample_set_id])
-      # flash[:success] = "Samples imported successfully"
-      # redirect_to @sample_set
-    # rescue
-      # flash[:danger] = "Invalid CSV file uploaded"
-      # redirect_to @sample_set
-    # end
-  # end
-  
   def self.open_spreadsheet(file)
     case File.extname(file.original_filename)
     when ".csv" then Csv.new(file.path, nil, :ignore)

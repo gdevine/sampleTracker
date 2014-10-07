@@ -6,11 +6,7 @@
   <td><%= sample.sample_set_id %></td>
   <td><%= sample.material_type %></td>
   <td><%= sample.date_sampled %></td>
-  <% if sample.storage_location %>
-    <td><%= sample.storage_location.code %></td>
-  <% else %>
-    <td></td>
-  <% end %>
+  <td><%= sample.is_primary %></td>
   <td><%= sample.sampled %></td>
   <td><%= link_to "View", sample %></td>
 </tr>

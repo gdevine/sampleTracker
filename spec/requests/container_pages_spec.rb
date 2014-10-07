@@ -226,8 +226,10 @@ describe "Container pages:" do
     
     describe "for signed-in users" do
     
-      before { sign_in(user) }
-      before { visit edit_container_path(mycontainer) }
+      before do 
+        sign_in(user) 
+        visit edit_container_path(mycontainer)
+      end 
       
       it { should have_content('Edit Container ' + mycontainer.id.to_s) }
       it { should have_title(full_title('Edit Container')) }
@@ -281,8 +283,7 @@ describe "Container pages:" do
           it { should have_content('Container updated') }
           it { should have_title(full_title('Container View')) }
           
-          it { should have_selector('table tr th', text: 'Storage Location') } 
-          it { should have_selector('table tr td', text: mycontainer.storage_location.code) } 
+          it { should have_selector('table tr th', text: 'Primary Sample?') } 
         end
       
       end

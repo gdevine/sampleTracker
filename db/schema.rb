@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140930095721) do
+ActiveRecord::Schema.define(version: 20141007033658) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -123,9 +123,9 @@ ActiveRecord::Schema.define(version: 20140930095721) do
     t.integer  "storage_location_id"
     t.integer  "parent_id"
     t.integer  "container_id"
-    t.string   "northing"
-    t.string   "easting"
-    t.string   "vertical"
+    t.float    "northing",            limit: 255
+    t.float    "easting",             limit: 255
+    t.float    "vertical",            limit: 255
   end
 
   add_index "samples", ["owner_id", "created_at"], name: "index_samples_on_owner_id_and_created_at"
