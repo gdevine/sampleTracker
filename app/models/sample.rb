@@ -23,13 +23,14 @@ class Sample < ActiveRecord::Base
   # validate :sampled_only_with_valid_fields
   validate :has_parent_when_isprimary_is_false
   validate :same_storage_location_and_container_location
-  validate :same_facility_between_parent_and_subsample
-  
+  validate :same_facility_as_parent
+  validate :same_facility_as_subsample  
   
   after_initialize :default_values
   # Callback to update sample's location based on changed container location
   before_validation :update_sample_loc_on_cont_change, on: [:update, :create]
-  # after_update :modify_subs, on: [:update]
+  # Callback to update subsample details based on changed sample
+  before_validation :modify_subs, on: [:update]
   
   before_destroy :subtract_from_sampleset
   
@@ -106,14 +107,7 @@ class Sample < ActiveRecord::Base
                 storage_location_id: subsample_fields['Storage_Location_ID'],        
                 container_id: subsample_fields['Container_ID']      
                 )
-                
-    subsample.save            
-    # if subsample.valid?
-      # return [subsample, true]
-    # else
-      # return false
-    # end
-    
+    subsample.save      
   end
   
   
@@ -135,15 +129,18 @@ class Sample < ActiveRecord::Base
       self.container && self.container.storage_location_id != self.storage_location_id 
   end
   
-  def same_facility_between_parent_and_subsample
+  def same_facility_as_parent
     #To test that a sample's facility is the same as its parent
     errors.add(:base, "A sample's facility must be the same as its parent") if
       self.parent && self.facility_id != self.parent.facility_id 
-    #To test that a sample's facility is the same as any subsample's facility 
-    # errors.add(:base, "A sample's facility must be the same as any of it's subsamples") if
-      # self.subsamples.exists? && self.subsamples.map do |ss| ss.facility_id != self.facility_id end
   end
   
+  def same_facility_as_subsample
+    #To test that a sample's facility is the same as its subsample
+    errors.add(:base, "A sample's facility must be the same as its subsamples") if
+      !self.subsamples.empty? && (self.facility_id != self.subsamples.first.facility_id || self.facility_id != self.subsamples.last.facility_id)  ## Terrible validation - improve this
+  end
+
   
   private
     def default_values
@@ -169,21 +166,20 @@ class Sample < ActiveRecord::Base
     end
     
     # In the event of a parent sample edit, modify the subsamples attributes to match
-    # def modify_subs
-      # if self.subsamples.exists?
-        # self.subsamples.map! do |x|
-          # x.update_attribute(:facility_id, self.facility_id) 
-          # x.update_attribute(:project_id, self.project_id )
-          # x.update_attribute(:tree, self.tree)
-          # x.update_attribute(:ring, self.ring)
-          # x.update_attribute(:northing, self.northing)
-          # x.update_attribute(:easting, self.easting)
-          # x.update_attribute(:vertical, self.vertical)
-          # x.update_attribute(:amount_collected, self.amount_collected)
-          # x.update_attribute(:material_type, self.material_type)
-          # x.update_attribute(:date_sampled, self.date_sampled)
-        # end
-      # end
-    # end
+    def modify_subs
+      if self.subsamples.exists?
+        self.subsamples.map! do |x|
+          x.update_attribute(:facility_id, self.facility_id) 
+          x.update_attribute(:tree, self.tree)
+          x.update_attribute(:ring, self.ring)
+          x.update_attribute(:northing, self.northing)
+          x.update_attribute(:easting, self.easting)
+          x.update_attribute(:vertical, self.vertical)
+          x.update_attribute(:amount_collected, self.amount_collected)
+          x.update_attribute(:material_type, self.material_type)
+          x.update_attribute(:date_sampled, self.date_sampled)
+        end
+      end
+    end
     
 end

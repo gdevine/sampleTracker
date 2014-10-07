@@ -127,7 +127,7 @@ describe Sample do
     it { should_not be_valid }
   end
   
-  describe "when a subsample's facility is not the same as its parent" do
+  describe "when a subsample's facility is edited to not match its parent" do   # Can't actually perform this through the front end but still testing in any case
     let!(:newfacility) { FactoryGirl.create(:facility) }                     
     let!(:parent_sample) { FactoryGirl.create(:sample, owner: owner, sampled: true, facility_id: newfacility.id, is_primary:true ) }  
    
@@ -138,8 +138,25 @@ describe Sample do
     end 
     
     it { should_not be_valid }
-    
   end
+  
+  
+  describe "when a parent sample's facility is edited to not match its subsample" do
+    let!(:newfacility) { FactoryGirl.create(:facility) }                     
+
+    before do    
+      @sample.sampled = true
+      @sample.save
+      sub_sample = @sample.dup
+      sub_sample.is_primary = false
+      sub_sample.parent_id = @sample.id
+      sub_sample.save
+      @sample.facility_id = newfacility.id    
+
+    end 
+    it { should_not be_valid }
+  end
+  
   
   describe "associated analyses" do
     let(:analysis1) { FactoryGirl.create(:analysis) }
