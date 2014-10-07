@@ -81,7 +81,7 @@ namespace :db do
     
     # Create a set of sample sets (that are still to be sampled) associated with users (samples will be created by default)
     users = User.all(limit: 5)
-    40.times do
+    100.times do
       users.each { |user| user.sample_sets.create!(facility_id: 1 + rand(7), 
                                                    project_id: 1 + rand(10), 
                                                    num_samples: 1 + rand(30),
