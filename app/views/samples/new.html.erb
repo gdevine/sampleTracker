@@ -35,7 +35,7 @@
       <div class="form-group">
         <%= f.label :material_type, "Sample Type", :class => "col-lg-2 control-label" %>
         <div class="col-lg-8">
-          <%= f.select(:sample, :material_type, %w[Leaf Soil Litter], , {include_blank: 'None selected'}, {:class=>"form-control"}) %>
+          <%= f.select :material_type, %w[Air Leaf Soil Litter], {include_blank: ' None selected'}, :class=>"form-control" %>
         </div>
       </div>
       
@@ -77,7 +77,7 @@
       <div class="form-group">
         <%= f.label :vertical, 'Height (m)', :class => "col-lg-2 control-label" %>
         <div class="col-lg-8">
-          <%= f.number_field :vertical, :min => 0, :class => "form-control", :step => 'any' %>
+          <%= f.number_field :vertical, :class => "form-control", :step => 'any' %>
         </div>
       </div>
       
