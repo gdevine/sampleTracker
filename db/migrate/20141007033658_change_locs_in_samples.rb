@@ -1,8 +1,8 @@
 class ChangeLocsInSamples < ActiveRecord::Migration
   def up
-    change_column :samples, :northing, :float
-    change_column :samples, :easting, :float
-    change_column :samples, :vertical, :float
+    change_column :samples, :northing, :decimal
+    change_column :samples, :easting, :decimal
+    change_column :samples, :vertical, :decimal
   end
 
   def down
