@@ -123,9 +123,9 @@ ActiveRecord::Schema.define(version: 20141007033658) do
     t.integer  "storage_location_id"
     t.integer  "parent_id"
     t.integer  "container_id"
-    t.decimal  "northing"
-    t.decimal  "easting"
-    t.decimal  "vertical"
+    t.float    "northing"
+    t.float    "easting"
+    t.float    "vertical"
   end
 
   add_index "samples", ["owner_id", "created_at"], name: "index_samples_on_owner_id_and_created_at"
