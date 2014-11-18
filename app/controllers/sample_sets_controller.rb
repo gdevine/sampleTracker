@@ -90,7 +90,7 @@ class SampleSetsController < ApplicationController
     #
     @sample_set = SampleSet.find(params[:id])
     # Check that uploaded file is a CSV file
-    if params['file'].content_type != 'text/csv'
+    if (params['file'].content_type != 'text/csv') && (params['file'].content_type != 'application/vnd.ms-excel')
       return redirect_to @sample_set, :flash => {:danger => "The uploaded file is not a CSV file" }
     end
     # Check that the CSV header line is correct
@@ -154,7 +154,7 @@ class SampleSetsController < ApplicationController
     # Add all Sample Set Sample IDs to a master array
     sample_set.samples.each do |x| sample_ids << x.id.to_s end
     # Loop through each row of the CSV and check ID against master array, throwing an error if it does not match   
-    CSV.foreach(file, headers: true) do |row|
+    CSV.foreach(file, headers: true, skip_blanks: true) do |row|
       sample_hash = row.to_hash
       if !sample_ids.include?(sample_hash['id'])
         # valid = false
