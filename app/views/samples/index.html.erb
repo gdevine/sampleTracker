@@ -26,9 +26,9 @@
                 <% for row in @search.facet(:facility_code).rows %>
                   <li>
                     <% if params[:myfacility].blank? %>
-                      <%= link_to row.value, params.merge({:myfacility => row.value}).except(:page) %> (<%= row.count %>)
+                      <%= link_to row.value, params.merge({:myfacility => row.value}).except(:s_page) %> (<%= row.count %>)
                     <% else %>
-                      <strong><%= row.value %></strong> (<%= link_to "remove", params.except(:myfacility, :page) %>)
+                      <strong><%= row.value %></strong> (<%= link_to "remove", params.except(:myfacility, :s_page) %>)
                     <% end %>
                   </li>
                 <% end %>
@@ -41,9 +41,9 @@
                 <% for row in @search.facet(:month_sampled).rows %>
                   <li>
                     <% if params[:mymonthsampled].blank? %>
-                      <%= link_to row.value, params.merge({:mymonthsampled => row.value}).except(:page) %> (<%= row.count %>)
+                      <%= link_to row.value, params.merge({:mymonthsampled => row.value}).except(:s_page) %> (<%= row.count %>)
                     <% else %>
-                      <strong><%= row.value %></strong> (<%= link_to "remove", params.except(:mymonthsampled, :page) %>)
+                      <strong><%= row.value %></strong> (<%= link_to "remove", params.except(:mymonthsampled, :s_page) %>)
                     <% end %>
                   </li>
                 <% end %>
@@ -55,9 +55,9 @@
                 <% for row in @search.facet(:material_type).rows %>
                   <li>
                     <% if params[:mymaterialtype].blank? %>
-                      <%= link_to row.value, params.merge({:mymaterialtype => row.value}).except(:page) %> (<%= row.count %>)
+                      <%= link_to row.value, params.merge({:mymaterialtype => row.value}).except(:s_page) %> (<%= row.count %>)
                     <% else %>
-                      <strong><%= row.value %></strong> (<%= link_to "remove", params.except(:mymaterialtype, :page) %>)
+                      <strong><%= row.value %></strong> (<%= link_to "remove", params.except(:mymaterialtype, :s_page) %>)
                     <% end %>
                   </li>
                 <% end %>
@@ -69,9 +69,9 @@
                 <% for row in @search.facet(:project_code).rows %>
                   <li>
                     <% if params[:myproject].blank? %>
-                      <%= link_to row.value, params.merge({:myproject => row.value}).except(:page) %> (<%= row.count %>)
+                      <%= link_to row.value, params.merge({:myproject => row.value}).except(:s_page) %> (<%= row.count %>)
                     <% else %>
-                      <strong><%= row.value %></strong> (<%= link_to "remove", params.except(:myproject, :page) %>)
+                      <strong><%= row.value %></strong> (<%= link_to "remove", params.except(:myproject, :s_page) %>)
                     <% end %>
                   </li>
                 <% end %>
@@ -83,9 +83,9 @@
                 <% for row in @search.facet(:ring).rows %>
                   <li>
                     <% if params[:my_ring].blank? %>
-                      <%= link_to row.value, params.merge({:my_ring => row.value}).except(:page) %> (<%= row.count %>)
+                      <%= link_to row.value, params.merge({:my_ring => row.value}).except(:s_page) %> (<%= row.count %>)
                     <% else %>
-                      <strong><%= row.value %></strong> (<%= link_to "remove", params.except(:my_ring, :page) %>)
+                      <strong><%= row.value %></strong> (<%= link_to "remove", params.except(:my_ring, :s_page) %>)
                     <% end %>
                   </li>
                 <% end %>
@@ -97,9 +97,9 @@
                 <% for row in @search.facet(:is_primary).rows %>
                   <li>
                     <% if params[:my_is_primary].blank? %>
-                      <%= link_to row.value, params.merge({:my_is_primary => row.value}).except(:page) %> (<%= row.count %>)
+                      <%= link_to row.value, params.merge({:my_is_primary => row.value}).except(:s_page) %> (<%= row.count %>)
                     <% else %>
-                      <strong><%= row.value %></strong> (<%= link_to "remove", params.except(:my_is_primary, :page) %>)
+                      <strong><%= row.value %></strong> (<%= link_to "remove", params.except(:my_is_primary, :s_page) %>)
                     <% end %>
                   </li>
                 <% end %>
@@ -114,9 +114,9 @@
                 <% for row in @search.facet(:sampled).rows %>
                   <li>
                     <% if params[:my_sampled].blank? %>
-                      <%= link_to row.value, params.merge({:my_sampled => row.value}).except(:page) %> (<%= row.count %>)
+                      <%= link_to row.value, params.merge({:my_sampled => row.value}).except(:s_page) %> (<%= row.count %>)
                     <% else %>
-                      <strong><%= row.value %></strong> (<%= link_to "remove", params.except(:my_sampled, :page) %>)
+                      <strong><%= row.value %></strong> (<%= link_to "remove", params.except(:my_sampled, :s_page) %>)
                     <% end %>
                   </li>
                 <% end %>

@@ -30,7 +30,7 @@ class ContainersController < ApplicationController
       format.html
       format.pdf do
         pdf = Prawn::Document.new
-        qrcode = RQRCode::QRCode.new(container_url(@container.id), :level=>:h, :size => 5)
+        qrcode = RQRCode::QRCode.new(container_url(@container.id), :level=>:m, :size => 5)
         pdf.bounding_box([0, 74], :width => 42, :height => 55) do
           pdf.render_qr_code(qrcode)
           pdf.text 'C'+@container.id.to_s, :size => 8

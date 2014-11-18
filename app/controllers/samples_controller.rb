@@ -45,7 +45,6 @@ class SamplesController < ApplicationController
       end
     else
       @search = Sunspot.search(Sample) do
-      # @search = Sample.search do
         fulltext params[:search]
         facet :ring, :facility_code, :month_sampled, :material_type, :project_code, :is_primary, :sampled
         with(:ring, params[:my_ring]) if params[:my_ring].present?
@@ -55,6 +54,7 @@ class SamplesController < ApplicationController
         with(:project_code, params[:myproject]) if params[:myproject].present?
         with(:is_primary, params[:my_is_primary]) if params[:my_is_primary].present?
         with(:sampled, params[:my_sampled]) if params[:my_sampled].present?
+        order_by :id, :desc
         paginate(:page => params[:s_page], :per_page => 20)
       end
       @samples = @search.results
@@ -87,7 +87,7 @@ class SamplesController < ApplicationController
       format.html
       format.pdf do
         pdf = Prawn::Document.new
-        qrcode = RQRCode::QRCode.new(sample_url(@sample.id), :level=>:h, :size => 4)
+        qrcode = RQRCode::QRCode.new(sample_url(@sample.id), :level=>:h, :size => 5)
         pdf.bounding_box([0, 74], :width => 42, :height => 55) do
           pdf.render_qr_code(qrcode)
           pdf.text 'S'+@sample.id.to_s, :size => 8

@@ -45,6 +45,7 @@ class Sample < ActiveRecord::Base
     string :project_code
     string :is_primary
     string :sampled
+    integer :id
   end
   
   def facility_code
