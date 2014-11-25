@@ -164,30 +164,6 @@ describe "Menu Panel:" do
     end
   end
   
-  describe "opening the storage location dropdown" do
-    before { sign_in(user) }
-    before { visit root_path }
-    
-    describe "and clicking the Create New link" do
-      before do
-        click_link('storage_locations_new')
-      end
-  
-      it "should open up the new storage location page" do
-        expect(page).to have_title('New Storage Location')
-      end
-    end
-    
-    describe "and clicking the View All link" do
-      before do
-        click_link('storage_locations_index')
-      end
-  
-      it "should open up the storage location index page" do
-        expect(page).to have_title('Storage Location List')
-      end
-    end
-  end
   
   describe "opening the container dropdown" do
     before { sign_in(user) }
@@ -243,6 +219,21 @@ describe "Menu Panel:" do
   
       it "should open up the project index page" do
         expect(page).to have_title('Project List')
+      end
+    end
+  end
+  
+  describe "opening the storage locations dropdown" do
+    before { sign_in(user) }
+    before { visit root_path }
+    
+    describe "and clicking the View link" do
+      before do
+        click_link('Storage Locations')
+      end
+  
+      it "should open up the storage locations index page" do
+        expect(page).to have_title('Storage Location List')
       end
     end
   end

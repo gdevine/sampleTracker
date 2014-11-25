@@ -57,57 +57,57 @@ describe "Storage Location pages:" do
   end
   
 
-  describe "New page" do
-    
-    describe "for signed-in users" do
-    
-      before { sign_in(user) }
-      before { visit new_storage_location_path }
-      
-      it { should have_content('New Storage Location') }
-      it { should have_title(full_title('New Storage Location')) }
-      it { should_not have_title('| Home') }
-      
-      describe "with invalid information" do
-  
-        it "should not create a storage location" do
-          expect { click_button "Submit" }.not_to change(StorageLocation, :count)
-        end
-  
-      end
-  
-      describe "with valid information" do
-  
-        before do
-          fill_in 'storage_location_code', with: 'L90Rbla' 
-          fill_in 'storage_location_building', with: 'L9' 
-          fill_in 'storage_location_room', with: '7' 
-          fill_in 'storage_location_address', with: 'An address' 
-          fill_in 'storage_location_description', with: 'A description of this storage location'
-        end
-        
-        it "should create a storage location" do
-          expect { click_button "Submit" }.to change(StorageLocation, :count).by(1)
-        end
-        
-        describe "should return to view page" do
-          before { click_button "Submit" }
-          it { should have_content('Storage location created!') }
-          it { should have_title(full_title('Storage Location View')) }
-        end
-        
-      end
-      
-    end
-    
-    describe "for non signed-in users" do
-      describe "should be redirected back to signin" do
-        before { visit new_storage_location_path }
-        it { should have_title('Sign in') }
-      end
-    end
-    
-  end
+  # describe "New page" do
+#     
+    # describe "for signed-in users" do
+#     
+      # before { sign_in(user) }
+      # before { visit new_storage_location_path }
+#       
+      # it { should have_content('New Storage Location') }
+      # it { should have_title(full_title('New Storage Location')) }
+      # it { should_not have_title('| Home') }
+#       
+      # describe "with invalid information" do
+#   
+        # it "should not create a storage location" do
+          # expect { click_button "Submit" }.not_to change(StorageLocation, :count)
+        # end
+#   
+      # end
+#   
+      # describe "with valid information" do
+#   
+        # before do
+          # fill_in 'storage_location_code', with: 'L90Rbla' 
+          # fill_in 'storage_location_building', with: 'L9' 
+          # fill_in 'storage_location_room', with: '7' 
+          # fill_in 'storage_location_address', with: 'An address' 
+          # fill_in 'storage_location_description', with: 'A description of this storage location'
+        # end
+#         
+        # it "should create a storage location" do
+          # expect { click_button "Submit" }.to change(StorageLocation, :count).by(1)
+        # end
+#         
+        # describe "should return to view page" do
+          # before { click_button "Submit" }
+          # it { should have_content('Storage location created!') }
+          # it { should have_title(full_title('Storage Location View')) }
+        # end
+#         
+      # end
+#       
+    # end
+#     
+    # describe "for non signed-in users" do
+      # describe "should be redirected back to signin" do
+        # before { visit new_storage_location_path }
+        # it { should have_title('Sign in') }
+      # end
+    # end
+#     
+  # end
   
   
   describe "Show page" do
@@ -126,17 +126,17 @@ describe "Storage Location pages:" do
       it { should have_selector('h2', :text => page_heading) }
       it { should have_title(full_title('Storage Location View')) }
       it { should_not have_title('| Home') }  
-      it { should have_link('Edit Location') }
-      it { should have_link('Delete Location') }
+      it { should_not have_link('Edit Location') }
+      it { should_not have_link('Delete Location') }
       
-      describe "when clicking the edit button" do
-        before { click_link "Edit Location" }
-        let!(:page_heading) {"Edit Storage Location " + storage_location.code}
-        
-        describe 'should have a page heading for editing the correct storage location' do
-          it { should have_content(page_heading) }
-        end
-      end
+      # describe "when clicking the edit button" do
+        # before { click_link "Edit Location" }
+        # let!(:page_heading) {"Edit Storage Location " + storage_location.code}
+#         
+        # describe 'should have a page heading for editing the correct storage location' do
+          # it { should have_content(page_heading) }
+        # end
+      # end
       
       describe "should show correct sample associations" do
         let!(:facility) { FactoryGirl.create(:facility) }
@@ -201,98 +201,98 @@ describe "Storage Location pages:" do
   end
   
   
-  describe "storage location destruction" do
-    let!(:storage_location_empty) { FactoryGirl.create(:storage_location, custodian: user) }
-    let!(:storage_location_with_samples) { FactoryGirl.create(:storage_location, custodian: user, 
-                                                                                 code: 'L33R10', 
-                                                                                 description: 'A description of the storage location') }
-    let!(:sample) { FactoryGirl.create(:sample, owner: user, 
-                                                storage_location: storage_location_with_samples,
-                                                sampled: true
-                                                ) }      
-                                                
-    describe "as correct user" do
-      before { sign_in(user) }
-      
-      describe "of an empty storage location" do
-        before { visit storage_location_path(storage_location_empty) }
-
-        it "should delete" do
-          expect { click_link "Delete Location" }.to change(StorageLocation, :count).by(-1)
-        end
-      end
-      
-      describe "of a non-empty storage location" do
-        before { visit storage_location_path(storage_location_with_samples) }
-        it "should not delete" do
-          expect { click_link "Delete Location" }.not_to change(StorageLocation, :count)
-        end
-        
-        describe "should display an error message" do
-          before { click_link "Delete Location" }
-          let!(:error_message) {"Unable to delete a Storage location that contains samples and/or containers. Relocate these first."}
-          
-          it { should have_content(error_message) }
-        end
-      end
-      
-    end
-  end
-  
-  
-  describe "edit page" do
-    
-    let!(:storage_location) { FactoryGirl.create(:storage_location, custodian: user, code: 'L33R10', description: 'A description of the storage location') }
-    
-    describe "for signed-in users" do
-    
-      before { sign_in(user) }
-      before { visit edit_storage_location_path(storage_location) }
-      
-      it { should have_content('Edit Storage Location ' + storage_location.code) }
-      it { should have_title(full_title('Edit Storage Location')) }
-      it { should_not have_title('| Home') }
-      
-      describe "with invalid information" do
-        
-          before do
-            fill_in 'storage_location_code', with: ''
-            click_button "Update"
-          end
-          
-          describe "should return an error" do
-            it { should have_content('error') }
-          end
-  
-      end
-  
-      describe "with valid information" do
-  
-        before do
-          fill_in 'storage_location_code'  , with: 'L5R32'
-          fill_in 'storage_location_description'   , with: 'A new description'
-        end
-        
-        it "should update, not add a storage location" do
-          expect { click_button "Update" }.not_to change(StorageLocation, :count).by(1)
-        end
-        
-        describe "should return to view page" do
-          before { click_button "Update" }
-          it { should have_content('Storage location updated') }
-          it { should have_title(full_title('Storage Location View')) }
-        end
-      
-      end
-      
-    end
-    
-    describe "for non signed-in users" do
-      describe "should be redirected back to signin" do
-        before { visit edit_storage_location_path(storage_location) }
-        it { should have_title('Sign in') }
-      end
-    end
-  end
+  # describe "storage location destruction" do
+    # let!(:storage_location_empty) { FactoryGirl.create(:storage_location, custodian: user) }
+    # let!(:storage_location_with_samples) { FactoryGirl.create(:storage_location, custodian: user, 
+                                                                                 # code: 'L33R10', 
+                                                                                 # description: 'A description of the storage location') }
+    # let!(:sample) { FactoryGirl.create(:sample, owner: user, 
+                                                # storage_location: storage_location_with_samples,
+                                                # sampled: true
+                                                # ) }      
+#                                                 
+    # describe "as correct user" do
+      # before { sign_in(user) }
+#       
+      # describe "of an empty storage location" do
+        # before { visit storage_location_path(storage_location_empty) }
+# 
+        # it "should delete" do
+          # expect { click_link "Delete Location" }.to change(StorageLocation, :count).by(-1)
+        # end
+      # end
+#       
+      # describe "of a non-empty storage location" do
+        # before { visit storage_location_path(storage_location_with_samples) }
+        # it "should not delete" do
+          # expect { click_link "Delete Location" }.not_to change(StorageLocation, :count)
+        # end
+#         
+        # describe "should display an error message" do
+          # before { click_link "Delete Location" }
+          # let!(:error_message) {"Unable to delete a Storage location that contains samples and/or containers. Relocate these first."}
+#           
+          # it { should have_content(error_message) }
+        # end
+      # end
+#       
+    # end
+  # end
+#   
+#   
+  # describe "edit page" do
+#     
+    # let!(:storage_location) { FactoryGirl.create(:storage_location, custodian: user, code: 'L33R10', description: 'A description of the storage location') }
+#     
+    # describe "for signed-in users" do
+#     
+      # before { sign_in(user) }
+      # before { visit edit_storage_location_path(storage_location) }
+#       
+      # it { should have_content('Edit Storage Location ' + storage_location.code) }
+      # it { should have_title(full_title('Edit Storage Location')) }
+      # it { should_not have_title('| Home') }
+#       
+      # describe "with invalid information" do
+#         
+          # before do
+            # fill_in 'storage_location_code', with: ''
+            # click_button "Update"
+          # end
+#           
+          # describe "should return an error" do
+            # it { should have_content('error') }
+          # end
+#   
+      # end
+#   
+      # describe "with valid information" do
+#   
+        # before do
+          # fill_in 'storage_location_code'  , with: 'L5R32'
+          # fill_in 'storage_location_description'   , with: 'A new description'
+        # end
+#         
+        # it "should update, not add a storage location" do
+          # expect { click_button "Update" }.not_to change(StorageLocation, :count).by(1)
+        # end
+#         
+        # describe "should return to view page" do
+          # before { click_button "Update" }
+          # it { should have_content('Storage location updated') }
+          # it { should have_title(full_title('Storage Location View')) }
+        # end
+#       
+      # end
+#       
+    # end
+#     
+    # describe "for non signed-in users" do
+      # describe "should be redirected back to signin" do
+        # before { visit edit_storage_location_path(storage_location) }
+        # it { should have_title('Sign in') }
+      # end
+    # end
+  # end
     
 end

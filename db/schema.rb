@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141007033658) do
+ActiveRecord::Schema.define(version: 20141125005534) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -133,7 +133,7 @@ ActiveRecord::Schema.define(version: 20141007033658) do
   create_table "storage_locations", force: true do |t|
     t.string   "code"
     t.string   "building"
-    t.integer  "room"
+    t.string   "room"
     t.text     "description"
     t.integer  "custodian_id"
     t.text     "address"
