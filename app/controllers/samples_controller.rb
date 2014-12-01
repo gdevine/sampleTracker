@@ -27,6 +27,10 @@ class SamplesController < ApplicationController
           s = 0
           i = 1
           until s == count-1 do
+            if [55, 110, 165, 220].include? s
+              pdf.start_new_page
+              i=1
+            end
             for j in 0..4 
               break if s == count
               qrcode = RQRCode::QRCode.new(sample_url(@samples[s].id), :level=>:m, :size => 5)
@@ -87,7 +91,7 @@ class SamplesController < ApplicationController
       format.html
       format.pdf do
         pdf = Prawn::Document.new
-        qrcode = RQRCode::QRCode.new(sample_url(@sample.id), :level=>:h, :size => 5)
+        qrcode = RQRCode::QRCode.new(sample_url(@sample.id), :level=>:m, :size => 5)
         pdf.bounding_box([0, 74], :width => 42, :height => 55) do
           pdf.render_qr_code(qrcode)
           pdf.text 'S'+@sample.id.to_s, :size => 8
