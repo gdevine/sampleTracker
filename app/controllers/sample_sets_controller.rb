@@ -15,14 +15,14 @@ class SampleSetsController < ApplicationController
   
   def show
     @sample_set = SampleSet.find(params[:id])
-    @samples = @sample_set.samples.paginate(page: params[:page])
+    @samples = @sample_set.samples.paginate(page: params[:s_page])
     subsamples = []
     @sample_set.samples.each do |s| 
       s.subsamples.each do |ss|
         subsamples << ss
       end
     end
-    @subsamples = subsamples.sort_by{|sample| -sample.id}.paginate(page: params[:page])
+    @subsamples = subsamples.sort_by{|sample| -sample.id}.paginate(page: params[:ss_page])
   end
 
   def create
