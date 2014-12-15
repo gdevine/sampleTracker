@@ -6,7 +6,7 @@ describe SampleSet do
   let(:facility) { FactoryGirl.create(:facility) }
   let(:project) { FactoryGirl.create(:project) }
   before do
-    @sample_set = owner.sample_sets.build(sampling_date: Date.new(2012, 12, 3), facility: facility, project: project, num_samples: 50)
+    @sample_set = owner.sample_sets.build(sampling_date: Date.new(2012, 12, 3), facility: facility, project: project, num_samples: 20)
   end
   
   subject { @sample_set }
@@ -86,6 +86,19 @@ describe SampleSet do
     
     its(:owner) { should eql first_sample_owner } 
     its(:owner) { should eql last_sample_owner } 
+  end
+  
+  describe "editing a sample set" do
+    
+    let(:facility2) { FactoryGirl.create(:facility) }
+    before do
+      @sample_set.save
+      @sample_set.update_attributes(:facility_id => facility2.id)
+    end
+    
+    it "should update its sample members" do
+      expect(@sample_set.samples.first.facility_id).to eql facility2.id
+    end
   end
   
 end

@@ -1,6 +1,7 @@
 class SampleSet < ActiveRecord::Base
   
   after_create :create_samples, on: [:create]
+  after_update :update_samples, on: [:update]
   before_destroy :deletable?
   
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_id'
@@ -29,6 +30,24 @@ class SampleSet < ActiveRecord::Base
       cs.save
     end
   end 
+  
+  
+  def update_samples
+    begin 
+      ActiveRecord::Base.transaction do
+        self.samples.each do |sample|     
+          sample.update_attributes!(
+                                    facility: self.facility,
+                                    project: self.project,
+                                    )
+        end
+      end
+      return
+    rescue => e 
+      return e.to_s
+    end  
+  end
+  
   
   def append_sample
     #

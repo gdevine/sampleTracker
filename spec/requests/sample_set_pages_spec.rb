@@ -331,14 +331,19 @@ describe "sample_set pages:" do
   
   describe "edit page" do
     
-    let!(:sample_set) { FactoryGirl.create(:sample_set, owner: user, num_samples: 60) }
+    let!(:sample_set) { FactoryGirl.create(:sample_set, owner: user, num_samples: 30) }
     
     describe "for signed-in users" do
     
-      before { sign_in user }
       let!(:myfacility) { sample_set.facility }
       let!(:myproject) { sample_set.project }
-      before { visit edit_sample_set_path(sample_set) }
+      let!(:newfacility) { FactoryGirl.create(:facility, contact: user, description: 'a new description') } 
+      let!(:newproject) { FactoryGirl.create(:project) } 
+      
+      before do 
+        sign_in user
+        visit edit_sample_set_path(sample_set) 
+      end
       
       it { should have_content('Edit Sample Set ' + sample_set.id.to_s) }
       it { should have_title(full_title('Edit Sample Set')) }
@@ -373,6 +378,28 @@ describe "sample_set pages:" do
         describe "should return to view page" do
           before { click_button "Update" }
           it { should have_content('Sample Set updated') }
+        end
+      
+      end
+      
+      describe "with new but valid information" do
+        let!(:newfacility) { FactoryGirl.create(:facility, contact: user, description: 'a new description') } 
+        let!(:newproject) { FactoryGirl.create(:project) } 
+        before do
+          find('#facilities').find(:xpath, 'option['+(newfacility.id + 1).to_s+']', visible: false).select_option
+          find('#projects').find(:xpath, 'option['+(newproject.id + 1).to_s+']', visible: false).select_option
+          fill_in 'sample_set_sampling_date', with: Date.new(2012, 12, 6)
+        end
+        
+        it "should update, not add a sample_set" do
+          expect { click_button "Update" }.not_to change(SampleSet, :count).by(1)
+        end
+        
+        describe "should return to view page and have updated samples" do
+          before { click_button "Update" }
+          it { should have_content('Sample Set updated') }
+          it { should have_selector('table tr td', text: newfacility.id) }
+          it { should have_selector('table tr td', text: newproject.id) }
         end
       
       end
